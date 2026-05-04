@@ -8,47 +8,374 @@
 
 # 1. Agent Design Philosophy
 
-SystemForge AI is designed around specialized autonomous agents rather than a single general-purpose assistant.
+SystemForge AI is designed as a collaborative engineering system where each agent represents a specialized senior engineering role.
 
-Each agent has:
-
-* a clear persona
-* a narrow responsibility
-* defined input/output boundaries
-* access to shared system state
-* validation and escalation rules
+Instead of relying on a single general-purpose model, the system uses role-based agents with clearly scoped responsibilities.
 
 This improves:
 
-* reliability
-* explainability
-* decision quality
-* self-correction capability
+* reasoning quality
+* architectural consistency
+* validation accuracy
+* security awareness
+* system reliability
+* traceability of decisions
 
-The goal is not “more agents.”
+Each agent operates on shared system state and contributes to a structured architecture refinement workflow.
 
-The goal is **structured engineering decision-making**.
+The objective is not response generation.
 
----
-
-# 2. Shared State Interaction Model
-
-All agents interact through a centralized state object.
-
-Agents do not communicate directly.
-
-They write to and read from the shared state.
-
-This ensures:
-
-* deterministic execution
-* reproducible decisions
-* traceable improvements
-* failure visibility
+The objective is production-grade decision making.
 
 ---
 
-## State Object
+# 2. Agent Workflow Overview
+
+```text
+User Input
+   ↓
+Planner Agent
+   ↓
+Research Agent
+   ↓
+Critic Agent
+   ↓
+Security Auditor Agent
+   ↓
+Self-Healing Agent
+   ↓
+Final Output Layer
+```
+
+Each stage updates the centralized state object and passes validated context forward.
+
+This creates deterministic workflows rather than isolated responses.
+
+---
+
+# 3. Planner Agent
+
+## Persona
+
+Principal Software Architect
+
+---
+
+## Objective
+
+Transform a high-level product idea into a complete architecture blueprint.
+
+---
+
+## Responsibilities
+
+* service decomposition
+* API architecture planning
+* database selection and structure
+* deployment strategy
+* scaling design
+* observability planning
+* infrastructure decisions
+
+---
+
+## Input
+
+```json
+{
+  "project_idea": "Build a scalable fintech SaaS using Next.js + FastAPI + PostgreSQL"
+}
+```
+
+---
+
+## Output
+
+```json
+{
+  "architecture_plan": {
+    "services": [],
+    "database_strategy": {},
+    "deployment_plan": {},
+    "scaling_strategy": {}
+  }
+}
+```
+
+---
+
+## Prompt Focus
+
+* think like a principal architect
+* prioritize production readiness
+* optimize for scalability and maintainability
+* avoid premature complexity
+* justify architectural choices
+
+---
+
+## Recommended Model
+
+Qwen
+
+This agent requires the strongest reasoning capability.
+
+---
+
+# 4. Research Agent
+
+## Persona
+
+Senior Staff Engineer
+
+---
+
+## Objective
+
+Validate and improve architecture decisions using current engineering best practices.
+
+---
+
+## Responsibilities
+
+* framework comparison
+* architecture validation
+* production readiness checks
+* ecosystem recommendations
+* technical alternative suggestions
+
+---
+
+## Input
+
+Planner Agent output
+
+---
+
+## Output
+
+```json
+{
+  "research_findings": {
+    "recommended_improvements": [],
+    "framework_notes": []
+  }
+}
+```
+
+---
+
+## Prompt Focus
+
+* validate assumptions
+* compare alternatives
+* identify stronger ecosystem choices
+* prefer practical production solutions
+
+---
+
+## Recommended Models
+
+Llama / Mistral
+
+This stage prioritizes precision and speed.
+
+---
+
+# 5. Critic Agent
+
+## Persona
+
+Senior Site Reliability Engineer (SRE)
+
+---
+
+## Objective
+
+Detect operational risks, reliability gaps, and deployment weaknesses.
+
+---
+
+## Responsibilities
+
+* SPOF detection
+* scaling bottleneck analysis
+* monitoring gap detection
+* failover validation
+* reliability review
+* incident prevention planning
+
+---
+
+## Input
+
+Architecture + Research findings
+
+---
+
+## Output
+
+```json
+{
+  "critic_flags": [
+    "Single PostgreSQL instance creates SPOF",
+    "No Redis caching strategy found",
+    "No observability pipeline configured"
+  ]
+}
+```
+
+---
+
+## Prompt Focus
+
+* think like an SRE preparing for production incidents
+* assume failure will happen
+* prioritize resilience and recovery
+* detect hidden operational risks
+
+---
+
+## Recommended Models
+
+Llama / Mistral
+
+This stage requires strict critical evaluation.
+
+---
+
+# 6. Security Auditor Agent
+
+## Persona
+
+Application Security Engineer
+
+---
+
+## Objective
+
+Validate the security posture of the proposed system architecture.
+
+---
+
+## Responsibilities
+
+* authentication review
+* authorization risks
+* API exposure validation
+* secrets management review
+* infrastructure security checks
+* deployment hardening recommendations
+
+---
+
+## Input
+
+Architecture + Critic findings
+
+---
+
+## Output
+
+```json
+{
+  "security_risks": [
+    "JWT secret management missing",
+    "Admin APIs lack RBAC planning"
+  ]
+}
+```
+
+---
+
+## Prompt Focus
+
+* think like a security engineer reviewing a production system
+* minimize attack surface
+* assume adversarial behavior
+* identify compliance risks
+
+---
+
+## Recommended Models
+
+Llama / Mistral
+
+Focused evaluation is more important than deep reasoning here.
+
+---
+
+# 7. Self-Healing Agent
+
+## Persona
+
+Autonomous Recovery Engine
+
+---
+
+## Objective
+
+Repair weak architecture decisions automatically.
+
+---
+
+## Responsibilities
+
+* redesign weak architecture paths
+* improve deployment patterns
+* add missing failover strategies
+* strengthen observability
+* improve security posture
+* optimize performance decisions
+
+---
+
+## Input
+
+Critic flags + Security risks
+
+---
+
+## Output
+
+```json
+{
+  "auto_fixes": [
+    "Added Redis caching layer",
+    "Introduced PostgreSQL read replicas",
+    "Added Prometheus + Grafana monitoring"
+  ]
+}
+```
+
+---
+
+## Prompt Focus
+
+* prioritize production-safe improvements
+* avoid unnecessary complexity
+* preserve system simplicity
+* generate practical corrections
+
+---
+
+## Recommended Models
+
+Qwen or Mistral depending on complexity
+
+This stage can scale based on problem depth.
+
+---
+
+# 8. Shared State Interaction
+
+All agents interact with a centralized state object.
+
+This prevents isolated reasoning and ensures full architecture traceability.
+
+---
+
+## State Example
 
 ```json
 {
@@ -64,348 +391,42 @@ This ensures:
 
 ---
 
-# 3. Agent Definitions
+# 9. Failure Handling Strategy
+
+SystemForge AI assumes failure is normal.
+
+If an agent produces incomplete or conflicting results:
+
+* state validation triggers re-execution
+* critic findings trigger repair loops
+* security failures force architecture revision
+* planner assumptions can be challenged and rewritten
+
+This creates iterative architecture improvement rather than single-pass generation.
 
 ---
 
-## Agent 1 — Planner Agent
-
-### Persona
-
-Principal Software Architect
-
-### Objective
-
-Transform vague product requirements into a complete production-grade system architecture.
-
-### Input
-
-* user project idea
-* business constraints
-* preferred technology stack (optional)
-
-### Output
-
-```json
-{
-  "services": [],
-  "database_strategy": {},
-  "api_design": {},
-  "deployment_plan": {},
-  "scaling_strategy": {},
-  "observability_plan": {}
-}
-```
-
-### Responsibilities
-
-* architecture decomposition
-* database design
-* service boundaries
-* deployment planning
-* system scalability
-* monitoring strategy
-
-### Model
-
-Qwen (primary reasoning model)
-
-### Example Prompt
-
-“You are a Principal Software Architect designing production systems. Your job is to convert product requirements into scalable, secure, production-ready architecture decisions.”
-
----
-
-## Agent 2 — Research Agent
-
-### Persona
-
-Senior Staff Engineer
-
-### Objective
-
-Validate architecture decisions using modern best practices and ecosystem recommendations.
-
-### Input
-
-* architecture_plan
-
-### Output
-
-```json
-{
-  "validated_choices": [],
-  "alternative_recommendations": [],
-  "ecosystem_improvements": []
-}
-```
-
-### Responsibilities
-
-* framework validation
-* production readiness checks
-* technology comparison
-* ecosystem optimization
-* stronger alternative suggestions
-
-### Model
-
-Llama / Mistral
-
-### Example Prompt
-
-“You are a Senior Staff Engineer reviewing architecture choices for production readiness using current engineering best practices.”
-
----
-
-## Agent 3 — Critic Agent
-
-### Persona
-
-Senior Site Reliability Engineer (SRE)
-
-### Objective
-
-Identify reliability risks, bottlenecks, and operational weaknesses.
-
-### Input
-
-* architecture_plan
-* research_findings
-
-### Output
-
-```json
-{
-  "critic_flags": [
-    {
-      "issue": "",
-      "severity": "",
-      "impact": "",
-      "recommendation": ""
-    }
-  ]
-}
-```
-
-### Responsibilities
-
-* SPOF detection
-* caching gaps
-* deployment risks
-* failover review
-* observability gaps
-* reliability assessment
-
-### Model
-
-Llama / Mistral
-
-### Example Prompt
-
-“You are a Senior Site Reliability Engineer reviewing production architecture for failure risks and operational weaknesses.”
-
----
-
-## Agent 4 — Security Auditor Agent
-
-### Persona
-
-Application Security Engineer
-
-### Objective
-
-Identify security vulnerabilities before deployment.
-
-### Input
-
-* architecture_plan
-
-### Output
-
-```json
-{
-  "security_risks": [
-    {
-      "risk": "",
-      "severity": "",
-      "affected_area": "",
-      "mitigation": ""
-    }
-  ]
-}
-```
-
-### Responsibilities
-
-* authentication review
-* authorization checks
-* secrets management
-* API exposure validation
-* infrastructure security review
-
-### Model
-
-Llama / Mistral
-
-### Example Prompt
-
-“You are an Application Security Engineer reviewing architecture for vulnerabilities, exposure risks, and deployment security failures.”
-
----
-
-## Agent 5 — Self-Healing Agent
-
-### Persona
-
-Autonomous Recovery Engine
-
-### Objective
-
-Apply fixes to improve weak architecture decisions automatically.
-
-### Input
-
-* critic_flags
-* security_risks
-* architecture_plan
-
-### Output
-
-```json
-{
-  "auto_fixes": [],
-  "improved_architecture": {}
-}
-```
-
-### Responsibilities
-
-* redesign weak systems
-* improve reliability
-* add failover strategies
-* improve observability
-* harden security posture
-
-### Model
-
-Qwen / Mistral
-
-### Example Prompt
-
-“You are an autonomous recovery engine. Your task is to repair architecture weaknesses using production-grade engineering decisions.”
-
----
-
-# 4. Failure Handling Logic
-
-SystemForge AI follows a validation loop.
-
----
-
-## Standard Flow
-
-Planner
-→ Research
-→ Critic
-→ Security
-→ Self-Healing
-→ Final Output
-
----
-
-## Escalation Rule
-
-If:
-
-* severity = High
-* unresolved critical failure exists
-
-Then:
-
-Planner Agent re-runs with updated constraints.
-
-This prevents weak architectures from reaching final output.
-
----
-
-# 5. Tool Access Strategy
-
-Not every agent needs every tool.
-
-Tool access is restricted intentionally.
-
----
-
-## Planner Agent
-
-Access to:
-
-* reasoning model
-* architecture templates
-
----
-
-## Research Agent
-
-Access to:
-
-* documentation retrieval
-* framework references
-* best practice knowledge base
-
----
-
-## Critic Agent
-
-Access to:
-
-* reliability checklists
-* deployment patterns
-* SRE validation rules
-
----
-
-## Security Agent
-
-Access to:
-
-* security validation patterns
-* authentication checklists
-* infrastructure risk rules
-
----
-
-## Self-Healing Agent
-
-Access to:
-
-* architecture improvement templates
-* failure resolution playbooks
-
----
-
-# 6. Final Output Composition
-
-The final response returned to the user contains:
-
-* architecture plan
-* validated recommendations
-* critic findings
-* security review
+# 10. Final Output Layer
+
+The final system output includes:
+
+* architecture blueprint
+* database strategy
+* deployment design
+* scaling recommendations
+* observability roadmap
+* security validation report
 * self-healing improvements
 * implementation roadmap
 
-This ensures users move from planning directly into execution.
+This output is designed to move directly into engineering execution.
 
 ---
 
 # Final Note
 
-The power of SystemForge AI is not the number of agents.
+Each agent is intentionally specialized.
 
-It is the quality of decision boundaries between them.
+The strength of SystemForge AI does not come from one powerful model.
 
-Good agents do not answer everything.
-
-They own one responsibility extremely well.
+It comes from structured collaboration between expert systems operating with shared context and continuous validation.
