@@ -144,8 +144,6 @@ Identifies reliability failures, scaling bottlenecks, and operational risks.
 * no monitoring strategy
 * weak failover handling
 
-This is the strongest demonstration point for judges.
-
 ---
 
 ## Agent 4 — Security Auditor Agent
@@ -167,7 +165,7 @@ Validates security posture of the proposed architecture.
 * secrets management validation
 * compliance risk detection
 
-This ensures the architecture is safe—not just scalable.
+This ensures the architecture is safe, not just scalable.
 
 ---
 
