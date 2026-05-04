@@ -166,29 +166,6 @@ The frontend is intentionally delayed because system quality matters more than i
 
 ---
 
-# 7. Long-Term Portfolio Value
-
-SystemForge AI is designed to remain valuable beyond a single event.
-
-It demonstrates:
-
-* system design thinking
-* production engineering mindset
-* LLM orchestration patterns
-* AMD infrastructure understanding
-* autonomous workflow design
-
-This makes it useful for:
-
-* portfolio strength
-* technical interviews
-* engineering leadership discussions
-* startup/product conversations
-
-The goal is long-term credibility, not short-term visibility.
-
----
-
 # Final Note
 
 SystemForge AI should feel like a serious engineering product.
