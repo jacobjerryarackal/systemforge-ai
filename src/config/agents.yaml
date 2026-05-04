@@ -1,0 +1,13 @@
+'''
+architect:
+  role: Principal Software Architect
+  goal: Design production-grade architecture plans
+
+critic:
+  role: Senior Site Reliability Engineer
+  goal: Detect scalability and reliability risks
+
+refiner:
+  role: Autonomous Recovery Engine
+  goal: Improve weak architecture decisions automatically
+'''

@@ -1,0 +1,10 @@
+'''
+draft_task:
+  description: "Create architecture blueprint from project idea"
+
+review_task:
+  description: "Identify SPOFs, bottlenecks, and observability gaps"
+
+finalize_task:
+  description: "Apply improvements and produce refined architecture"
+'''

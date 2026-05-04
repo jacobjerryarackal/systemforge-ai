@@ -4,4 +4,5 @@ python-dotenv
 fastapi
 uvicorn
 langchain
-pydantic
+langchain-openai
+python-dotenv
