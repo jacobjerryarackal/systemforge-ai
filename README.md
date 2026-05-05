@@ -1,296 +1,279 @@
-# SystemForge AI
+# SystemForge
 
-### Autonomous Multi-Agent Engine for Production-Grade Software Architecture
+## AI-Powered Workflow Redesign + Architecture Validation Engine
 
-## Team Name
+SystemForge transforms messy business workflows into production-ready AI system architectures using autonomous multi-agent reasoning.
 
-**The Prompt Engineer**
+Instead of relying on manual architecture reviews, disconnected diagrams, spreadsheets, and consultant-heavy redesign cycles, SystemForge analyzes fragmented operational workflows, identifies architectural risks, and produces optimized, scalable, and production-grade system designs.
 
-## Hackathon
-
-AMD Developer Hackathon 2026
-Track 1: AI Agents & Agentic Workflows
+It combines workflow redesign, architecture validation, and infrastructure refinement into a single autonomous engine powered by multi-agent orchestration and GPU-accelerated LLM inference.
 
 ---
 
-## Problem Statement
+# Problem
 
-Most AI coding assistants help developers write code.
+Many businesses operate with fragmented workflows that are difficult to scale, monitor, and optimize.
 
-Very few help them make the *right architectural decisions before coding begins*.
+Common examples include:
 
-Bad architecture decisions lead to:
+* Manual approvals across multiple teams
+* Spreadsheet-driven operations
+* Unclear ownership across services
+* Single points of failure in critical systems
+* Lack of observability and production safeguards
+* Poorly documented architecture decisions
+* Delayed engineering reviews and expensive consulting cycles
 
-* poor scalability
-* security vulnerabilities
-* deployment failures
-* expensive rewrites
-* unreliable production systems
+Traditional tools help visualize workflows, but they do not redesign them for production readiness.
 
-Developers often spend days deciding:
+Organizations often need both:
 
-* which database to use
-* how services should communicate
-* how to scale infrastructure
-* how to handle observability
-* how to secure deployments
+* Workflow optimization
+* Architecture reliability validation
 
-This process is slow, inconsistent, and highly dependent on senior engineering expertise.
-
----
-
-## Solution
-
-**SystemForge AI** is an autonomous multi-agent system that plans, validates, and self-corrects production-grade software architectures using AMD-accelerated large language models.
-
-Instead of acting like a simple chatbot, SystemForge AI behaves like an experienced engineering team:
-
-* Principal Software Architect
-* Senior Staff Engineer
-* Senior Site Reliability Engineer (SRE)
-* Security Auditor
-* Autonomous Recovery Engine
-
-The system takes a product idea as input and generates:
-
-* scalable architecture plans
-* technology recommendations
-* deployment strategies
-* observability planning
-* security reviews
-* self-healing corrections
-* production-ready implementation roadmap
+SystemForge solves both.
 
 ---
 
-## Example Input
+# Solution
 
-> Build me a scalable fintech SaaS platform using Next.js + FastAPI + PostgreSQL
+SystemForge converts messy workflows into resilient, production-grade system architectures through a 3-agent autonomous pipeline.
 
----
+### Input
 
-## Example Output
+A user provides an existing workflow, operational process, or architecture draft.
 
-### Planner Agent
+Example:
 
-Designs:
+Customer sends request
+→ team manually checks inventory
+→ approval happens through email
+→ payment is manually tracked
+→ delivery is delayed
 
-* system architecture
-* API strategy
-* database design
-* deployment strategy
-* scaling roadmap
+### Output
 
-### Critic Agent (Senior SRE)
+SystemForge redesigns the system into an optimized architecture.
 
-Detects:
+Example:
 
-* Single PostgreSQL instance → SPOF risk
-* Missing Redis layer → performance bottleneck
-* No observability → monitoring failure risk
+Customer Request
+→ AI Intake Agent
+→ Validation Layer
+→ Inventory Sync Service
+→ Approval Engine
+→ Payment Orchestration
+→ Auto Dispatch
+→ Monitoring Dashboard
 
-### Self-Healing Agent
+The result includes:
 
-Automatically fixes:
-
-* adds Redis caching
-* introduces read replicas
-* adds Prometheus + Grafana monitoring
-* improves failover strategy
-
----
-
-## Why This Matters
-
-Most hackathon projects stop at:
-
-> Ask → Answer
-
-SystemForge AI goes further:
-
-> Plan → Execute → Validate → Self-Correct
-
-This creates a true **agentic workflow**, which aligns directly with Track 1 objectives.
+* Improved workflow design
+* Service architecture recommendations
+* Infrastructure planning
+* Reliability improvements
+* Production-readiness validation
+* Deployment and observability suggestions
 
 ---
 
-## Core Architecture
+# Core Agent Pipeline
 
-### 1. Planner Agent
+SystemForge uses three autonomous agents working sequentially.
 
-**Persona:** Principal Software Architect
+## 1. Architect Agent
 
-Breaks high-level ideas into complete production architecture.
+### Responsibility
 
----
+Designs the first version of the system architecture.
 
-### 2. Research Agent
+### Tasks
 
-**Persona:** Senior Staff Engineer
+* Understand workflow intent
+* Identify service boundaries
+* Define APIs and data flow
+* Recommend queues, databases, and infrastructure
+* Create scalable architecture foundations
 
-Validates choices using latest production best practices and framework recommendations.
+### Output
 
----
-
-### 3. Critic Agent
-
-**Persona:** Senior Site Reliability Engineer (SRE)
-
-Detects:
-
-* bottlenecks
-* deployment risks
-* scaling issues
-* observability gaps
-* reliability failures
+Initial production architecture draft
 
 ---
 
-### 4. Security Auditor Agent
+## 2. Critic Agent
 
-**Persona:** Application Security Engineer
+### Responsibility
 
-Finds:
+Finds weaknesses, bottlenecks, and architectural risks.
 
-* authentication flaws
-* API exposure risks
-* secrets management issues
-* infrastructure vulnerabilities
+### Tasks
 
----
+* Detect single points of failure
+* Identify scaling risks
+* Review latency and reliability concerns
+* Analyze observability gaps
+* Check fallback and failure handling
+* Surface security and compliance risks
 
-### 5. Self-Healing Agent
+### Output
 
-**Persona:** Autonomous Recovery Engine
-
-Applies corrective actions and improves architecture decisions automatically.
-
----
-
-## State Management
-
-Inspired by production-grade agent orchestration systems, SystemForge AI uses a central state object to track architecture evolution across all agents.
-
-```json
-{
-  "project_idea": "",
-  "architecture_plan": {},
-  "research_findings": {},
-  "critic_flags": [],
-  "security_risks": [],
-  "auto_fixes": [],
-  "final_output": {}
-}
-```
-
-This enables:
-
-* deterministic workflows
-* traceable decisions
-* validation loops
-* self-healing architecture refinement
+Architecture review with high-severity findings
 
 ---
 
-## Tech Stack
+## 3. Refiner Agent
 
-### Agent Framework
+### Responsibility
 
-* CrewAI
+Improves the architecture using critic feedback.
 
-### Models
+### Tasks
 
-* Qwen (Primary reasoning model)
-* Llama / Mistral (Specialized execution agents)
+* Add fallback systems
+* Introduce circuit breakers
+* Improve resilience patterns
+* Strengthen observability
+* Improve deployment readiness
+* Finalize production-grade architecture
 
-### Infrastructure
+### Output
 
-* AMD Developer Cloud
-* ROCm
-* vLLM
+Production-ready refined architecture
 
-### Backend
+---
+
+# System Flow
+
+Workflow Input
+↓
+Workflow Builder UI
+↓
+Backend API
+↓
+Multi-Agent Orchestration Engine
+↓
+GPU-Accelerated LLM Inference
+↓
+Architecture Generation + Validation
+↓
+Final Workflow + Infrastructure Output
+
+---
+
+# Features
+
+* Workflow redesign from messy operational processes
+* Autonomous architecture generation
+* Multi-agent validation pipeline
+* Reliability and SPOF detection
+* Production-readiness scoring
+* Infrastructure recommendations
+* Observability and monitoring suggestions
+* Failure recovery strategy generation
+* Deployment architecture planning
+* Visual workflow output generation
+
+---
+
+# Technology Stack
+
+## Frontend
+
+* Next.js
+* TypeScript
+* Ant Design
+* Framer Motion
+* Three.js
+
+## Backend
 
 * Python
 * FastAPI
+* CrewAI
+* LangChain
 
-### Frontend (Optional)
+## AI Layer
 
-* Next.js / Streamlit
+* Qwen Models
+* vLLM
+* AMD ROCm GPU Acceleration
 
-### Deployment
+## Infrastructure
 
-* Hugging Face Spaces
-
----
-
-## Why AMD Developer Cloud
-
-The Planner Agent requires deep reasoning and long-context architectural thinking.
-
-Using **Qwen on AMD GPUs via vLLM + ROCm** allows us to:
-
-* run high-capacity models efficiently
-* avoid API dependency limitations
-* improve latency and control
-* benchmark real workloads on AMD infrastructure
-
-This makes AMD not just infrastructure—but a core part of the product strategy.
+* PostgreSQL
+* Redis
+* Docker
 
 ---
 
-## Build in Public Challenge
+# AMD GPU Integration
 
-We are documenting the full journey through:
+SystemForge uses GPU-accelerated inference for autonomous agent execution.
 
-* technical architecture breakdowns
-* AMD cloud deployment insights
-* model optimization learnings
-* agent failure + self-healing case studies
+The frontend is responsible for workflow interaction and visualization, while the backend routes agent reasoning through high-performance model inference using AMD GPU infrastructure.
 
-We will:
+### GPU workloads include
 
-* publish technical updates on LinkedIn
-* open-source the full implementation
-* share feedback on ROCm + AMD Developer Cloud experience
+* Architect agent reasoning
+* Critic agent analysis
+* Refiner agent refinement
+* Long-context architecture validation
+* Multi-step architecture generation
 
----
+### Inference pipeline
 
-## Project Goal
+Frontend
+↓
+Backend API
+↓
+CrewAI Agent Engine
+↓
+AMD GPU Endpoint
+↓
+Qwen Model Inference
+↓
+Agent Response Generation
 
-Build an AI system that thinks like a senior engineering team—not just another coding assistant.
-
-SystemForge AI aims to reduce architecture mistakes before development begins and help teams ship production-grade systems faster.
-
----
-
-## Repository Roadmap
-
-```text
-systemforge-ai/
-│
-├── agents/
-├── workflows/
-├── state/
-├── tools/
-├── api/
-├── frontend/
-├── docs/
-│   ├── architecture.md
-│   ├── agent-design.md
-│   ├── amd-stack.md
-│   ├── demo-script.md
-│   └── judging-strategy.md
-│
-├── tests/
-├── README.md
-└── requirements.txt
-```
+This enables faster inference, better scalability, and production-grade multi-agent execution.
 
 ---
 
-## Final Vision
+# Example Use Cases
 
-SystemForge AI is not just an AI assistant.
+## E-commerce Platform Redesign
 
-It is an autonomous software architecture engine built to help developers make better decisions before writing their first line of code.
+Transform fragmented order processing into scalable event-driven architecture.
+
+## Healthcare Workflow Optimization
+
+Redesign patient intake, approvals, and compliance systems with reliability safeguards.
+
+## Fintech Operations Pipeline
+
+Improve fraud detection, transaction routing, and regulatory reporting systems.
+
+## Internal Enterprise Automation
+
+Replace manual approvals and spreadsheet-driven workflows with resilient service architecture.
+
+---
+
+# Future Scope
+
+* Drag-and-drop workflow builder
+* Collaborative workflow editing
+* Industry-specific architecture templates
+* Compliance-aware architecture generation
+* Kubernetes deployment generation
+* CI/CD pipeline generation
+* Infrastructure-as-Code recommendations
+* Automated incident recovery planning
+
+---
+
+# Vision
+
+SystemForge is designed to move beyond architecture review.
+
+The long-term goal is to become an autonomous workflow redesign engine that helps organizations transform operational complexity into scalable, reliable, and production-ready AI systems.
