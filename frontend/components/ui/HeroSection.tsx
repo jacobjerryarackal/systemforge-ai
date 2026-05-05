@@ -5,8 +5,9 @@ import {
   ThunderboltOutlined,
   CodeOutlined,
 } from '@ant-design/icons';
+import WorkflowBuilder from '../workflow/WorkflowBuilder';
 
-const { TextArea } = Input;
+
 
 interface HeroSectionProps {
   onSubmit: (description: string) => void;
@@ -345,32 +346,7 @@ export default function HeroSection({
               PROJECT_DESCRIPTION
             </div>
 
-            <TextArea
-              value={description}
-              onChange={(e) =>
-                setDescription(e.target.value)
-              }
-              placeholder="Describe your system: scale, constraints, latency, availability, domain..."
-              rows={5}
-              style={{
-                resize: 'none',
-                background: 'transparent',
-                border: 'none',
-                boxShadow: 'none',
-                color: '#F0F0FF',
-                fontSize: '1rem',
-                lineHeight: 1.7,
-                padding: 0,
-              }}
-              onKeyDown={(e) => {
-                if (
-                  e.key === 'Enter' &&
-                  (e.ctrlKey || e.metaKey)
-                ) {
-                  handleSubmit();
-                }
-              }}
-            />
+            <WorkflowBuilder onSubmit={(steps) => { const text = steps.map((s) => s.label).join(' → '); onSubmit(text); }} isRunning={isRunning} />
 
             <div
               style={{
