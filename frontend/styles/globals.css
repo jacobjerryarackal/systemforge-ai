@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=JetBrains+Mono:wght@300;400;500;700&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --amd-red: #E30913;
+  --amd-red-dark: #B5060F;
+  --amd-red-glow: rgba(227, 9, 19, 0.4);
+  --amd-red-subtle: rgba(227, 9, 19, 0.08);
+
+  --bg-void: #020204;
+  --bg-deep: #07070F;
+  --bg-surface: #0D0D1A;
+  --bg-raised: #12121F;
+  --bg-overlay: #1A1A2E;
+
+  --accent-cyan: #00D4FF;
+  --accent-cyan-glow: rgba(0, 212, 255, 0.3);
+  --accent-cyan-subtle: rgba(0, 212, 255, 0.06);
+  --accent-gold: #FFB800;
+  --accent-gold-glow: rgba(255, 184, 0, 0.3);
+  --accent-green: #00FF9C;
+  --accent-green-glow: rgba(0, 255, 156, 0.3);
+
+  --text-primary: #F0F0FF;
+  --text-secondary: #8888AA;
+  --text-muted: #444466;
+  --text-code: #00D4FF;
+
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-glow: rgba(227, 9, 19, 0.3);
+
+  --font-display: 'Orbitron', monospace;
+  --font-body: 'Rajdhani', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-void);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg-deep); }
+::-webkit-scrollbar-thumb { background: var(--amd-red); border-radius: 2px; }
+::selection { background: var(--amd-red-glow); color: var(--text-primary); }
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(227, 9, 19, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(227, 9, 19, 0.015) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
