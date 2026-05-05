@@ -2,207 +2,255 @@
 
 ## Overview
 
-SystemForge demonstrates how fragmented workflows can be transformed into production-ready AI system architectures using autonomous multi-agent reasoning.
+SystemForge is an AI-native workflow redesign platform that transforms fragmented manual workflows into production-grade system architectures.
 
-The demo focuses on showing the complete lifecycle:
+Instead of generating simple automation suggestions, the platform redesigns operational systems using a structured multi-agent reasoning engine composed of:
 
-messy workflow
-→ architecture generation
-→ architecture review
-→ architecture refinement
-→ final production-ready system
+* Architect Agent
+* Critic Agent
+* Refiner Agent
 
-The goal is to show how operational complexity becomes engineering clarity.
+The final output is a deployable system blueprint with workflow transformation, operational redesign, architecture validation, and production-readiness analysis.
+
+The demo should present SystemForge as a real engineering platform focused on workflow modernization and enterprise system redesign.
 
 ---
 
 # Demo Scenario
 
-Example workflow:
+## Example Input
 
-Healthcare data pipeline with manual approvals, patient monitoring, compliance requirements, and fragmented operational ownership.
+Use a workflow that clearly shows operational friction.
 
-This scenario highlights:
+Recommended example:
 
-* workflow complexity
-* reliability risks
-* scaling challenges
-* architecture redesign opportunities
+### Hospital Approval Workflow
 
-It clearly demonstrates the value of autonomous architecture refinement.
+```text id="5mrm2p"
+Patient fills intake form
+Reception manually verifies insurance
+Doctor manually reviews reports
+Lab sends PDF reports by email
+Admin manually updates billing
+```
 
----
+This works well because the pain points are obvious and the redesign is visually strong.
 
-# Demo Sequence
+Alternative demo scenarios:
 
----
-
-# Step 1 — Workflow Input
-
-The user provides an existing workflow.
-
-Example:
-
-Patient intake
-→ manual approval
-→ diagnosis review
-→ payment confirmation
-→ discharge workflow
-
-This represents the current operational state.
-
-The system accepts either:
-
-* text-based workflow input
-* node-based workflow builder input
-
-This becomes the architecture starting point.
+* Insurance Claims Workflow
+* Recruitment Approval Chain
+* Accounting Invoice Approval
+* Internal Compliance Workflow
+* Vendor Approval Pipeline
 
 ---
 
-# Step 2 — Architect Agent Execution
+# Live Demo Sequence
 
-The Architect Agent analyzes the workflow and creates the first system architecture.
+## Step 1 — Workflow Input
 
-It identifies:
+Open the platform and introduce the workflow builder.
 
-* service boundaries
-* APIs
-* queues
-* databases
-* infrastructure requirements
+Explain that users can enter real operational workflows exactly as they exist today, without needing technical formatting.
 
-Example output:
+Paste the hospital workflow example into the builder.
 
-Patient Intake API
-→ Validation Layer
-→ Approval Engine
-→ Payment Service
-→ Monitoring Pipeline
-
-This creates the first architecture draft.
+This demonstrates that SystemForge starts from operational reality rather than ideal architecture assumptions.
 
 ---
 
-# Step 3 — Critic Agent Review
+## Step 2 — Generate Workflow Redesign
 
-The Critic Agent reviews the architecture for production risks.
+Trigger the redesign process.
 
-It checks for:
+Explain that the backend activates a three-agent reasoning system:
 
-* single points of failure
-* missing failover paths
-* poor observability
-* latency bottlenecks
-* scaling concerns
-* compliance-sensitive risks
+### Architect
 
-Example findings:
+Builds the initial system design and transforms manual operations into scalable architecture.
 
-* API Gateway has no circuit breaker
-* no distributed tracing
-* no inference fallback path
-* missing failover strategy
+### Critic
 
-This creates the architecture review layer.
+Reviews the generated architecture like a production engineer and identifies bottlenecks, risks, and failure points.
+
+### Refiner
+
+Uses critic feedback to improve reliability, deployment readiness, and operational resilience.
+
+This shows that the platform is not generating a single answer, but running structured architectural reasoning.
 
 ---
 
-# Step 4 — Refiner Agent Improvements
+## Step 3 — Before → After Transformation
 
-The Refiner Agent applies improvements using Critic feedback.
+Show the workflow transformation section.
 
-It adds:
+Highlight how manual steps are redesigned into production-grade system flows.
 
-* circuit breakers
-* retry strategies
-* failover systems
-* observability stack
-* high-availability deployment design
+Example transformation:
 
-The architecture becomes production-ready.
+### Before
 
----
+```text id="yjv5m1"
+Reception manually verifies insurance
+Lab sends PDF reports by email
+Admin manually updates billing
+```
 
-# Step 5 — Final Workflow Output
+### After
 
-SystemForge presents the final redesigned system.
+```text id="yebp2j"
+Insurance validation API
+Automated lab integration pipeline
+Billing automation with EHR sync
+```
 
-This includes:
-
-## Workflow Map
-
-Production-grade operational flow
-
-## Architecture Design
-
-Services, APIs, queues, infrastructure
-
-## Reliability Layer
-
-Fallbacks, monitoring, observability
-
-## Production Score
-
-Deployment readiness and architecture confidence
-
-This becomes the final output.
+This demonstrates measurable operational redesign rather than surface-level automation.
 
 ---
 
-# Live Visual Experience
+## Step 4 — Operational Redesign Breakdown
 
-The frontend shows:
+Show the workflow comparison section.
 
-* workflow builder
-* multi-agent execution pipeline
-* agent reasoning stages
-* architecture review cards
-* final workflow visualization
-* production-readiness summary
+Explain how SystemForge breaks each workflow step into:
 
-This creates visibility into how architecture decisions are made.
+* original operational problem
+* redesigned architecture
+* business impact
 
-The system behaves like an architecture engine, not a chatbot.
+This gives engineering clarity instead of generic AI recommendations.
 
----
-
-# Recommended Demo Timing
-
-## Introduction
-
-20–30 seconds
-
-## Workflow Input
-
-20 seconds
-
-## Agent Pipeline Execution
-
-40–60 seconds
-
-## Final Architecture Review
-
-40–60 seconds
-
-## Closing Summary
-
-20 seconds
-
-Ideal total demo time:
-
-2 to 3 minutes
-
-This keeps the flow clear and focused.
+It helps teams understand exactly what changed and why.
 
 ---
 
-# Closing Message
+## Step 5 — Agent Decision Intelligence
 
-SystemForge does not simply review architecture.
+Move to the agent reasoning section.
 
-It redesigns operational workflows into scalable, reliable, and production-ready systems.
+Show how each agent contributes specialized decisions.
 
-The output is not just a diagram.
+### Architect Output
 
-It is an executable architecture strategy.
+Service boundaries, approval engine design, event-driven workflow creation.
+
+### Critic Output
+
+Detection of SPOFs, missing retries, PDF dependency risks, audit visibility gaps.
+
+### Refiner Output
+
+Fallback paths, observability layers, retry systems, production hardening.
+
+This proves the system is performing architecture review rather than simple text generation.
+
+---
+
+## Step 6 — Final Architecture Blueprint
+
+Show the production architecture layers.
+
+Explain how the platform outputs a deployable blueprint covering:
+
+* workflow interface layer
+* multi-agent reasoning layer
+* inference and compute layer
+* production infrastructure layer
+
+This makes the output implementation-ready for engineering teams.
+
+---
+
+## Step 7 — Final System Impact
+
+Show measurable outcome metrics:
+
+* production readiness
+* manual work reduction
+* workflow execution speed
+* scalability improvement
+
+This helps decision-makers understand business value, not just technical design.
+
+---
+
+# AMD Inference Layer
+
+## Where AMD Is Used
+
+SystemForge uses AMD in the inference layer.
+
+The frontend sends workflow redesign requests to the backend multi-agent system.
+
+The backend runs Architect, Critic, and Refiner agents using Qwen models served through vLLM on AMD GPUs accelerated by ROCm.
+
+This enables:
+
+* fast workflow redesign generation
+* scalable multi-agent execution
+* lower inference latency
+* production-grade architecture generation
+* enterprise deployment readiness
+
+AMD powers the execution engine behind the system architecture.
+
+It is not a frontend integration.
+
+It is the core compute layer.
+
+---
+
+# Development and Production Architecture
+
+## Development Mode
+
+Current development uses:
+
+* Groq API
+* FastAPI backend
+* CrewAI multi-agent engine
+* dynamic frontend rendering
+
+This allows fast iteration and rapid testing.
+
+---
+
+## Production Mode
+
+Final production deployment uses:
+
+* AMD GPUs
+* ROCm
+* Qwen models
+* vLLM serving
+* scalable multi-agent execution
+
+Only the inference provider changes.
+
+The workflow engine, agent logic, frontend, and API contracts remain unchanged.
+
+This ensures a clean migration path to production.
+
+---
+
+# Closing Summary
+
+SystemForge is not a workflow visualization tool.
+
+It is a production workflow redesign engine.
+
+The platform takes fragmented operational systems and transforms them into deployable AI-native architectures using structured multi-agent reasoning.
+
+The result is:
+
+* architecture clarity
+* operational redesign
+* deployment readiness
+* measurable business improvement
+* enterprise-grade system modernization
+
+The goal is not better documentation.
+
+The goal is better systems.
