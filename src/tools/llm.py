@@ -1,19 +1,20 @@
+from langchain_groq import ChatGroq
 import os
 from dotenv import load_dotenv
-from crewai import LLM
 
 load_dotenv()
 
 
 def get_llm():
-    use_mock = os.getenv("USE_MOCK_MODE", "true").lower() == "true"
+    """
+    Temporary Development Mode using GROQ
 
-    if use_mock:
-        return None
+    Later replace with:
+    AMD ROCm + vLLM + Qwen
+    """
 
-    return LLM(
-        model=os.getenv("MODEL_NAME"),
-        base_url=os.getenv("VLLM_BASE_URL"),
-        api_key=os.getenv("VLLM_API_KEY"),
-        temperature=0.2,
+    return ChatGroq(
+        groq_api_key=os.getenv("GROQ_API_KEY"),
+        model_name="llama-3.1-8b-instant",
+        temperature=0.2
     )
