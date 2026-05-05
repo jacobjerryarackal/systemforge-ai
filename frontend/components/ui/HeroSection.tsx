@@ -1,23 +1,33 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { Button, Input } from 'antd';
-import {
-  ThunderboltOutlined,
-  CodeOutlined,
-} from '@ant-design/icons';
 import WorkflowBuilder from '../workflow/WorkflowBuilder';
 
-
-
 interface HeroSectionProps {
-  onSubmit: (description: string) => void;
+  onSubmit: (workflowText: string) => void;
   isRunning: boolean;
 }
 
-const EXAMPLE_PROMPTS = [
-  'E-commerce platform with 1M DAU, real-time inventory, payment processing, and ML-based recommendations',
-  'Healthcare data pipeline with HIPAA compliance, real-time patient monitoring, and AI diagnosis assistance',
-  'Fintech trading platform with sub-millisecond latency, fraud detection, and regulatory reporting',
+const EXAMPLE_WORKFLOWS = [
+  {
+    title: 'E-commerce Operations Chaos',
+    flow:
+      'Orders come from Shopify → Team manually updates inventory in Excel → Slack message sent to warehouse → Warehouse updates delivery status manually → Customer support manually handles delays',
+  },
+  {
+    title: 'Hospital Approval Workflow',
+    flow:
+      'Patient fills intake form → Reception manually verifies insurance → Doctor manually reviews reports → Lab sends PDF reports by email → Admin manually updates billing',
+  },
+  {
+    title: 'Hiring Workflow Mess',
+    flow:
+      'Resume comes from LinkedIn → HR manually shortlists candidates → Interview scheduling via WhatsApp → Feedback collected in Google Sheets → Offer approval delayed manually',
+  },
+  {
+    title: 'Startup Support Workflow',
+    flow:
+      'Customer submits issue → Support team checks CRM manually → Engineering gets pinged in Slack → Fix status tracked in Notion → Customer gets manual update email',
+  },
 ];
 
 const containerVariants = {
@@ -44,48 +54,10 @@ const fadeUp = {
   },
 };
 
-function CornerAccent({
-  position,
-}: {
-  position:
-  | 'top-left'
-  | 'top-right'
-  | 'bottom-left'
-  | 'bottom-right';
-}) {
-  const size = 12;
-
-  const style: React.CSSProperties = {
-    position: 'absolute',
-    width: size,
-    height: size,
-    borderColor: '#E30913',
-    borderStyle: 'solid',
-    borderWidth: 0,
-    borderTopWidth: position.startsWith('top') ? 2 : 0,
-    borderBottomWidth: position.startsWith('bottom') ? 2 : 0,
-    borderLeftWidth: position.endsWith('left') ? 2 : 0,
-    borderRightWidth: position.endsWith('right') ? 2 : 0,
-    top: position.startsWith('top') ? -1 : undefined,
-    bottom: position.startsWith('bottom') ? -1 : undefined,
-    left: position.endsWith('left') ? -1 : undefined,
-    right: position.endsWith('right') ? -1 : undefined,
-  };
-
-  return <div style={style} />;
-}
-
 export default function HeroSection({
   onSubmit,
   isRunning,
 }: HeroSectionProps) {
-  const [description, setDescription] = useState('');
-
-  const handleSubmit = () => {
-    if (!description.trim() || isRunning) return;
-    onSubmit(description.trim());
-  };
-
   return (
     <section
       style={{
@@ -93,7 +65,6 @@ export default function HeroSection({
         zIndex: 10,
         minHeight: '100vh',
         display: 'flex',
-        alignItems: 'center',
         justifyContent: 'center',
         padding: '120px 24px 80px',
       }}
@@ -104,11 +75,10 @@ export default function HeroSection({
         animate="visible"
         style={{
           width: '100%',
-          maxWidth: '1100px',
+          maxWidth: '1200px',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          textAlign: 'center',
         }}
       >
         {/* EYEBROW */}
@@ -118,15 +88,15 @@ export default function HeroSection({
             display: 'flex',
             alignItems: 'center',
             gap: '12px',
-            marginBottom: '32px',
+            marginBottom: '28px',
           }}
         >
           <div
             style={{
-              width: 48,
+              width: 60,
               height: 1,
               background:
-                'linear-gradient(90deg, transparent, rgba(227,9,19,0.6))',
+                'linear-gradient(90deg, transparent, rgba(227,9,19,0.7))',
             }}
           />
 
@@ -138,29 +108,35 @@ export default function HeroSection({
               color: '#E30913',
             }}
           >
-            AUTONOMOUS MULTI-AGENT ENGINE
+            WORKFLOW REDESIGN ENGINE
           </span>
 
           <div
             style={{
-              width: 48,
+              width: 60,
               height: 1,
               background:
-                'linear-gradient(90deg, rgba(227,9,19,0.6), transparent)',
+                'linear-gradient(90deg, rgba(227,9,19,0.7), transparent)',
             }}
           />
         </motion.div>
 
         {/* TITLE */}
-        <motion.div variants={fadeUp}>
+        <motion.div
+          variants={fadeUp}
+          style={{
+            textAlign: 'center',
+            marginBottom: '28px',
+          }}
+        >
           <h1
             style={{
               fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(4rem, 10vw, 9rem)',
+              fontSize: 'clamp(4rem, 10vw, 8rem)',
               lineHeight: 0.95,
               fontWeight: 900,
               letterSpacing: '-0.03em',
-              marginBottom: '20px',
+              marginBottom: '16px',
             }}
           >
             <span style={{ color: '#F0F0FF' }}>
@@ -178,39 +154,33 @@ export default function HeroSection({
             </span>
           </h1>
 
-          <motion.div
-            animate={{
-              opacity: [0.5, 1, 0.5],
-            }}
-            transition={{
-              repeat: Infinity,
-              duration: 3,
-            }}
+          <div
             style={{
               fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(2rem, 4vw, 3rem)',
+              fontSize: 'clamp(1.5rem, 3vw, 2.6rem)',
               color: '#8888AA',
-              marginBottom: '28px',
               letterSpacing: '0.08em',
             }}
           >
-            AI
-          </motion.div>
+            Messy Workflow → AI-Native Architecture
+          </div>
         </motion.div>
 
         {/* TAGLINE */}
         <motion.p
           variants={fadeUp}
           style={{
-            maxWidth: '760px',
-            fontSize: 'clamp(1rem, 2vw, 1.35rem)',
-            lineHeight: 1.7,
+            maxWidth: '860px',
+            textAlign: 'center',
+            fontSize: 'clamp(1rem, 2vw, 1.25rem)',
+            lineHeight: 1.8,
             color: '#8888AA',
-            marginBottom: '48px',
+            marginBottom: '52px',
           }}
         >
-          Plans, validates, and self-corrects
-          production-grade architectures using{' '}
+          Transform approvals, spreadsheets, manual handoffs, broken operations,
+          and disconnected systems into scalable production-grade AI workflows
+          powered by{' '}
           <span
             style={{
               color: '#00D4FF',
@@ -232,7 +202,7 @@ export default function HeroSection({
             justifyContent: 'center',
             flexWrap: 'wrap',
             gap: '10px',
-            marginBottom: '52px',
+            marginBottom: '56px',
           }}
         >
           {[
@@ -255,15 +225,16 @@ export default function HeroSection({
             <React.Fragment key={item.title}>
               <motion.div
                 whileHover={{
-                  scale: 1.04,
+                  scale: 1.03,
                   y: -2,
                 }}
                 style={{
-                  padding: '12px 28px',
+                  padding: '14px 30px',
                   border: `1px solid ${item.color}30`,
                   background: `${item.color}08`,
                   borderRadius: 4,
-                  minWidth: 170,
+                  minWidth: 190,
+                  textAlign: 'center',
                 }}
               >
                 <div
@@ -304,180 +275,89 @@ export default function HeroSection({
           ))}
         </motion.div>
 
-        {/* INPUT SECTION */}
+        {/* WORKFLOW BUILDER */}
         <motion.div
           variants={fadeUp}
           style={{
             width: '100%',
-            maxWidth: '850px',
+            maxWidth: '980px',
+            marginBottom: '48px',
+          }}
+        >
+          <WorkflowBuilder
+            onSubmit={(steps) => onSubmit(steps.map(s => s.label).join(' → '))}
+            isRunning={isRunning}
+          />
+        </motion.div>
+
+        {/* EXAMPLE WORKFLOWS */}
+        <motion.div
+          variants={fadeUp}
+          style={{
+            width: '100%',
+            maxWidth: '980px',
           }}
         >
           <div
             style={{
-              position: 'relative',
-              background:
-                'rgba(13,13,26,0.82)',
-              border:
-                '1px solid rgba(227,9,19,0.22)',
-              borderRadius: 4,
-              padding: '28px',
-              backdropFilter: 'blur(18px)',
-              marginBottom: '16px',
+              fontFamily: 'var(--font-mono)',
+              fontSize: '0.7rem',
+              letterSpacing: '0.28em',
+              color: '#444466',
+              marginBottom: '18px',
+              textAlign: 'center',
             }}
           >
-            <CornerAccent position="top-left" />
-            <CornerAccent position="top-right" />
-            <CornerAccent position="bottom-left" />
-            <CornerAccent position="bottom-right" />
-
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 8,
-                marginBottom: '14px',
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.68rem',
-                letterSpacing: '0.24em',
-                color: '#E30913',
-              }}
-            >
-              <CodeOutlined />
-              PROJECT_DESCRIPTION
-            </div>
-
-            <WorkflowBuilder onSubmit={(steps) => { const text = steps.map((s) => s.label).join(' → '); onSubmit(text); }} isRunning={isRunning} />
-
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                marginTop: '18px',
-              }}
-            >
-              <span
-                style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '0.65rem',
-                  color: '#444466',
-                }}
-              >
-                Ctrl + Enter to run
-              </span>
-
-              <span
-                style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '0.65rem',
-                  color:
-                    description.length > 50
-                      ? '#00FF9C'
-                      : '#444466',
-                }}
-              >
-                {description.length} chars
-              </span>
-            </div>
+            EXAMPLE_MESSY_WORKFLOWS
           </div>
 
-          {/* CTA BUTTON */}
-          <motion.div
-            whileHover={{
-              scale: 1.01,
-            }}
-            whileTap={{
-              scale: 0.99,
-            }}
-          >
-            <Button
-              type="primary"
-              size="large"
-              icon={<ThunderboltOutlined />}
-              loading={isRunning}
-              onClick={handleSubmit}
-              disabled={
-                !description.trim() || isRunning
-              }
-              style={{
-                width: '100%',
-                height: 58,
-                border: 'none',
-                borderRadius: 4,
-                fontFamily: 'var(--font-display)',
-                fontSize: '0.88rem',
-                letterSpacing: '0.18em',
-                background: isRunning
-                  ? 'rgba(227,9,19,0.35)'
-                  : 'linear-gradient(135deg, #E30913 0%, #B5060F 100%)',
-                boxShadow:
-                  '0 0 40px rgba(227,9,19,0.28)',
-              }}
-            >
-              {isRunning
-                ? 'FORGING ARCHITECTURE...'
-                : 'INITIATE SYSTEMFORGE →'}
-            </Button>
-          </motion.div>
-
-          {/* EXAMPLES */}
-          <motion.div
-            variants={fadeUp}
+          <div
             style={{
-              marginTop: '28px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '18px',
             }}
           >
-            <div
-              style={{
-                textAlign: 'left',
-                fontFamily: 'var(--font-mono)',
-                fontSize: '0.65rem',
-                letterSpacing: '0.24em',
-                color: '#444466',
-                marginBottom: '14px',
-              }}
-            >
-              EXAMPLE_PROMPTS:
-            </div>
+            {EXAMPLE_WORKFLOWS.map((item, index) => (
+              <motion.div
+                key={index}
+                whileHover={{
+                  y: -2,
+                }}
+                style={{
+                  background:
+                    'rgba(0,212,255,0.04)',
+                  border:
+                    '1px solid rgba(0,212,255,0.12)',
+                  borderRadius: 4,
+                  padding: '22px',
+                  cursor: 'pointer',
+                }}
+              >
+                <div
+                  style={{
+                    fontFamily: 'var(--font-display)',
+                    fontSize: '1.1rem',
+                    color: '#00D4FF',
+                    marginBottom: '12px',
+                  }}
+                >
+                  {item.title}
+                </div>
 
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 10,
-              }}
-            >
-              {EXAMPLE_PROMPTS.map(
-                (prompt, index) => (
-                  <motion.button
-                    key={index}
-                    whileHover={{
-                      x: 4,
-                    }}
-                    onClick={() =>
-                      setDescription(prompt)
-                    }
-                    style={{
-                      background:
-                        'rgba(0,212,255,0.04)',
-                      border:
-                        '1px solid rgba(0,212,255,0.12)',
-                      borderRadius: 4,
-                      padding: '12px 14px',
-                      textAlign: 'left',
-                      cursor: 'pointer',
-                      color: '#8888AA',
-                      fontFamily:
-                        'var(--font-mono)',
-                      fontSize: '0.76rem',
-                      lineHeight: 1.5,
-                    }}
-                  >
-                    ↳ {prompt}
-                  </motion.button>
-                )
-              )}
-            </div>
-          </motion.div>
+                <div
+                  style={{
+                    fontFamily: 'var(--font-mono)',
+                    fontSize: '0.88rem',
+                    lineHeight: 1.8,
+                    color: '#8888AA',
+                  }}
+                >
+                  {item.flow}
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </motion.div>
       </motion.div>
     </section>
