@@ -1,29 +1,13 @@
 'use client';
 
-import dynamic from 'next/dynamic';
-
-const ParticleCanvas = dynamic(
-  () => import('./ParticleCanvas'),
-  {
-    ssr: false,
-  }
-);
-
-export default function ParticleBackground({
-  isActive,
-}: {
-  isActive: boolean;
-}) {
+export default function ParticleBackground() {
   return (
-    <div
-      style={{
-        position: 'fixed',
-        inset: 0,
-        zIndex: 0,
-        pointerEvents: 'none',
-      }}
-    >
-      <ParticleCanvas isActive={isActive} />
+    <div className="cyber-background">
+      <div className="grid-overlay" />
+      <div className="glow glow-red" />
+      <div className="glow glow-blue" />
+      <div className="glow glow-green" />
+      <div className="scan-line" />
     </div>
   );
 }

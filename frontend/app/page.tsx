@@ -7,7 +7,7 @@ import AgentPipeline from '../components/agents/AgentPipeline';
 import { runForgeMock } from '../lib/api';
 import type { AgentOutput } from '../lib/types';
 
-const ParticleBackground = lazy(() => import('../components/animations/ParticleBackground'));
+import ParticleBackground from '../components/animations/ParticleBackground';
 
 const INITIAL_OUTPUTS: AgentOutput[] = [
   { agent: 'architect', content: '', status: 'idle' },
@@ -73,13 +73,14 @@ export default function HomePage() {
   const hasOutput = outputs.some((o) => o.status !== 'idle');
 
   return (
-    <main style={{ position: 'relative', minHeight: '100vh' }}>
-      <Suspense fallback={null}>
-        <ParticleBackground isActive={isExploding} />
-      </Suspense>
-
+    <main style={{
+      position: 'relative',
+      minHeight: '100vh',
+      overflow: 'hidden',
+      background: '#03040a',
+    }}>
+      <ParticleBackground />
       <Header />
-
       <HeroSection onSubmit={handleSubmit} isRunning={isRunning} />
 
       <div id="pipeline">
