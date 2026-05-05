@@ -1,20 +1,42 @@
+from fastapi import FastAPI
+from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
+
 from src.workflows.crew import run_systemforge
 
 
-if __name__ == "__main__":
-    project_input = "Build a scalable fintech SaaS using Next.js + FastAPI + PostgreSQL"
+app = FastAPI(title="SystemForge API")
 
-    result = run_systemforge(project_input)
 
-    print("\n=== SYSTEMFORGE AI OUTPUT ===\n")
-    print("Project Idea:")
-    print(result.project_idea)
+# CORS for Next.js frontend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # later replace with frontend URL
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-    print("\nArchitecture Plan:")
-    print(result.architecture_plan)
 
-    print("\nCritic Flags:")
-    print(result.critic_flags)
+class WorkflowRequest(BaseModel):
+    workflow: list[str]
 
-    print("\nRefined Solution:")
-    print(result.refined_solution)
+
+@app.get("/")
+def root():
+    return {
+        "message": "SystemForge API Running"
+    }
+
+
+@app.post("/run-systemforge")
+def generate_architecture(request: WorkflowRequest):
+    try:
+        result = run_systemforge(request.workflow)
+
+        return result
+
+    except Exception as e:
+        return {
+            "error": str(e)
+        }
