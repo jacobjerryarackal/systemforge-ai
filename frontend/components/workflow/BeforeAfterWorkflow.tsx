@@ -2,30 +2,13 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import type { WorkflowTransformation } from '../../lib/types';
 
 interface BeforeAfterWorkflowProps {
-    beforeWorkflow?: string[];
-    afterWorkflow?: string[];
-    workflowSteps: string[];
+    data: WorkflowTransformation;
 }
 
-const defaultBeforeWorkflow = [
-    'Lead comes from website form',
-    'Sales team manually qualifies lead',
-    'Manager approval happens in WhatsApp',
-    'Proposal created manually in Excel',
-    'CRM updated manually by operations',
-];
-
-const defaultAfterWorkflow = [
-    'AI Lead Qualification Engine',
-    'Priority scoring + routing automation',
-    'Auto approval policy engine',
-    'Proposal Generator Agent',
-    'CRM auto-sync + follow-up automation',
-];
-
-function WorkflowNode({
+function StepCard({
     step,
     index,
     type,
@@ -38,7 +21,7 @@ function WorkflowNode({
 
     return (
         <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
                 delay: index * 0.08,
@@ -46,7 +29,7 @@ function WorkflowNode({
             }}
             style={{
                 display: 'flex',
-                alignItems: 'center',
+                alignItems: 'flex-start',
                 gap: '1rem',
                 marginBottom: '1rem',
             }}
@@ -60,13 +43,13 @@ function WorkflowNode({
                     alignItems: 'center',
                     justifyContent: 'center',
                     border: `1px solid ${isBefore
-                        ? 'rgba(255,184,0,0.25)'
-                        : 'rgba(0,255,156,0.25)'
+                            ? 'rgba(255,184,0,0.25)'
+                            : 'rgba(0,255,156,0.25)'
                         }`,
                     background: isBefore
                         ? 'rgba(255,184,0,0.05)'
                         : 'rgba(0,255,156,0.05)',
-                    borderRadius: 6,
+                    borderRadius: 8,
                     fontFamily: 'var(--font-mono)',
                     fontSize: '0.8rem',
                     color: isBefore ? '#FFB800' : '#00FF9C',
@@ -76,26 +59,26 @@ function WorkflowNode({
                 {String(index + 1).padStart(2, '0')}
             </div>
 
-            {/* Content */}
+            {/* Step Content */}
             <div
                 style={{
                     flex: 1,
                     border: `1px solid ${isBefore
-                        ? 'rgba(255,184,0,0.10)'
-                        : 'rgba(0,255,156,0.10)'
+                            ? 'rgba(255,184,0,0.08)'
+                            : 'rgba(0,255,156,0.08)'
                         }`,
                     background: isBefore
-                        ? 'rgba(255,184,0,0.03)'
-                        : 'rgba(0,255,156,0.03)',
+                        ? 'rgba(255,184,0,0.02)'
+                        : 'rgba(0,255,156,0.02)',
+                    borderRadius: 8,
                     padding: '1rem 1.2rem',
-                    borderRadius: 6,
                 }}
             >
                 <div
                     style={{
                         fontFamily: 'var(--font-body)',
-                        fontSize: '1rem',
                         color: '#F0F0FF',
+                        fontSize: '0.98rem',
                         lineHeight: 1.6,
                     }}
                 >
@@ -106,101 +89,12 @@ function WorkflowNode({
     );
 }
 
-function ResultCard() {
-    const stats = [
-        {
-            label: 'Less Manual Work',
-            value: '92%',
-        },
-        {
-            label: 'Faster Execution',
-            value: '78%',
-        },
-        {
-            label: 'Scalability Improvement',
-            value: '4x',
-        },
-    ];
-
-    return (
-        <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{
-                delay: 0.5,
-                duration: 0.6,
-            }}
-            style={{
-                marginTop: '3rem',
-                border: '1px solid rgba(0,255,156,0.14)',
-                background: 'rgba(0,255,156,0.03)',
-                borderRadius: 8,
-                padding: '2rem',
-            }}
-        >
-            <div
-                style={{
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '0.72rem',
-                    color: '#00FF9C',
-                    letterSpacing: '0.25em',
-                    marginBottom: '1rem',
-                }}
-            >
-                BUSINESS IMPACT
-            </div>
-
-            <div
-                style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
-                    gap: '1rem',
-                }}
-            >
-                {stats.map((item, i) => (
-                    <div
-                        key={i}
-                        style={{
-                            border: '1px solid rgba(0,255,156,0.08)',
-                            background: 'rgba(255,255,255,0.015)',
-                            padding: '1.2rem',
-                            borderRadius: 6,
-                        }}
-                    >
-                        <div
-                            style={{
-                                fontFamily: 'var(--font-display)',
-                                fontSize: '2rem',
-                                color: '#00FF9C',
-                                marginBottom: '0.5rem',
-                            }}
-                        >
-                            {item.value}
-                        </div>
-
-                        <div
-                            style={{
-                                fontFamily: 'var(--font-body)',
-                                color: '#8888AA',
-                                fontSize: '0.95rem',
-                            }}
-                        >
-                            {item.label}
-                        </div>
-                    </div>
-                ))}
-            </div>
-        </motion.div>
-    );
-}
-
 export default function BeforeAfterWorkflow({
-    workflowSteps,
-    beforeWorkflow = defaultBeforeWorkflow,
-    afterWorkflow = defaultAfterWorkflow,
+    data,
 }: BeforeAfterWorkflowProps) {
     return (
         <section
+            id="workflow-engine"
             style={{
                 position: 'relative',
                 zIndex: 10,
@@ -214,9 +108,9 @@ export default function BeforeAfterWorkflow({
                     margin: '0 auto',
                 }}
             >
-                {/* Section Header */}
+                {/* Header */}
                 <motion.div
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 18 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.55 }}
                     style={{
@@ -252,17 +146,17 @@ export default function BeforeAfterWorkflow({
                             maxWidth: 760,
                             margin: '0 auto',
                             color: '#8888AA',
-                            fontSize: '1.05rem',
-                            lineHeight: 1.7,
+                            fontSize: '1rem',
+                            lineHeight: 1.75,
                         }}
                     >
-                        SystemForge transforms broken manual workflows into scalable,
-                        production-grade AI-native systems with autonomous orchestration,
-                        policy engines, and production architecture readiness.
+                        SystemForge converts fragmented manual operations into
+                        production-grade AI-native workflows with automation,
+                        validation layers, and scalable execution paths.
                     </p>
                 </motion.div>
 
-                {/* Comparison Grid */}
+                {/* Main Grid */}
                 <div
                     style={{
                         display: 'grid',
@@ -289,11 +183,11 @@ export default function BeforeAfterWorkflow({
                                 marginBottom: '1.5rem',
                             }}
                         >
-                            BEFORE — MANUAL CHAOS
+                            BEFORE — MANUAL WORKFLOW
                         </div>
 
-                        {beforeWorkflow.map((step, index) => (
-                            <WorkflowNode
+                        {data.before.map((step, index) => (
+                            <StepCard
                                 key={index}
                                 step={step}
                                 index={index}
@@ -350,8 +244,8 @@ export default function BeforeAfterWorkflow({
                             AFTER — AI NATIVE SYSTEM
                         </div>
 
-                        {afterWorkflow.map((step, index) => (
-                            <WorkflowNode
+                        {data.after.map((step, index) => (
+                            <StepCard
                                 key={index}
                                 step={step}
                                 index={index}
@@ -360,9 +254,6 @@ export default function BeforeAfterWorkflow({
                         ))}
                     </div>
                 </div>
-
-                {/* Impact */}
-                <ResultCard />
             </div>
         </section>
     );
