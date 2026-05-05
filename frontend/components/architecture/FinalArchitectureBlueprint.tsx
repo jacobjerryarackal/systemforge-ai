@@ -2,64 +2,11 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import type { ArchitectureLayer } from '../../lib/types';
 
-interface ArchitectureLayer {
-    title: string;
-    subtitle: string;
-    items: string[];
-    color: string;
+interface FinalArchitectureBlueprintProps {
+    layers: ArchitectureLayer[];
 }
-
-const architectureLayers: ArchitectureLayer[] = [
-    {
-        title: 'Workflow Interface Layer',
-        subtitle: 'User input + workflow orchestration',
-        color: '#00D4FF',
-        items: [
-            'Workflow Builder UI',
-            'Before → After Visualization',
-            'Operational Flow Mapping',
-            'Approval Chain Modeling',
-            'System Redesign Interface',
-        ],
-    },
-    {
-        title: 'Multi-Agent Intelligence Layer',
-        subtitle: 'Autonomous reasoning engine',
-        color: '#FFB800',
-        items: [
-            'Architect Agent',
-            'Critic Agent',
-            'Refiner Agent',
-            'Workflow Validation Engine',
-            'Decision Intelligence Panel',
-        ],
-    },
-    {
-        title: 'Inference + Compute Layer',
-        subtitle: 'LLM execution + GPU acceleration',
-        color: '#00FF9C',
-        items: [
-            'CrewAI Orchestration',
-            'Qwen Model Inference',
-            'vLLM Serving Engine',
-            'AMD ROCm GPU Runtime',
-            'Fallback + Retry Strategy',
-        ],
-    },
-    {
-        title: 'Production Architecture Layer',
-        subtitle: 'Deployment + reliability + observability',
-        color: '#E30913',
-        items: [
-            'Redis + PostgreSQL',
-            'Event Queues + Async Workers',
-            'Observability + Tracing',
-            'Kubernetes Deployment',
-            'Production Readiness Scoring',
-        ],
-    },
-];
 
 function LayerCard({
     layer,
@@ -68,6 +15,9 @@ function LayerCard({
     layer: ArchitectureLayer;
     index: number;
 }) {
+    const colors = ['#00D4FF', '#FFB800', '#00FF9C', '#E30913'];
+    const color = colors[index % colors.length];
+
     return (
         <motion.div
             initial={{ opacity: 0, y: 24 }}
@@ -80,12 +30,12 @@ function LayerCard({
                 y: -4,
             }}
             style={{
-                border: `1px solid ${layer.color}20`,
-                background: `${layer.color}05`,
+                border: `1px solid ${color}20`,
+                background: `${color}05`,
                 borderRadius: 10,
                 padding: '2rem',
                 backdropFilter: 'blur(14px)',
-                boxShadow: `0 0 30px ${layer.color}08`,
+                boxShadow: `0 0 30px ${color}08`,
             }}
         >
             {/* Header */}
@@ -98,7 +48,7 @@ function LayerCard({
                     style={{
                         fontFamily: 'var(--font-mono)',
                         fontSize: '0.72rem',
-                        color: layer.color,
+                        color,
                         letterSpacing: '0.22em',
                         marginBottom: '0.5rem',
                     }}
@@ -125,7 +75,7 @@ function LayerCard({
                         lineHeight: 1.6,
                     }}
                 >
-                    {layer.subtitle}
+                    {layer.description}
                 </div>
             </div>
 
@@ -148,7 +98,7 @@ function LayerCard({
                     >
                         <span
                             style={{
-                                color: layer.color,
+                                color,
                                 fontSize: '0.8rem',
                                 marginTop: '2px',
                             }}
@@ -172,9 +122,12 @@ function LayerCard({
     );
 }
 
-export default function FinalArchitectureBlueprint() {
+export default function FinalArchitectureBlueprint({
+    layers,
+}: FinalArchitectureBlueprintProps) {
     return (
         <section
+            id="architecture-blueprint"
             style={{
                 position: 'relative',
                 zIndex: 10,
@@ -230,10 +183,10 @@ export default function FinalArchitectureBlueprint() {
                             lineHeight: 1.75,
                         }}
                     >
-                        SystemForge does not stop at workflow redesign.
-                        It produces a full production-ready architecture blueprint
-                        covering orchestration, inference, infrastructure,
-                        observability, deployment, and operational reliability.
+                        SystemForge produces a production-ready
+                        architecture blueprint covering orchestration,
+                        inference, infrastructure, observability,
+                        deployment, and operational reliability.
                     </p>
                 </motion.div>
 
@@ -246,7 +199,7 @@ export default function FinalArchitectureBlueprint() {
                         gap: '1.6rem',
                     }}
                 >
-                    {architectureLayers.map((layer, index) => (
+                    {layers.map((layer, index) => (
                         <LayerCard
                             key={index}
                             layer={layer}
@@ -292,7 +245,7 @@ export default function FinalArchitectureBlueprint() {
                             marginBottom: '0.8rem',
                         }}
                     >
-                        From Operational Chaos → Production-Ready AI System
+                        From Manual Operations → Production-Ready AI System
                     </div>
 
                     <p
@@ -304,9 +257,9 @@ export default function FinalArchitectureBlueprint() {
                             fontSize: '0.95rem',
                         }}
                     >
-                        Workflow redesign, autonomous architecture validation,
-                        AMD GPU accelerated inference, and deployment-ready
-                        system planning — all inside a single engineering platform.
+                        Workflow redesign, architecture validation,
+                        AI inference, and deployment-ready system
+                        planning — all inside one engineering platform.
                     </p>
                 </motion.div>
             </div>
