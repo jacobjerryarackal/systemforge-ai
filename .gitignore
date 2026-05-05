@@ -1,7 +1,45 @@
-__pycache__/
-*.pyc
+# Python
+
+**pycache**/
+*.py[cod]
+*.pyo
+*.pyd
 .env
 venv/
 .venv/
-.idea/
+
+# Next.js
+.env.local
+
+
+# Node.js
+
+node_modules/
+.next/
+out/
+dist/
+build/
+
+# Logs
+
+*.log
+
+# OS files
+
+.DS_Store
+Thumbs.db
+
+# IDE
+
 .vscode/
+.idea/
+
+# Testing
+
+coverage/
+.pytest_cache/
+
+# Misc
+
+*.sqlite3
+*.db
