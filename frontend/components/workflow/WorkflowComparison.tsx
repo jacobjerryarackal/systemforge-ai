@@ -2,60 +2,61 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import type { SystemForgeResponse } from '../../lib/types';
 
-interface ComparisonItem {
+interface WorkflowComparisonProps {
+    data: SystemForgeResponse;
+}
+
+interface ComparisonBlock {
     title: string;
     before: string;
     after: string;
     impact: string;
 }
 
-const comparisonData: ComparisonItem[] = [
-    {
-        title: 'Lead Qualification',
-        before: 'Manual review by sales team using spreadsheets and repeated follow-ups.',
-        after: 'AI lead scoring engine with automatic routing and qualification.',
-        impact: 'Faster response time + higher conversion',
-    },
-    {
-        title: 'Approval Flow',
-        before: 'Manager approvals handled manually through WhatsApp and email chains.',
-        after: 'Policy-based approval engine with auto-escalation and rule validation.',
-        impact: 'Reduced approval delays + audit visibility',
-    },
-    {
-        title: 'Proposal Generation',
-        before: 'Proposals created manually in Excel and shared through multiple versions.',
-        after: 'Proposal Generator Agent with template automation and approval checkpoints.',
-        impact: 'Consistent output + less manual effort',
-    },
-    {
-        title: 'CRM Updates',
-        before: 'Operations team manually updates CRM after every customer interaction.',
-        after: 'Real-time CRM sync with event-driven updates and workflow triggers.',
-        impact: 'Reliable data + operational accuracy',
-    },
-];
+function buildComparisonBlocks(
+    before: string[],
+    after: string[]
+): ComparisonBlock[] {
+    const maxLength = Math.max(before.length, after.length);
+
+    const blocks: ComparisonBlock[] = [];
+
+    for (let i = 0; i < maxLength; i++) {
+        blocks.push({
+            title: `Workflow Step ${String(i + 1).padStart(2, '0')}`,
+            before: before[i] || 'Not defined',
+            after: after[i] || 'System optimized this step',
+            impact:
+                i % 2 === 0
+                    ? 'Reduced manual effort + faster execution'
+                    : 'Improved reliability + production readiness',
+        });
+    }
+
+    return blocks;
+}
 
 function ComparisonCard({
     item,
     index,
 }: {
-    item: ComparisonItem;
+    item: ComparisonBlock;
     index: number;
 }) {
     return (
         <motion.div
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
                 delay: index * 0.08,
-                duration: 0.5,
+                duration: 0.45,
             }}
             style={{
                 border: '1px solid rgba(255,255,255,0.06)',
                 background: 'rgba(255,255,255,0.02)',
-                borderRadius: 8,
+                borderRadius: 10,
                 padding: '1.8rem',
                 backdropFilter: 'blur(14px)',
             }}
@@ -66,19 +67,15 @@ function ComparisonCard({
                     fontFamily: 'var(--font-display)',
                     fontSize: '1rem',
                     color: '#F0F0FF',
-                    marginBottom: '1.5rem',
-                    letterSpacing: '0.06em',
+                    marginBottom: '1.4rem',
+                    letterSpacing: '0.05em',
                 }}
             >
                 {item.title}
             </div>
 
             {/* Before */}
-            <div
-                style={{
-                    marginBottom: '1.2rem',
-                }}
-            >
+            <div style={{ marginBottom: '1.2rem' }}>
                 <div
                     style={{
                         fontFamily: 'var(--font-mono)',
@@ -103,11 +100,7 @@ function ComparisonCard({
             </div>
 
             {/* After */}
-            <div
-                style={{
-                    marginBottom: '1.2rem',
-                }}
-            >
+            <div style={{ marginBottom: '1.2rem' }}>
                 <div
                     style={{
                         fontFamily: 'var(--font-mono)',
@@ -164,7 +157,14 @@ function ComparisonCard({
     );
 }
 
-export default function WorkflowComparison() {
+export default function WorkflowComparison({
+    data,
+}: WorkflowComparisonProps) {
+    const comparisonBlocks = buildComparisonBlocks(
+        data.workflowTransformation.before,
+        data.workflowTransformation.after
+    );
+
     return (
         <section
             style={{
@@ -219,12 +219,14 @@ export default function WorkflowComparison() {
                             margin: '0 auto',
                             color: '#8888AA',
                             fontSize: '1rem',
-                            lineHeight: 1.7,
+                            lineHeight: 1.75,
                         }}
                     >
-                        Every workflow redesign is broken into measurable improvements.
-                        SystemForge explains what changed, why it changed, and how the
-                        redesigned system improves scalability, reliability, and execution speed.
+                        Every workflow redesign is broken into measurable
+                        improvements. SystemForge explains what changed,
+                        why it changed, and how the redesigned system
+                        improves execution speed, scalability, and
+                        operational reliability.
                     </p>
                 </motion.div>
 
@@ -233,11 +235,11 @@ export default function WorkflowComparison() {
                     style={{
                         display: 'grid',
                         gridTemplateColumns:
-                            'repeat(auto-fit, minmax(300px, 1fr))',
+                            'repeat(auto-fit, minmax(320px, 1fr))',
                         gap: '1.5rem',
                     }}
                 >
-                    {comparisonData.map((item, index) => (
+                    {comparisonBlocks.map((item, index) => (
                         <ComparisonCard
                             key={index}
                             item={item}
