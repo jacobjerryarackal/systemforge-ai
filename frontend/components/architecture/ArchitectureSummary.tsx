@@ -2,61 +2,39 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import type { FinalMetrics } from '../../lib/types';
 
-interface SummaryMetric {
+interface ArchitectureSummaryProps {
+    metrics: FinalMetrics;
+}
+
+interface MetricCardData {
     label: string;
     value: string;
     subtitle: string;
     color: string;
 }
 
-const summaryMetrics: SummaryMetric[] = [
-    {
-        label: 'Production Readiness',
-        value: '94%',
-        subtitle: 'Validated architecture confidence',
-        color: '#00FF9C',
-    },
-    {
-        label: 'Manual Work Reduced',
-        value: '92%',
-        subtitle: 'Operational bottlenecks removed',
-        color: '#00D4FF',
-    },
-    {
-        label: 'Execution Speed',
-        value: '78%',
-        subtitle: 'Faster workflow completion',
-        color: '#FFB800',
-    },
-    {
-        label: 'Scalability Gain',
-        value: '4x',
-        subtitle: 'Improved system growth capacity',
-        color: '#E30913',
-    },
-];
-
 function MetricCard({
     item,
     index,
 }: {
-    item: SummaryMetric;
+    item: MetricCardData;
     index: number;
 }) {
     return (
         <motion.div
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 22 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
                 delay: index * 0.08,
-                duration: 0.5,
+                duration: 0.45,
             }}
             whileHover={{
                 y: -4,
             }}
             style={{
-                border: `1px solid ${item.color}20`,
+                border: `1px solid ${item.color}18`,
                 background: `${item.color}05`,
                 borderRadius: 10,
                 padding: '1.8rem',
@@ -69,7 +47,7 @@ function MetricCard({
                     fontFamily: 'var(--font-display)',
                     fontSize: '2.2rem',
                     color: item.color,
-                    marginBottom: '0.5rem',
+                    marginBottom: '0.6rem',
                     lineHeight: 1,
                 }}
             >
@@ -81,8 +59,8 @@ function MetricCard({
                     fontFamily: 'var(--font-display)',
                     fontSize: '0.95rem',
                     color: '#F0F0FF',
-                    marginBottom: '0.4rem',
-                    letterSpacing: '0.05em',
+                    marginBottom: '0.45rem',
+                    letterSpacing: '0.04em',
                 }}
             >
                 {item.label}
@@ -101,9 +79,39 @@ function MetricCard({
     );
 }
 
-export default function ArchitectureSummary() {
+export default function ArchitectureSummary({
+    metrics,
+}: ArchitectureSummaryProps) {
+    const metricCards: MetricCardData[] = [
+        {
+            label: 'Production Readiness',
+            value: metrics.readiness,
+            subtitle: 'Validated architecture confidence',
+            color: '#00FF9C',
+        },
+        {
+            label: 'Manual Work Reduced',
+            value: metrics.manualReduction,
+            subtitle: 'Operational bottlenecks removed',
+            color: '#00D4FF',
+        },
+        {
+            label: 'Execution Speed',
+            value: metrics.speedGain,
+            subtitle: 'Faster workflow completion',
+            color: '#FFB800',
+        },
+        {
+            label: 'Scalability Gain',
+            value: metrics.scalabilityGain,
+            subtitle: 'Improved system growth capacity',
+            color: '#E30913',
+        },
+    ];
+
     return (
         <section
+            id="amd-inference"
             style={{
                 position: 'relative',
                 zIndex: 10,
@@ -159,9 +167,10 @@ export default function ArchitectureSummary() {
                             lineHeight: 1.75,
                         }}
                     >
-                        SystemForge measures architectural improvements beyond diagrams.
-                        The platform evaluates reliability, scalability, workflow efficiency,
-                        and deployment readiness to provide a complete engineering outcome.
+                        SystemForge evaluates architectural improvements
+                        beyond diagrams. The platform measures reliability,
+                        scalability, workflow efficiency, and deployment
+                        readiness to provide a complete engineering outcome.
                     </p>
                 </motion.div>
 
@@ -175,7 +184,7 @@ export default function ArchitectureSummary() {
                         marginBottom: '3rem',
                     }}
                 >
-                    {summaryMetrics.map((item, index) => (
+                    {metricCards.map((item, index) => (
                         <MetricCard
                             key={index}
                             item={item}
@@ -220,7 +229,8 @@ export default function ArchitectureSummary() {
                             marginBottom: '0.8rem',
                         }}
                     >
-                        Workflow Redesign + Production Validation in One Engine
+                        Workflow Redesign + Production Validation
+                        in One Engine
                     </div>
 
                     <p
@@ -233,8 +243,9 @@ export default function ArchitectureSummary() {
                         }}
                     >
                         The final output is not just a workflow redesign.
-                        It is a production-grade system strategy with measurable business impact,
-                        operational clarity, and infrastructure confidence.
+                        It is a production-grade system strategy with
+                        measurable business impact, operational clarity,
+                        and infrastructure confidence.
                     </p>
                 </motion.div>
             </div>
