@@ -3,34 +3,51 @@
 import React, { useState } from 'react';
 
 import Navbar from '../components/ui/Navbar';
-
 import WorkflowBuilder from '../components/workflow/WorkflowBuilder';
 import BeforeAfterWorkflow from '../components/workflow/BeforeAfterWorkflow';
 import WorkflowComparison from '../components/workflow/WorkflowComparison';
-
 import AgentDecisionPanel from '../components/agents/AgentDecisionPanel';
-
 import FinalArchitectureBlueprint from '../components/architecture/FinalArchitectureBlueprint';
 import ArchitectureSummary from '../components/architecture/ArchitectureSummary';
-
 import ParticleBackground from '../components/animations/ParticleBackground';
 
+import { generateWorkflowRedesign } from '../lib/api';
+import type { SystemForgeResponse } from '../lib/types';
+
 export default function HomePage() {
-  const [generated, setGenerated] = useState(false);
-  const [workflowSteps, setWorkflowSteps] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [systemData, setSystemData] =
+    useState<SystemForgeResponse | null>(null);
 
-  const handleGenerate = (steps: string[]) => {
-    setWorkflowSteps(steps);
-    setGenerated(true);
+  const handleGenerate = async (
+    workflowSteps: string[]
+  ) => {
+    try {
+      setLoading(true);
 
-    setTimeout(() => {
-      document
-        .getElementById('redesign-results')
-        ?.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start',
-        });
-    }, 400);
+      const result =
+        await generateWorkflowRedesign(
+          workflowSteps
+        );
+
+      setSystemData(result);
+
+      setTimeout(() => {
+        document
+          .getElementById('results')
+          ?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+          });
+      }, 400);
+    } catch (error) {
+      console.error(error);
+      alert(
+        'Failed to generate workflow redesign'
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -42,13 +59,10 @@ export default function HomePage() {
         overflowX: 'hidden',
       }}
     >
-      {/* Optional animated cyber background */}
       <ParticleBackground />
 
-      {/* Top Navbar */}
       <Navbar />
 
-      {/* HERO + WORKFLOW INPUT */}
       <section
         style={{
           position: 'relative',
@@ -57,73 +71,43 @@ export default function HomePage() {
           paddingBottom: '80px',
         }}
       >
-        <WorkflowBuilder onGenerate={handleGenerate} />
+        <WorkflowBuilder
+          onGenerate={handleGenerate}
+          isRunning={loading}
+        />
       </section>
 
-      {/* RESULTS */}
-      {generated && (
-        <section
-          id="redesign-results"
-          style={{
-            position: 'relative',
-            zIndex: 10,
-            padding: '0 0 100px',
-          }}
-        >
-          {/* BEFORE → AFTER FLOW */}
-          <BeforeAfterWorkflow workflowSteps={workflowSteps} />
+      {systemData && (
+        <section id="results">
+          <BeforeAfterWorkflow
+            data={
+              systemData.workflowTransformation
+            }
+          />
 
-          {/* COMPARISON BLOCK */}
-          <WorkflowComparison />
+          <WorkflowComparison
+            data={systemData}
+          />
 
-          {/* AGENT REASONING */}
-          <AgentDecisionPanel />
+          <AgentDecisionPanel
+            architect={systemData.architect}
+            critic={systemData.critic}
+            refiner={systemData.refiner}
+          />
 
-          {/* FINAL BLUEPRINT */}
-          <FinalArchitectureBlueprint />
+          <FinalArchitectureBlueprint
+            layers={
+              systemData.architectureLayers
+            }
+          />
 
-          {/* FINAL SUMMARY */}
-          <ArchitectureSummary />
+          <ArchitectureSummary
+            metrics={
+              systemData.finalMetrics
+            }
+          />
         </section>
       )}
-
-      {/* FOOTER */}
-      <footer
-        style={{
-          position: 'relative',
-          zIndex: 10,
-          borderTop: '1px solid rgba(255,255,255,0.05)',
-          padding: '28px 32px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: '16px',
-          marginTop: '40px',
-        }}
-      >
-        <div
-          style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize: '0.68rem',
-            color: '#666680',
-            letterSpacing: '0.12em',
-          }}
-        >
-          SYSTEMFORGE · AI WORKFLOW REDESIGN ENGINE
-        </div>
-
-        <div
-          style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize: '0.68rem',
-            color: '#555570',
-            letterSpacing: '0.12em',
-          }}
-        >
-          Powered by AMD ROCm · Qwen 2.5 · vLLM · CrewAI
-        </div>
-      </footer>
     </main>
   );
 }

@@ -7,6 +7,7 @@ import { WorkflowStep } from './WorkflowTypes';
 
 interface Props {
     onGenerate: (steps: string[]) => void;
+    isRunning: boolean;
 }
 
 const EXAMPLE_WORKFLOWS = [
@@ -61,11 +62,11 @@ function createStep(label = ''): WorkflowStep {
 
 export default function WorkflowBuilder({
     onGenerate,
+    isRunning,
 }: Props) {
     const [steps, setSteps] = useState<WorkflowStep[]>([
         createStep(),
     ]);
-    const [isRunning, setIsRunning] = useState(false);
 
     const updateStep = (id: string, value: string) => {
         setSteps((prev) =>
@@ -95,11 +96,7 @@ export default function WorkflowBuilder({
 
         if (cleanSteps.length === 0 || isRunning) return;
 
-        setIsRunning(true);
-        setTimeout(() => {
-            setIsRunning(false);
-            onGenerate(cleanSteps.map((s) => s.label));
-        }, 800);
+        onGenerate(cleanSteps.map((s) => s.label));
     };
 
     return (
