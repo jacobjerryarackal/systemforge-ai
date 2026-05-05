@@ -1,25 +1,35 @@
-export type AgentStatus = 'idle' | 'thinking' | 'complete' | 'error';
-
-export interface AgentOutput {
-  agent: 'architect' | 'critic' | 'refiner';
-  content: string;
-  status: AgentStatus;
-  duration?: number;
+export interface WorkflowTransformation {
+  before: string[];
+  after: string[];
 }
 
-export interface ForgeSession {
-  id: string;
-  projectDescription: string;
-  outputs: AgentOutput[];
-  startedAt: number;
-  completedAt?: number;
-  isMockMode: boolean;
+export interface AgentDecision {
+  title: string;
+  subtitle: string;
+  decisions: string[];
 }
 
-export interface ForgeRequest {
-  projectDescription: string;
+export interface ArchitectureLayer {
+  title: string;
+  description: string;
+  items: string[];
 }
 
-export interface ForgeResponse {
-  session: ForgeSession;
+export interface FinalMetrics {
+  readiness: string;
+  manualReduction: string;
+  speedGain: string;
+  scalabilityGain: string;
+}
+
+export interface SystemForgeResponse {
+  workflowTransformation: WorkflowTransformation;
+
+  architect: AgentDecision;
+  critic: AgentDecision;
+  refiner: AgentDecision;
+
+  architectureLayers: ArchitectureLayer[];
+
+  finalMetrics: FinalMetrics;
 }
