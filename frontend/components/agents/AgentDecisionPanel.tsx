@@ -2,73 +2,26 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import type { AgentDecision } from '../../lib/types';
 
-interface AgentDecision {
-    agent: string;
-    role: string;
-    color: string;
-    icon: string;
-    title: string;
-    summary: string;
-    decisions: string[];
+interface AgentDecisionPanelProps {
+    architect: AgentDecision;
+    critic: AgentDecision;
+    refiner: AgentDecision;
 }
 
-const agentDecisions: AgentDecision[] = [
-    {
-        agent: 'ARCHITECT',
-        role: 'System Design',
-        color: '#00D4FF',
-        icon: '01',
-        title: 'Initial Architecture Construction',
-        summary:
-            'The Architect Agent transforms fragmented workflows into structured services, APIs, queues, and production-ready system boundaries.',
-        decisions: [
-            'Separated lead intake from approval processing',
-            'Introduced async queue for proposal generation',
-            'Added service boundary between CRM sync and customer follow-up',
-            'Recommended event-driven workflow instead of manual dependency chains',
-            'Moved approval logic into dedicated policy engine',
-        ],
-    },
-    {
-        agent: 'CRITIC',
-        role: 'Risk Detection',
-        color: '#FFB800',
-        icon: '02',
-        title: 'Failure Points + Operational Risk Analysis',
-        summary:
-            'The Critic Agent reviews the architecture for reliability gaps, scaling risks, SPOFs, and operational bottlenecks before production deployment.',
-        decisions: [
-            'Detected approval bottleneck causing business delays',
-            'Found manual CRM updates creating data inconsistency',
-            'Identified lack of fallback path for proposal generation',
-            'Flagged missing observability across workflow transitions',
-            'Detected SPOF risk in centralized approval dependency',
-        ],
-    },
-    {
-        agent: 'REFINER',
-        role: 'Production Readiness',
-        color: '#00FF9C',
-        icon: '03',
-        title: 'Architecture Hardening + Final Optimization',
-        summary:
-            'The Refiner Agent improves resilience, observability, failover handling, and deployment readiness to create a production-grade architecture.',
-        decisions: [
-            'Added retry + fallback strategy for failed proposals',
-            'Introduced audit logs and distributed tracing',
-            'Designed HA deployment with queue failover',
-            'Added circuit breaker for approval service dependency',
-            'Improved operational monitoring and incident visibility',
-        ],
-    },
-];
+interface AgentCardData {
+    id: string;
+    role: string;
+    color: string;
+    data: AgentDecision;
+}
 
 function DecisionCard({
     item,
     index,
 }: {
-    item: AgentDecision;
+    item: AgentCardData;
     index: number;
 }) {
     return (
@@ -111,7 +64,7 @@ function DecisionCard({
                             marginBottom: '0.45rem',
                         }}
                     >
-                        {item.icon} · {item.role}
+                        {item.id} · {item.role}
                     </div>
 
                     <div
@@ -123,7 +76,7 @@ function DecisionCard({
                             marginBottom: '0.35rem',
                         }}
                     >
-                        {item.agent}
+                        {item.data.title}
                     </div>
 
                     <div
@@ -133,7 +86,7 @@ function DecisionCard({
                             fontWeight: 500,
                         }}
                     >
-                        {item.title}
+                        {item.data.subtitle}
                     </div>
                 </div>
 
@@ -152,21 +105,9 @@ function DecisionCard({
                         background: `${item.color}08`,
                     }}
                 >
-                    {item.icon}
+                    {item.id}
                 </div>
             </div>
-
-            {/* Summary */}
-            <p
-                style={{
-                    color: '#8888AA',
-                    lineHeight: 1.7,
-                    fontSize: '0.95rem',
-                    marginBottom: '1.5rem',
-                }}
-            >
-                {item.summary}
-            </p>
 
             {/* Decisions */}
             <div>
@@ -189,7 +130,7 @@ function DecisionCard({
                         gap: '0.8rem',
                     }}
                 >
-                    {item.decisions.map((decision, i) => (
+                    {item.data.decisions.map((decision, i) => (
                         <div
                             key={i}
                             style={{
@@ -225,9 +166,35 @@ function DecisionCard({
     );
 }
 
-export default function AgentDecisionPanel() {
+export default function AgentDecisionPanel({
+    architect,
+    critic,
+    refiner,
+}: AgentDecisionPanelProps) {
+    const agentCards: AgentCardData[] = [
+        {
+            id: '01',
+            role: 'ARCHITECT',
+            color: '#00D4FF',
+            data: architect,
+        },
+        {
+            id: '02',
+            role: 'CRITIC',
+            color: '#FFB800',
+            data: critic,
+        },
+        {
+            id: '03',
+            role: 'REFINER',
+            color: '#00FF9C',
+            data: refiner,
+        },
+    ];
+
     return (
         <section
+            id="agent-intelligence"
             style={{
                 position: 'relative',
                 zIndex: 10,
@@ -283,9 +250,10 @@ export default function AgentDecisionPanel() {
                             lineHeight: 1.75,
                         }}
                     >
-                        SystemForge separates architecture generation into specialized agents.
-                        Each agent performs focused reasoning: building architecture,
-                        detecting risks, and refining the final system for production readiness.
+                        SystemForge separates architecture generation
+                        into specialized reasoning agents. Each agent
+                        performs focused analysis: system design,
+                        risk detection, and production hardening.
                     </p>
                 </motion.div>
 
@@ -298,7 +266,7 @@ export default function AgentDecisionPanel() {
                         gap: '1.6rem',
                     }}
                 >
-                    {agentDecisions.map((item, index) => (
+                    {agentCards.map((item, index) => (
                         <DecisionCard
                             key={index}
                             item={item}
