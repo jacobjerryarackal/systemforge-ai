@@ -2,201 +2,286 @@
 
 ## Overview
 
-SystemForge uses GPU-accelerated inference to power autonomous multi-agent reasoning for workflow redesign and architecture validation.
+SystemForge is designed as an AI-native workflow redesign platform where the inference layer is built for AMD-powered production deployment.
 
-The frontend handles workflow input, orchestration visibility, and final architecture visualization, while the backend routes complex reasoning tasks through high-performance LLM inference running on AMD GPU infrastructure.
+The platform transforms fragmented manual workflows into production-grade system architectures using a multi-agent reasoning engine composed of Architect, Critic, and Refiner agents.
 
-This enables fast, scalable, and production-grade execution for multi-step architecture generation.
+While development mode uses Groq for rapid iteration and local testing, the production architecture is designed for AMD GPU inference using ROCm, vLLM, and Qwen models.
 
-SystemForge is designed so that model inference is not dependent on frontend performance. All heavy reasoning workloads are executed in the backend through AMD-powered model serving.
-
----
-
-# Why GPU Acceleration Matters
-
-Architecture generation is not a simple prompt-response workflow.
-
-Each user request requires:
-
-* multi-step reasoning
-* long-context understanding
-* architectural dependency analysis
-* sequential agent execution
-* architecture validation loops
-* refinement and correction cycles
-
-This makes inference significantly heavier than standard chatbot interactions.
-
-GPU acceleration is required to ensure:
-
-* low-latency responses
-* scalable concurrent requests
-* stable multi-agent execution
-* reliable long-context processing
-* production-grade inference performance
+This enables scalable, low-latency, enterprise-grade workflow redesign with a clean migration path from development to production.
 
 ---
 
-# GPU Workloads
+# Inference Architecture
 
-AMD GPU infrastructure is used for:
+## Development Mode
 
-## Architect Agent
-
-* workflow understanding
-* system decomposition
-* service boundary design
-* infrastructure recommendations
-
-## Critic Agent
-
-* SPOF detection
-* scaling bottleneck analysis
-* reliability review
-* observability validation
-* compliance gap detection
-
-## Refiner Agent
-
-* resilience improvements
-* fallback strategy generation
-* production-readiness optimization
-* deployment hardening
-
-## Extended Reasoning
-
-* architecture scoring
-* architecture comparison
-* iterative refinement loops
-* long-context workflow validation
-
----
-
-# Inference Flow
-
-Frontend
-↓
-Workflow Builder UI
-↓
-Backend API
-↓
+```text
+Frontend (Next.js)
+        ↓
+FastAPI Backend
+        ↓
 CrewAI Multi-Agent Engine
-↓
-AMD GPU Inference Endpoint
-↓
-Qwen Model Execution via vLLM
-↓
-Agent Response Generation
-↓
-Final Workflow + Architecture Output
+        ↓
+Groq API (Development Inference)
+        ↓
+Structured JSON Output
+        ↓
+Dynamic UI Rendering
+```
+
+Development mode is optimized for:
+
+* rapid iteration
+* fast debugging
+* zero local GPU dependency
+* no large model downloads
+* simplified testing flow
+* frontend/backend integration speed
+
+This allows the full product to be built and validated before production GPU deployment.
 
 ---
 
-# Model Serving Stack
+## Production Mode
 
-## LLM Layer
+```text
+Frontend (Next.js)
+        ↓
+FastAPI Backend
+        ↓
+CrewAI Multi-Agent Engine
+        ↓
+Qwen Models via vLLM
+        ↓
+AMD GPUs via ROCm
+        ↓
+Structured JSON Output
+        ↓
+Dynamic Workflow Redesign UI
+```
 
-SystemForge uses Qwen-based models for architecture reasoning and workflow redesign.
+Production mode enables:
 
-These models are optimized for:
+* parallel agent execution
+* low-latency inference
+* enterprise-scale workflow redesign
+* higher throughput
+* production-grade reliability
+* infrastructure ownership
+* reduced external API dependency
 
-* structured system thinking
-* technical architecture generation
-* critical reasoning
-* workflow analysis
-* iterative refinement
-
----
-
-## Inference Engine
-
-vLLM is used for high-throughput model serving.
-
-Benefits include:
-
-* efficient token generation
-* parallel request handling
-* lower latency
-* optimized memory utilization
-* better production scalability
-
----
-
-## GPU Runtime
-
-AMD ROCm is used for GPU acceleration.
-
-Benefits include:
-
-* hardware acceleration for LLM inference
-* scalable GPU workloads
-* production-ready model deployment
-* optimized enterprise inference performance
+This is the final intended deployment architecture.
 
 ---
 
-# Backend Integration Strategy
+# Why AMD
 
-Instead of using standard OpenAI-style API calls, SystemForge routes agent execution through a dedicated inference layer connected to AMD GPU infrastructure.
+## Inference Layer Acceleration
 
-Example flow:
+SystemForge uses multiple specialized agents:
 
-CrewAI
-→ LLM Wrapper
-→ AMD Inference Endpoint
-→ vLLM
-→ Qwen Model
+* Architect Agent
+* Critic Agent
+* Refiner Agent
 
-This allows:
+Each agent performs independent reasoning tasks and generates structured system outputs.
 
-* model flexibility
-* infrastructure control
-* lower operational cost
-* production deployment readiness
+These agents require:
 
----
+* repeated inference calls
+* structured generation consistency
+* fast response time
+* parallel execution capability
+* scalable throughput for enterprise workloads
 
-# Reliability Strategy
+AMD GPUs improve this layer by providing:
 
-Inference systems must remain resilient under production workloads.
+* accelerated model serving
+* lower inference latency
+* better multi-agent throughput
+* efficient production deployment
+* full control over inference infrastructure
 
-SystemForge includes:
+AMD is not used in the frontend layer.
 
-* fallback model strategy
-* retry mechanisms
-* timeout protection
-* request queueing
-* observability and logging
-* inference monitoring
-* degraded-mode response handling
+AMD powers the backend reasoning engine.
 
-This ensures stable architecture generation even during infrastructure pressure.
+This distinction is critical.
 
 ---
 
-# Performance Goals
+# Qwen + vLLM + ROCm Stack
 
-Target system behavior:
+## Qwen Models
 
-* low-latency workflow analysis
-* stable concurrent requests
-* reliable long-context processing
-* consistent multi-agent execution
-* production-safe architecture generation
+Qwen is used for:
 
-The goal is not only speed, but dependable architecture quality under real workloads.
+* workflow redesign reasoning
+* architecture generation
+* production validation
+* operational risk detection
+* system refinement
+
+The model is optimized for structured engineering output rather than conversational output.
 
 ---
 
-# Long-Term Expansion
+## vLLM
 
-Future improvements include:
+vLLM is used for:
 
-* model routing by workflow type
-* hybrid model execution
-* industry-specific inference specialization
-* fine-tuned architecture models
-* architecture memory systems
-* domain-aware workflow generation
+* high-performance model serving
+* parallel inference requests
+* low-latency response generation
+* efficient token streaming
+* production-grade LLM deployment
 
-This moves SystemForge from architecture review toward fully autonomous workflow redesign infrastructure.
+This is essential for multi-agent execution.
+
+---
+
+## ROCm
+
+ROCm provides:
+
+* AMD GPU acceleration
+* optimized inference execution
+* deployment compatibility
+* infrastructure scalability
+* production GPU orchestration
+
+This is the core AMD integration layer.
+
+---
+
+# Environment-Based Provider Switching
+
+SystemForge uses an abstraction layer inside:
+
+```text
+src/tools/llm.py
+```
+
+This allows dynamic switching between:
+
+## Development Provider
+
+```env
+LLM_PROVIDER=groq
+```
+
+and
+
+## Production Provider
+
+```env
+LLM_PROVIDER=amd
+```
+
+without changing:
+
+* frontend code
+* agent logic
+* workflow engine
+* API contracts
+* UI rendering
+
+Only the inference provider changes.
+
+This ensures architecture stability and production readiness.
+
+---
+
+# Example Configuration
+
+## Development
+
+```env
+LLM_PROVIDER=groq
+GROQ_API_KEY=your_key_here
+```
+
+---
+
+## Production
+
+```env
+LLM_PROVIDER=amd
+AMD_API_KEY=your_key_here
+AMD_BASE_URL=your_endpoint_here
+AMD_MODEL=qwen
+```
+
+This creates a clean migration path from development to production deployment.
+
+---
+
+# Where AMD Is Used
+
+A common question is:
+
+## “Where exactly is AMD used in SystemForge?”
+
+The answer:
+
+AMD powers the inference layer.
+
+The frontend sends workflow redesign requests to the backend multi-agent system.
+
+The backend runs Architect, Critic, and Refiner agents using Qwen models served through vLLM on AMD GPUs accelerated by ROCm.
+
+This enables:
+
+* fast workflow redesign generation
+* scalable multi-agent reasoning
+* reduced inference latency
+* production-grade architecture generation
+* enterprise deployment readiness
+
+AMD is the execution engine behind the AI system architecture.
+
+---
+
+# Future Production Expansion
+
+The production roadmap includes:
+
+* dedicated vLLM deployment clusters
+* queue-based async workflow execution
+* Redis task orchestration
+* PostgreSQL workflow persistence
+* observability pipelines
+* distributed tracing
+* production monitoring
+* enterprise deployment patterns
+
+The AMD inference layer remains the central compute engine for the platform.
+
+---
+
+# Summary
+
+SystemForge is built with a development-first and production-ready architecture.
+
+Development uses Groq for speed.
+
+Production uses:
+
+* AMD GPUs
+* ROCm
+* Qwen
+* vLLM
+
+This ensures the platform remains:
+
+* scalable
+* reliable
+* deployable
+* cost-efficient
+* enterprise-ready
+* portfolio-grade
+
+The system is not simply AI-assisted UI generation.
+
+It is a full production workflow redesign engine powered by AMD inference architecture.
