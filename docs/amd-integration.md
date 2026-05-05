@@ -1,5 +1,3 @@
-# amd-integration.md
-
 # AMD Integration
 
 ## Overview
