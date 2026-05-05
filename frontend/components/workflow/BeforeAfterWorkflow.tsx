@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 interface BeforeAfterWorkflowProps {
     beforeWorkflow?: string[];
     afterWorkflow?: string[];
+    workflowSteps: string[];
 }
 
 const defaultBeforeWorkflow = [
@@ -59,8 +60,8 @@ function WorkflowNode({
                     alignItems: 'center',
                     justifyContent: 'center',
                     border: `1px solid ${isBefore
-                            ? 'rgba(255,184,0,0.25)'
-                            : 'rgba(0,255,156,0.25)'
+                        ? 'rgba(255,184,0,0.25)'
+                        : 'rgba(0,255,156,0.25)'
                         }`,
                     background: isBefore
                         ? 'rgba(255,184,0,0.05)'
@@ -80,8 +81,8 @@ function WorkflowNode({
                 style={{
                     flex: 1,
                     border: `1px solid ${isBefore
-                            ? 'rgba(255,184,0,0.10)'
-                            : 'rgba(0,255,156,0.10)'
+                        ? 'rgba(255,184,0,0.10)'
+                        : 'rgba(0,255,156,0.10)'
                         }`,
                     background: isBefore
                         ? 'rgba(255,184,0,0.03)'
@@ -194,6 +195,7 @@ function ResultCard() {
 }
 
 export default function BeforeAfterWorkflow({
+    workflowSteps,
     beforeWorkflow = defaultBeforeWorkflow,
     afterWorkflow = defaultAfterWorkflow,
 }: BeforeAfterWorkflowProps) {

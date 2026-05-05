@@ -1,124 +1,127 @@
 'use client';
 
-import { useState, useCallback, lazy, Suspense } from 'react';
-import Header from '../components/layout/Header';
-import HeroSection from '../components/ui/HeroSection';
-import AgentPipeline from '../components/agents/AgentPipeline';
-import { runForgeMock } from '../lib/api';
-import type { AgentOutput } from '../lib/types';
+import React, { useState } from 'react';
+
+import Navbar from '../components/ui/Navbar';
+
+import WorkflowBuilder from '../components/workflow/WorkflowBuilder';
+import BeforeAfterWorkflow from '../components/workflow/BeforeAfterWorkflow';
+import WorkflowComparison from '../components/workflow/WorkflowComparison';
+
+import AgentDecisionPanel from '../components/agents/AgentDecisionPanel';
+
+import FinalArchitectureBlueprint from '../components/architecture/FinalArchitectureBlueprint';
+import ArchitectureSummary from '../components/architecture/ArchitectureSummary';
 
 import ParticleBackground from '../components/animations/ParticleBackground';
 
-const INITIAL_OUTPUTS: AgentOutput[] = [
-  { agent: 'architect', content: '', status: 'idle' },
-  { agent: 'critic', content: '', status: 'idle' },
-  { agent: 'refiner', content: '', status: 'idle' },
-];
-
-function delay(ms: number) {
-  return new Promise<void>((r) => setTimeout(r, ms));
-}
-
 export default function HomePage() {
-  const [isRunning, setIsRunning] = useState(false);
-  const [outputs, setOutputs] = useState<AgentOutput[]>(INITIAL_OUTPUTS);
-  const [isExploding, setIsExploding] = useState(false);
+  const [generated, setGenerated] = useState(false);
+  const [workflowSteps, setWorkflowSteps] = useState<string[]>([]);
 
-  const setAgentStatus = useCallback(
-    (index: number, patch: Partial<AgentOutput>) => {
-      setOutputs((prev) => prev.map((o, i) => (i === index ? { ...o, ...patch } : o)));
-    },
-    []
-  );
+  const handleGenerate = (steps: string[]) => {
+    setWorkflowSteps(steps);
+    setGenerated(true);
 
-  const handleSubmit = useCallback(
-    async (description: string) => {
-      if (isRunning) return;
-
-      setIsRunning(true);
-      setIsExploding(true);
-      setOutputs(INITIAL_OUTPUTS);
-
-      // Scroll to pipeline after short delay
-      setTimeout(() => {
-        document.getElementById('pipeline')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }, 400);
-
-      // Stagger the "thinking" states visually
-      setAgentStatus(0, { status: 'thinking' });
-      await delay(300);
-
-      const t1 = setTimeout(() => setAgentStatus(1, { status: 'thinking' }), 1900);
-      const t2 = setTimeout(() => setAgentStatus(2, { status: 'thinking' }), 3800);
-
-      try {
-        const response = await runForgeMock(description);
-        const { outputs: results } = response.session;
-        // Apply all results at once after mock completes
-        setOutputs(results);
-      } catch (err) {
-        setOutputs((prev) =>
-          prev.map((o) => ({ ...o, status: 'error' as const, content: String(err) }))
-        );
-      } finally {
-        clearTimeout(t1);
-        clearTimeout(t2);
-        setIsRunning(false);
-        setTimeout(() => setIsExploding(false), 3000);
-      }
-    },
-    [isRunning, setAgentStatus]
-  );
-
-  const hasOutput = outputs.some((o) => o.status !== 'idle');
+    setTimeout(() => {
+      document
+        .getElementById('redesign-results')
+        ?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        });
+    }, 400);
+  };
 
   return (
-    <main style={{
-      position: 'relative',
-      minHeight: '100vh',
-      overflow: 'hidden',
-      background: '#03040a',
-    }}>
+    <main
+      style={{
+        minHeight: '100vh',
+        background: '#03040a',
+        position: 'relative',
+        overflowX: 'hidden',
+      }}
+    >
+      {/* Optional animated cyber background */}
       <ParticleBackground />
-      <Header />
-      <HeroSection onSubmit={handleSubmit} isRunning={isRunning} />
 
-      <div id="pipeline">
-        {hasOutput && <AgentPipeline outputs={outputs} isRunning={isRunning} />}
-      </div>
+      {/* Top Navbar */}
+      <Navbar />
 
+      {/* HERO + WORKFLOW INPUT */}
+      <section
+        style={{
+          position: 'relative',
+          zIndex: 10,
+          paddingTop: '120px',
+          paddingBottom: '80px',
+        }}
+      >
+        <WorkflowBuilder onGenerate={handleGenerate} />
+      </section>
+
+      {/* RESULTS */}
+      {generated && (
+        <section
+          id="redesign-results"
+          style={{
+            position: 'relative',
+            zIndex: 10,
+            padding: '0 0 100px',
+          }}
+        >
+          {/* BEFORE → AFTER FLOW */}
+          <BeforeAfterWorkflow workflowSteps={workflowSteps} />
+
+          {/* COMPARISON BLOCK */}
+          <WorkflowComparison />
+
+          {/* AGENT REASONING */}
+          <AgentDecisionPanel />
+
+          {/* FINAL BLUEPRINT */}
+          <FinalArchitectureBlueprint />
+
+          {/* FINAL SUMMARY */}
+          <ArchitectureSummary />
+        </section>
+      )}
+
+      {/* FOOTER */}
       <footer
         style={{
           position: 'relative',
           zIndex: 10,
-          borderTop: '1px solid rgba(255,255,255,0.04)',
-          padding: '1.5rem 2rem',
+          borderTop: '1px solid rgba(255,255,255,0.05)',
+          padding: '28px 32px',
           display: 'flex',
-          alignItems: 'center',
           justifyContent: 'space-between',
+          alignItems: 'center',
           flexWrap: 'wrap',
-          gap: '1rem',
+          gap: '16px',
+          marginTop: '40px',
         }}
       >
         <div
           style={{
             fontFamily: 'var(--font-mono)',
-            fontSize: '0.6rem',
-            color: '#444466',
-            letterSpacing: '0.15em',
+            fontSize: '0.68rem',
+            color: '#666680',
+            letterSpacing: '0.12em',
           }}
         >
-          SYSTEMFORGE AI · THE PROMPT ENGINEER · AMD HACKATHON 2024
+          SYSTEMFORGE · AI WORKFLOW REDESIGN ENGINE
         </div>
+
         <div
           style={{
             fontFamily: 'var(--font-mono)',
-            fontSize: '0.6rem',
-            color: '#333355',
-            letterSpacing: '0.1em',
+            fontSize: '0.68rem',
+            color: '#555570',
+            letterSpacing: '0.12em',
           }}
         >
-          AMD ROCm · vLLM · Qwen2.5-7B · CrewAI
+          Powered by AMD ROCm · Qwen 2.5 · vLLM · CrewAI
         </div>
       </footer>
     </main>
