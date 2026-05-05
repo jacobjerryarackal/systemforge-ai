@@ -1,7 +1,8 @@
 import gradio as gr
+from src.workflows.crew import run_systemforge
 
 
-def run_systemforge_mock(project_idea: str):
+def execute_systemforge(project_idea: str):
     if not project_idea.strip():
         return (
             "Please enter a project idea.",
@@ -9,55 +10,42 @@ def run_systemforge_mock(project_idea: str):
             "No refined architecture generated."
         )
 
-    architect_output = f"""
-## Architect Agent Output
+    try:
+        final_result = run_systemforge(project_idea)
+
+        architect_output = f"""
+# Architect Agent Output
 
 Project Idea: {project_idea}
 
-Recommended Core Architecture:
-- Frontend: Next.js / React dashboard
-- Backend: FastAPI service layer
-- Database: PostgreSQL for transactional data
-- Cache Layer: Redis for performance optimization
-- Queue System: Celery + Redis for async tasks
-- Authentication: JWT + OAuth
-- Deployment: Docker + AMD Cloud inference endpoint
-- AI Layer: Qwen-powered multi-agent workflow using CrewAI
-
-Initial Recommendation:
-Build a scalable service-oriented architecture with clear agent boundaries.
+The Architect Agent generated the initial production architecture plan.
 """
 
-    critic_output = """
-## Critic Agent Output (Senior SRE Persona)
+        critic_output = """
+# Critic Agent Output (Senior SRE Persona)
 
-Potential Risks Identified:
-- Missing observability layer (logging + monitoring)
-- No fallback strategy for LLM failure
-- Single-point dependency on inference endpoint
-- No retry mechanism for failed agent execution
-- Missing security validation for generated architecture
-
-Recommendation:
-Add resilience, observability, and fault-tolerance before production rollout.
+The Critic Agent reviewed the architecture for:
+- scalability risks
+- observability gaps
+- fault tolerance
+- security concerns
+- production reliability
 """
 
-    refiner_output = """
-## Refiner Agent Output
+        refiner_output = f"""
+# Refiner Agent Output
 
-Production-Ready Improvements:
-- Add Prometheus + Grafana monitoring
-- Add structured logging with request tracing
-- Add fallback workflow for LLM timeout/failure
-- Introduce retry queue for failed tasks
-- Add validation layer before final architecture approval
-- Add security review checkpoint before deployment
-
-Final Result:
-SystemForge AI now produces safer, more reliable, and production-grade architecture recommendations.
+{final_result}
 """
 
-    return architect_output, critic_output, refiner_output
+        return architect_output, critic_output, refiner_output
+
+    except Exception as e:
+        return (
+            "Architect Agent execution failed.",
+            "Critic Agent execution failed.",
+            f"System Error: {str(e)}"
+        )
 
 
 with gr.Blocks(title="SystemForge AI") as demo:
@@ -83,7 +71,7 @@ Describe your startup or product idea and let the agents generate a production-g
     refiner_box = gr.Markdown(label="Refiner Output")
 
     run_button.click(
-        fn=run_systemforge_mock,
+        fn=execute_systemforge,
         inputs=[project_input],
         outputs=[architect_box, critic_box, refiner_box],
     )
