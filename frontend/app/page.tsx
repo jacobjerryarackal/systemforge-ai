@@ -17,6 +17,7 @@ import {
 } from '../lib/api';
 import ReadinessProgress from '../components/architecture/ReadinessProgress';
 import InfraCostBreakdown from '../components/architecture/InfraCostBreakdown';
+import RiskHeatmap from '../components/architecture/RiskHeatmap';
 import type { SystemForgeResponse } from '../lib/types';
 
 export default function HomePage() {
@@ -149,6 +150,8 @@ export default function HomePage() {
           />
 
           <InfraCostBreakdown />
+
+          <RiskHeatmap />
 
           <div
             style={{
