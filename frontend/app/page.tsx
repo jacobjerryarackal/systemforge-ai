@@ -10,15 +10,12 @@ import AgentDecisionPanel from '../components/agents/AgentDecisionPanel';
 import FinalArchitectureBlueprint from '../components/architecture/FinalArchitectureBlueprint';
 import ArchitectureSummary from '../components/architecture/ArchitectureSummary';
 import ParticleBackground from '../components/animations/ParticleBackground';
-import ArchitectureScoreCard from '../components/architecture/ArchitectureScoreCard';
+
 import {
   generateWorkflowRedesign,
   downloadArchitectureReport,
 } from '../lib/api';
-import ReadinessProgress from '../components/architecture/ReadinessProgress';
-import InfraCostBreakdown from '../components/architecture/InfraCostBreakdown';
-import RiskHeatmap from '../components/architecture/RiskHeatmap';
-import ExecutiveReport from '../components/architecture/ExecutiveReport';
+
 import type { SystemForgeResponse } from '../lib/types';
 
 export default function HomePage() {
@@ -88,7 +85,6 @@ export default function HomePage() {
       }}
     >
       <ParticleBackground />
-
       <Navbar />
 
       <section
@@ -135,35 +131,11 @@ export default function HomePage() {
             }
           />
 
-          <ArchitectureScoreCard
-            metrics={systemData.finalMetrics}
-          />
-
-
-          <ReadinessProgress
-            metrics={{
-              deploymentReadiness:
-                systemData.finalMetrics?.deploymentReadiness || "0%",
-              automationPotential:
-                systemData.finalMetrics?.automationPotential || "0%",
-              architectureConfidence:
-                systemData.finalMetrics?.architectureConfidence || "0%",
-            }}
-          />
-
-          <InfraCostBreakdown />
-
-          <RiskHeatmap />
-
-          <ExecutiveReport
-            summary={systemData.executiveSummary}
-          />
-
           <div
             style={{
               display: 'flex',
               justifyContent: 'center',
-              padding: '40px 0 80px',
+              padding: '50px 0 100px',
             }}
           >
             <button
@@ -177,8 +149,6 @@ export default function HomePage() {
                 fontSize: '16px',
                 fontWeight: 600,
                 cursor: 'pointer',
-                boxShadow:
-                  '0 10px 30px rgba(37, 99, 235, 0.3)',
               }}
             >
               Download Architecture Report
