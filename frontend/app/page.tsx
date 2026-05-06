@@ -16,6 +16,7 @@ import {
   downloadArchitectureReport,
 } from '../lib/api';
 import ReadinessProgress from '../components/architecture/ReadinessProgress';
+import InfraCostBreakdown from '../components/architecture/InfraCostBreakdown';
 import type { SystemForgeResponse } from '../lib/types';
 
 export default function HomePage() {
@@ -146,6 +147,8 @@ export default function HomePage() {
                 systemData.finalMetrics.architectureConfidence,
             }}
           />
+
+          <InfraCostBreakdown />
 
           <div
             style={{
