@@ -69,12 +69,17 @@ function detectNodeType(step: string) {
     return 'task';
 }
 
+
 function summarizeStep(step: string): string {
     const text = step.toLowerCase();
 
-    // Claim / Insurance Flow
+
+    /* =========================
+       INSURANCE / CLAIM FLOW
+    ========================= */
+
     if (
-        text.includes('customer emails') ||
+        text.includes('customer emails a claim') ||
         text.includes('claim arrives') ||
         text.includes('email arrives')
     ) {
@@ -82,160 +87,215 @@ function summarizeStep(step: string): string {
     }
 
     if (
-        text.includes('email parser') ||
-        text.includes('extracts') ||
-        text.includes('parse')
+        text.includes('opens email') ||
+        text.includes('outlook')
     ) {
-        return 'Email Parser';
+        return 'Email Review';
     }
 
     if (
-        text.includes('policy') &&
-        (
-            text.includes('lookup') ||
-            text.includes('verification') ||
-            text.includes('validate')
-        )
+        text.includes('read email body') ||
+        text.includes('reads claim details')
     ) {
-        return 'Policy Verification';
+        return 'Claim Review';
     }
 
     if (
-        text.includes('claims database') ||
+        text.includes('policy lookup') ||
+        text.includes('policy portal') ||
+        text.includes('search policy')
+    ) {
+        return 'Policy Lookup';
+    }
+
+    if (
+        text.includes('type policy number') ||
+        text.includes('manual policy entry')
+    ) {
+        return 'Policy Entry';
+    }
+
+    if (
+        text.includes('read policy details') ||
+        text.includes('coverage type')
+    ) {
+        return 'Policy Review';
+    }
+
+    if (
+        text.includes('claims history') ||
         text.includes('claim history') ||
-        text.includes('history check')
+        text.includes('claims db')
     ) {
         return 'Claims DB Check';
     }
 
     if (
-        text.includes('coverage') &&
-        (
-            text.includes('verify') ||
-            text.includes('validation') ||
-            text.includes('cross')
-        )
+        text.includes('customer filing history')
+    ) {
+        return 'History Validation';
+    }
+
+    if (
+        text.includes('coverage verification')
     ) {
         return 'Coverage Validation';
     }
 
     if (
-        text.includes('fraud') ||
-        text.includes('risk scorer')
+        text.includes('cross-reference') ||
+        text.includes('coverage limits')
+    ) {
+        return 'Compliance Check';
+    }
+
+    if (
+        text.includes('fraud risk') ||
+        text.includes('fraud scorer')
     ) {
         return 'Fraud Score';
     }
 
     if (
-        text.includes('decision engine') ||
-        text.includes('classifier') ||
-        text.includes('auto-decision')
+        text.includes('spreadsheet summary') ||
+        text.includes('summary of findings')
     ) {
-        return 'Decision Engine';
+        return 'Summary Creation';
     }
 
     if (
-        text.includes('approve') ||
-        text.includes('approval')
+        text.includes('email summary to supervisor')
     ) {
-        return 'Approval Flow';
+        return 'Supervisor Brief';
     }
 
     if (
-        text.includes('reject') ||
-        text.includes('rejection')
+        text.includes('wait for supervisor')
     ) {
-        return 'Rejection Flow';
+        return 'Approval Waiting';
     }
 
     if (
-        text.includes('escalate') ||
-        text.includes('supervisor') ||
-        text.includes('human review')
+        text.includes('supervisor decision')
     ) {
-        return 'Human Review';
+        return 'Approval Decision';
     }
 
     if (
-        text.includes('draft') &&
-        text.includes('email')
+        text.includes('draft approval email')
     ) {
-        return 'Email Draft';
+        return 'Approval Draft';
     }
 
     if (
-        text.includes('send email') ||
-        text.includes('notification') ||
-        text.includes('customer update')
+        text.includes('draft rejection')
+    ) {
+        return 'Rejection Draft';
+    }
+
+    if (
+        text.includes('send email to customer')
     ) {
         return 'Customer Notification';
     }
 
     if (
-        text.includes('crm') ||
-        text.includes('spreadsheet') ||
-        text.includes('update status')
+        text.includes('update spreadsheet') ||
+        text.includes('update crm')
     ) {
         return 'System Update';
     }
 
-    // Recruitment Flow
+    /* =========================
+       RECRUITMENT FLOW
+    ========================= */
+
     if (
-        text.includes('resume') ||
-        text.includes('candidate applied')
+        text.includes('resumes arrive') ||
+        text.includes('resume arrives')
     ) {
         return 'Candidate Intake';
     }
 
     if (
-        text.includes('resume screening') ||
-        text.includes('screening')
+        text.includes('downloads resumes')
+    ) {
+        return 'Resume Collection';
+    }
+
+    if (
+        text.includes('reviews candidate profile')
+    ) {
+        return 'Profile Review';
+    }
+
+    if (
+        text.includes('resume screening')
     ) {
         return 'Resume Screening';
     }
 
     if (
-        text.includes('shortlist') ||
+        text.includes('candidate shortlist') ||
         text.includes('shortlisting')
     ) {
         return 'Candidate Shortlist';
     }
 
     if (
-        text.includes('interview')
+        text.includes('schedule interview')
     ) {
-        return 'Interview Stage';
+        return 'Interview Scheduling';
     }
 
     if (
-        text.includes('hr review') ||
-        text.includes('recruiter review')
+        text.includes('interview feedback')
+    ) {
+        return 'Interview Review';
+    }
+
+    if (
+        text.includes('hr review')
     ) {
         return 'HR Review';
     }
 
     if (
-        text.includes('offer letter') ||
-        text.includes('offer generation')
+        text.includes('offer letter')
     ) {
         return 'Offer Generation';
     }
 
-    // Accounting / Finance Flow
     if (
-        text.includes('invoice')
+        text.includes('onboarding')
     ) {
-        return 'Invoice Processing';
+        return 'Candidate Onboarding';
+    }
+
+    /* =========================
+       ACCOUNTING / FINANCE FLOW
+    ========================= */
+
+    if (
+        text.includes('invoice received')
+    ) {
+        return 'Invoice Intake';
     }
 
     if (
-        text.includes('payment')
+        text.includes('invoice validation')
+    ) {
+        return 'Invoice Validation';
+    }
+
+    if (
+        text.includes('payment confirmation')
     ) {
         return 'Payment Validation';
     }
 
     if (
-        text.includes('audit')
+        text.includes('audit log')
     ) {
         return 'Audit Logging';
     }
@@ -246,19 +306,27 @@ function summarizeStep(step: string): string {
         return 'Approval Engine';
     }
 
+    /* =========================
+       SYSTEM / ARCHITECTURE
+    ========================= */
+
     if (
         text.includes('queue') ||
-        text.includes('kafka') ||
-        text.includes('async')
+        text.includes('kafka')
     ) {
         return 'Async Queue';
     }
 
     if (
-        text.includes('api') ||
-        text.includes('service')
+        text.includes('email parser')
     ) {
-        return 'Service Layer';
+        return 'Email Parser';
+    }
+
+    if (
+        text.includes('validation service')
+    ) {
+        return 'Validation Layer';
     }
 
     if (
@@ -275,9 +343,19 @@ function summarizeStep(step: string): string {
         return 'Retry System';
     }
 
-    // Final Fallback
-    return step.length > 42
-        ? step.slice(0, 42) + '...'
+    if (
+        text.includes('human review') ||
+        text.includes('manual review')
+    ) {
+        return 'Human Review';
+    }
+
+    /* =========================
+       FINAL SAFE FALLBACK
+    ========================= */
+
+    return step.length > 50
+        ? step.slice(0, 50) + '...'
         : step;
 }
 
@@ -448,7 +526,7 @@ export default function BeforeAfterWorkflow({
                             (step, index) => (
                                 <FlowchartNode
                                     key={index}
-                                    title={step}
+                                    title={summarizeStep(step)}
                                     type={detectNodeType(step)}
                                     isLast={index === cleanedAfterSteps.length - 1}
                                 />
