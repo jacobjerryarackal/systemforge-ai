@@ -10,7 +10,7 @@ import AgentDecisionPanel from '../components/agents/AgentDecisionPanel';
 import FinalArchitectureBlueprint from '../components/architecture/FinalArchitectureBlueprint';
 import ArchitectureSummary from '../components/architecture/ArchitectureSummary';
 import ParticleBackground from '../components/animations/ParticleBackground';
-
+import ArchitectureScoreCard from '../components/architecture/ArchitectureScoreCard';
 import {
   generateWorkflowRedesign,
   downloadArchitectureReport,
@@ -130,6 +130,10 @@ export default function HomePage() {
             metrics={
               systemData.finalMetrics
             }
+          />
+
+          <ArchitectureScoreCard
+            metrics={systemData.finalMetrics}
           />
 
           <div

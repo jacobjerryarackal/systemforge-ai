@@ -84,28 +84,34 @@ export default function ArchitectureSummary({
 }: ArchitectureSummaryProps) {
     const metricCards: MetricCardData[] = [
         {
-            label: 'Production Readiness',
-            value: metrics.readiness,
-            subtitle: 'Validated architecture confidence',
+            label: 'Deployment Readiness',
+            value: metrics.deploymentReadiness,
+            subtitle: 'Production readiness score',
             color: '#00FF9C',
         },
         {
-            label: 'Manual Work Reduced',
-            value: metrics.manualReduction,
+            label: 'Automation Potential',
+            value: metrics.automationPotential,
             subtitle: 'Operational bottlenecks removed',
             color: '#00D4FF',
         },
         {
-            label: 'Execution Speed',
-            value: metrics.speedGain,
-            subtitle: 'Faster workflow completion',
+            label: 'Risk Score',
+            value: metrics.riskScore,
+            subtitle: 'System vulnerability evaluation',
             color: '#FFB800',
         },
         {
-            label: 'Scalability Gain',
-            value: metrics.scalabilityGain,
-            subtitle: 'Improved system growth capacity',
+            label: 'Infrastructure Cost',
+            value: metrics.estimatedMonthlyInfraCost,
+            subtitle: 'Estimated monthly cost',
             color: '#E30913',
+        },
+        {
+            label: 'Architecture Confidence',
+            value: metrics.architectureConfidence,
+            subtitle: 'Validated architecture confidence',
+            color: '#A020F0',
         },
     ];
 

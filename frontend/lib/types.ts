@@ -3,6 +3,15 @@ export interface WorkflowTransformation {
   after: string[];
 }
 
+export type AgentStatus = 'idle' | 'thinking' | 'complete' | 'error';
+
+export interface AgentOutput {
+  agent: 'architect' | 'critic' | 'refiner';
+  status: AgentStatus;
+  content: string;
+  duration?: number;
+}
+
 export interface AgentDecision {
   title: string;
   subtitle: string;
@@ -16,10 +25,11 @@ export interface ArchitectureLayer {
 }
 
 export interface FinalMetrics {
-  readiness: string;
-  manualReduction: string;
-  speedGain: string;
-  scalabilityGain: string;
+  deploymentReadiness: string;
+  automationPotential: string;
+  architectureConfidence: string;
+  riskScore: string;
+  estimatedMonthlyInfraCost: string;
 }
 
 export interface SystemForgeResponse {

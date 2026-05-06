@@ -285,7 +285,7 @@ export default function HeroSection({
           }}
         >
           <WorkflowBuilder
-            onSubmit={(steps) => onSubmit(steps.map(s => s.label).join(' → '))}
+            onGenerate={(steps: string[]) => onSubmit(steps.join(' → '))}
             isRunning={isRunning}
           />
         </motion.div>
