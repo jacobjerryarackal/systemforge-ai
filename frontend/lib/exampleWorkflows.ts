@@ -1,218 +1,482 @@
-export type ExampleWorkflow = {
-    id: string;
-    title: string;
-    category: string;
+import { ExampleWorkflow } from '../components/workflow/WorkflowTypes';
 
-    before: string[];
-
-    after: string[];
-
-    whatChanged: string[];
-
-    timeImpact: {
-        before: string;
-        after: string;
-    };
-};
-
-export const EXAMPLE_MESSY_WORKFLOWS: ExampleWorkflow[] = [
+export const EXAMPLE_WORKFLOWS: ExampleWorkflow[] = [
     {
         id: 'insurance-claims',
-        title: 'Insurance Claim Review',
-        category: 'Insurance Operations',
+        title: 'Insurance Claims Processing',
+        industry: 'Insurance Operations',
 
         before: [
-            'Customer emails a claim',
-            'Agent opens email manually in Outlook',
-            'Reads claim details manually',
-            'Logs into Policy Portal to search policy',
-            'Checks claim history in Claims DB',
-            'Cross-verifies coverage limits manually',
-            'Creates summary in spreadsheet',
-            'Emails supervisor for approval',
-            'Waits for supervisor response',
-            'Drafts approval or rejection email',
-            'Updates CRM manually',
+            {
+                id: 'b1',
+                type: 'input',
+                label: 'Customer emails a claim',
+            },
+            {
+                id: 'b2',
+                type: 'task',
+                label: 'Agent opens email manually in Outlook',
+            },
+            {
+                id: 'b3',
+                type: 'task',
+                label: 'Reads claim details manually',
+            },
+            {
+                id: 'b4',
+                type: 'task',
+                label: 'Logs into Policy Portal to search policy',
+            },
+            {
+                id: 'b5',
+                type: 'decision',
+                label: 'Checks claim history in Claims DB',
+            },
+            {
+                id: 'b6',
+                type: 'task',
+                label: 'Cross-verifies coverage limits manually',
+            },
+            {
+                id: 'b7',
+                type: 'task',
+                label: 'Creates summary in spreadsheet',
+            },
+            {
+                id: 'b8',
+                type: 'task',
+                label: 'Emails supervisor for approval',
+            },
+            {
+                id: 'b9',
+                type: 'decision',
+                label: 'Supervisor approves or rejects',
+            },
+            {
+                id: 'b10',
+                type: 'output',
+                label: 'Drafts approval or rejection email',
+            },
         ],
 
         after: [
-            'Email parser extracts claim data automatically',
-            'Policy API validates policy + limits',
-            'Claims DB API fetches claim history',
-            'Coverage verification engine cross-checks eligibility',
-            'Fraud risk scorer calculates fraud score',
-            'Decision engine classifies Approve / Reject / Escalate',
-            'LLM drafts approval or rejection response',
-            'Human review triggered only for escalations',
-            'CRM auto-updated',
-            'Customer notified automatically',
+            {
+                id: 'a1',
+                type: 'automation',
+                label: 'Claim intake service captures email automatically',
+            },
+            {
+                id: 'a2',
+                type: 'automation',
+                label: 'Document parser extracts claim details + policy info',
+            },
+            {
+                id: 'a3',
+                type: 'decision',
+                label: 'Claims DB + Policy validation check',
+            },
+            {
+                id: 'a4',
+                type: 'automation',
+                label: 'Coverage validation engine verifies limits',
+            },
+            {
+                id: 'a5',
+                type: 'approval',
+                label: 'Auto decision: approve / reject / escalate',
+            },
+            {
+                id: 'a6',
+                type: 'output',
+                label: 'LLM drafts customer response + CRM updated',
+            },
         ],
 
-        whatChanged: [
-            'Removed manual portal lookups',
-            'Introduced API-first policy validation',
-            'Added fraud risk scoring layer',
-            'Human review only for escalations',
-            'Auto-generated customer communication',
-        ],
-
-        timeImpact: {
-            before: '45–60 mins',
-            after: '10–15 mins',
-        },
+        estimatedReduction: '45–60 min → 10–15 min',
     },
 
     {
         id: 'recruitment-screening',
         title: 'Recruitment Candidate Screening',
-        category: 'Hiring Operations',
+        industry: 'Hiring Operations',
 
         before: [
-            'Resumes arrive from LinkedIn',
-            'HR downloads resumes manually',
-            'Reviews candidate profile manually',
-            'Checks job fit in spreadsheet',
-            'Compares against JD manually',
-            'Sends shortlisted resumes to manager',
-            'Manager reviews and responds',
-            'Interview scheduling via WhatsApp',
+            {
+                id: 'b1',
+                type: 'input',
+                label: 'Resumes arrive from LinkedIn',
+            },
+            {
+                id: 'b2',
+                type: 'task',
+                label: 'HR downloads resumes manually',
+            },
+            {
+                id: 'b3',
+                type: 'task',
+                label: 'Reviews candidate profile manually',
+            },
+            {
+                id: 'b4',
+                type: 'decision',
+                label: 'Checks job fit in spreadsheet',
+            },
+            {
+                id: 'b5',
+                type: 'task',
+                label: 'Compares against JD manually',
+            },
+            {
+                id: 'b6',
+                type: 'task',
+                label: 'Sends shortlist to hiring manager',
+            },
+            {
+                id: 'b7',
+                type: 'decision',
+                label: 'Manager approves interview round',
+            },
+            {
+                id: 'b8',
+                type: 'output',
+                label: 'Recruiter sends candidate response',
+            },
         ],
 
         after: [
-            'Resume parser extracts candidate profile',
-            'JD matching engine calculates fit score',
-            'Ranking engine prioritizes candidates',
-            'Auto-shortlisting generated',
-            'Hiring manager reviews only top candidates',
-            'Interview scheduling automated',
-            'Candidate notifications triggered automatically',
+            {
+                id: 'a1',
+                type: 'automation',
+                label: 'Resume intake API ingests candidate profiles',
+            },
+            {
+                id: 'a2',
+                type: 'automation',
+                label: 'Resume parser extracts skills + experience',
+            },
+            {
+                id: 'a3',
+                type: 'automation',
+                label: 'Skill matching engine scores JD fit',
+            },
+            {
+                id: 'a4',
+                type: 'approval',
+                label: 'Auto shortlist / reject / escalate',
+            },
+            {
+                id: 'a5',
+                type: 'output',
+                label: 'LLM drafts recruiter email + ATS updated',
+            },
         ],
 
-        whatChanged: [
-            'Removed manual resume review',
-            'Introduced AI fit scoring',
-            'Automated ranking and shortlisting',
-            'Reduced manager review load',
-            'Scheduling fully automated',
-        ],
-
-        timeImpact: {
-            before: '30–45 mins',
-            after: '5–10 mins',
-        },
+        estimatedReduction: '35–50 min → 5–8 min',
     },
 
     {
-        id: 'invoice-approval',
-        title: 'Invoice Approval Workflow',
-        category: 'Accounting',
+        id: 'accounts-payable',
+        title: 'Accounts Payable Invoice Processing',
+        industry: 'Finance Operations',
 
         before: [
-            'Vendor emails invoice PDF',
-            'Finance downloads invoice manually',
-            'Invoice details entered into ERP',
-            'Cross-check with PO manually',
-            'Manager approval requested via email',
-            'Wait for manager response',
-            'Payment status updated manually',
+            {
+                id: 'b1',
+                type: 'input',
+                label: 'Vendor emails invoice PDF',
+            },
+            {
+                id: 'b2',
+                type: 'task',
+                label: 'Finance downloads invoice manually',
+            },
+            {
+                id: 'b3',
+                type: 'task',
+                label: 'Reads invoice details manually',
+            },
+            {
+                id: 'b4',
+                type: 'decision',
+                label: 'Checks PO and vendor details',
+            },
+            {
+                id: 'b5',
+                type: 'task',
+                label: 'Validates GST + payment terms',
+            },
+            {
+                id: 'b6',
+                type: 'task',
+                label: 'Creates approval note in spreadsheet',
+            },
+            {
+                id: 'b7',
+                type: 'approval',
+                label: 'Manager approves payment',
+            },
+            {
+                id: 'b8',
+                type: 'output',
+                label: 'Finance updates ERP manually',
+            },
         ],
 
         after: [
-            'Invoice parser extracts invoice fields',
-            'PO validation engine verifies purchase order',
-            'Approval rules engine checks thresholds',
-            'Auto-approval for low-risk invoices',
-            'Escalation only for exceptions',
-            'ERP updated automatically',
-            'Payment workflow triggered',
+            {
+                id: 'a1',
+                type: 'automation',
+                label: 'Invoice parser extracts PDF invoice data',
+            },
+            {
+                id: 'a2',
+                type: 'decision',
+                label: 'PO + Vendor validation layer checks match',
+            },
+            {
+                id: 'a3',
+                type: 'automation',
+                label: 'Tax validation engine verifies GST rules',
+            },
+            {
+                id: 'a4',
+                type: 'approval',
+                label: 'Auto approval routing based on invoice value',
+            },
+            {
+                id: 'a5',
+                type: 'output',
+                label: 'ERP updated + payment workflow triggered',
+            },
         ],
 
-        whatChanged: [
-            'Removed manual invoice entry',
-            'Auto-validated PO matching',
-            'Approval policy engine added',
-            'Reduced manager approval dependency',
-            'ERP sync automated',
-        ],
-
-        timeImpact: {
-            before: '25–40 mins',
-            after: '5–8 mins',
-        },
+        estimatedReduction: '40–55 min → 7–10 min',
     },
 
     {
         id: 'vendor-onboarding',
         title: 'Vendor Onboarding',
-        category: 'Procurement',
+        industry: 'Procurement Operations',
 
         before: [
-            'Vendor submits onboarding form',
-            'Ops team manually validates GST',
-            'Bank account verification done manually',
-            'Compliance documents checked manually',
-            'Approval requested from finance',
-            'Vendor activated manually in ERP',
+            {
+                id: 'b1',
+                type: 'input',
+                label: 'Vendor submits onboarding form',
+            },
+            {
+                id: 'b2',
+                type: 'task',
+                label: 'Ops team manually validates GST',
+            },
+            {
+                id: 'b3',
+                type: 'task',
+                label: 'Bank account verification done manually',
+            },
+            {
+                id: 'b4',
+                type: 'task',
+                label: 'PAN and compliance docs reviewed',
+            },
+            {
+                id: 'b5',
+                type: 'decision',
+                label: 'Checks duplicate vendor risk',
+            },
+            {
+                id: 'b6',
+                type: 'approval',
+                label: 'Procurement manager approves vendor',
+            },
+            {
+                id: 'b7',
+                type: 'output',
+                label: 'Vendor added to ERP manually',
+            },
         ],
 
         after: [
-            'Document parser validates submissions',
-            'GST verification API triggered',
-            'Bank verification API triggered',
-            'Compliance engine validates documents',
-            'Approval engine handles exceptions',
-            'ERP onboarding completed automatically',
+            {
+                id: 'a1',
+                type: 'automation',
+                label: 'Vendor onboarding API receives form data',
+            },
+            {
+                id: 'a2',
+                type: 'automation',
+                label: 'GST + PAN verification services validate documents',
+            },
+            {
+                id: 'a3',
+                type: 'automation',
+                label: 'Bank verification service validates account',
+            },
+            {
+                id: 'a4',
+                type: 'decision',
+                label: 'Duplicate vendor risk engine check',
+            },
+            {
+                id: 'a5',
+                type: 'approval',
+                label: 'Approval workflow triggered automatically',
+            },
+            {
+                id: 'a6',
+                type: 'output',
+                label: 'Vendor master created in ERP',
+            },
         ],
 
-        whatChanged: [
-            'Removed manual document validation',
-            'Introduced API verification services',
-            'Reduced finance approval dependency',
-            'Improved compliance reliability',
-            'ERP activation automated',
-        ],
-
-        timeImpact: {
-            before: '40–50 mins',
-            after: '8–12 mins',
-        },
+        estimatedReduction: '60–90 min → 10–15 min',
     },
 
     {
-        id: 'loan-approval',
-        title: 'Loan Approval Processing',
-        category: 'Banking',
+        id: 'expense-reimbursement',
+        title: 'Employee Expense Reimbursement',
+        industry: 'Internal Finance',
 
         before: [
-            'Customer submits loan request',
-            'Bank officer reviews documents manually',
-            'Credit history checked manually',
-            'Income verification requested',
-            'Approval request sent to manager',
-            'Final decision communicated manually',
+            {
+                id: 'b1',
+                type: 'input',
+                label: 'Employee emails reimbursement request',
+            },
+            {
+                id: 'b2',
+                type: 'task',
+                label: 'Finance opens receipts manually',
+            },
+            {
+                id: 'b3',
+                type: 'task',
+                label: 'Reads expense details line by line',
+            },
+            {
+                id: 'b4',
+                type: 'decision',
+                label: 'Checks policy compliance manually',
+            },
+            {
+                id: 'b5',
+                type: 'task',
+                label: 'Creates approval note',
+            },
+            {
+                id: 'b6',
+                type: 'approval',
+                label: 'Manager approves reimbursement',
+            },
+            {
+                id: 'b7',
+                type: 'output',
+                label: 'Finance updates payroll manually',
+            },
         ],
 
         after: [
-            'Document parser extracts applicant data',
-            'Credit bureau API validates score',
-            'Income verification API checks salary history',
-            'Risk engine computes approval confidence',
-            'Auto-approval for low-risk applications',
-            'Escalation only for risky applications',
-            'Customer notified automatically',
+            {
+                id: 'a1',
+                type: 'automation',
+                label: 'Receipt parser extracts expense details',
+            },
+            {
+                id: 'a2',
+                type: 'automation',
+                label: 'Policy compliance engine validates expenses',
+            },
+            {
+                id: 'a3',
+                type: 'decision',
+                label: 'Fraud + duplicate claim detection',
+            },
+            {
+                id: 'a4',
+                type: 'approval',
+                label: 'Smart approval routing to manager',
+            },
+            {
+                id: 'a5',
+                type: 'output',
+                label: 'Payroll updated + employee notified',
+            },
         ],
 
-        whatChanged: [
-            'Removed manual credit verification',
-            'Added risk scoring engine',
-            'Auto-approved low-risk loans',
-            'Reduced manager dependency',
-            'Improved approval speed',
+        estimatedReduction: '30–45 min → 5–7 min',
+    },
+
+    {
+        id: 'customer-support',
+        title: 'Customer Support Escalation',
+        industry: 'Support Operations',
+
+        before: [
+            {
+                id: 'b1',
+                type: 'input',
+                label: 'Customer raises support ticket',
+            },
+            {
+                id: 'b2',
+                type: 'task',
+                label: 'Agent reads ticket manually',
+            },
+            {
+                id: 'b3',
+                type: 'task',
+                label: 'Checks CRM for customer history',
+            },
+            {
+                id: 'b4',
+                type: 'decision',
+                label: 'Determines issue severity manually',
+            },
+            {
+                id: 'b5',
+                type: 'task',
+                label: 'Routes ticket to correct team',
+            },
+            {
+                id: 'b6',
+                type: 'approval',
+                label: 'Supervisor handles critical escalation',
+            },
+            {
+                id: 'b7',
+                type: 'output',
+                label: 'Customer receives final update',
+            },
         ],
 
-        timeImpact: {
-            before: '60–90 mins',
-            after: '12–20 mins',
-        },
+        after: [
+            {
+                id: 'a1',
+                type: 'automation',
+                label: 'Ticket parser classifies issue automatically',
+            },
+            {
+                id: 'a2',
+                type: 'automation',
+                label: 'CRM lookup service fetches customer history',
+            },
+            {
+                id: 'a3',
+                type: 'decision',
+                label: 'Severity + SLA priority engine',
+            },
+            {
+                id: 'a4',
+                type: 'approval',
+                label: 'Critical cases escalated to human lead',
+            },
+            {
+                id: 'a5',
+                type: 'output',
+                label: 'Auto response + routing + CRM update',
+            },
+        ],
+
+        estimatedReduction: '25–40 min → 3–5 min',
     },
 ];
