@@ -18,7 +18,12 @@ export async function generateWorkflowRedesign(
     throw new Error("Failed to generate architecture");
   }
 
-  return response.json();
+  const data = await response.json();
+  if (data.error) {
+    throw new Error(data.error);
+  }
+
+  return data;
 }
 
 

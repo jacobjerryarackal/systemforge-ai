@@ -139,14 +139,15 @@ export default function HomePage() {
             metrics={systemData.finalMetrics}
           />
 
+
           <ReadinessProgress
             metrics={{
               deploymentReadiness:
-                systemData.finalMetrics.deploymentReadiness,
+                systemData.finalMetrics?.deploymentReadiness || "0%",
               automationPotential:
-                systemData.finalMetrics.automationPotential,
+                systemData.finalMetrics?.automationPotential || "0%",
               architectureConfidence:
-                systemData.finalMetrics.architectureConfidence,
+                systemData.finalMetrics?.architectureConfidence || "0%",
             }}
           />
 

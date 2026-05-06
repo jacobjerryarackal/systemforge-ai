@@ -80,7 +80,7 @@ STRICT OUTPUT FORMAT
 
 Return ONLY valid JSON.
 
-{
+{{
   "after_workflow": [
     "specific transformed step 1",
     "specific transformed step 2",
@@ -96,7 +96,7 @@ Return ONLY valid JSON.
     "specific architecture decision 4",
     "specific architecture decision 5"
   ]
-}
+}}
 
 No markdown.
 No explanations.

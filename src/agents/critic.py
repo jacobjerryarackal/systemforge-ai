@@ -70,7 +70,7 @@ STRICT OUTPUT FORMAT
 
 Return ONLY valid JSON.
 
-{
+{{
   "risks": [
     "specific production risk 1",
     "specific production risk 2",
@@ -78,7 +78,7 @@ Return ONLY valid JSON.
     "specific production risk 4",
     "specific production risk 5"
   ]
-}
+}}
 
 Bad example:
 "system may fail"

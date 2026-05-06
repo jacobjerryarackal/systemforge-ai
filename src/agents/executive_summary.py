@@ -76,7 +76,7 @@ STRICT OUTPUT FORMAT
 
 Return ONLY valid JSON.
 
-{
+{{
   "deployment_readiness": "87%",
   "automation_potential": "74%",
   "risk_score": "Low Risk",
@@ -90,7 +90,7 @@ Return ONLY valid JSON.
     "impact 4",
     "impact 5"
   ]
-}
+}}
 
 No markdown.
 No explanations.

@@ -83,7 +83,7 @@ STRICT OUTPUT FORMAT
 
 Return ONLY valid JSON.
 
-{
+{{
   "improvements": [
     "specific improvement 1",
     "specific improvement 2",
@@ -93,7 +93,7 @@ Return ONLY valid JSON.
   ],
 
   "architecture_layers": [
-    {
+    {{
       "title": "Layer Name",
       "description": "Production-grade explanation",
       "items": [
@@ -101,9 +101,9 @@ Return ONLY valid JSON.
         "specific item 2",
         "specific item 3"
       ]
-    }
+    }}
   ]
-}
+}}
 
 No markdown.
 No explanations.
