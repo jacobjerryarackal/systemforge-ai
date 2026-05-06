@@ -28,9 +28,8 @@ Your job is to translate technical architecture into:
 1. deployment readiness score
 2. automation potential
 3. operational risk score
-4. estimated monthly infrastructure cost
-5. architecture confidence score
-6. business impact summary
+4. architecture confidence score
+5. business impact summary
 
 You do NOT write technical implementation details.
 
