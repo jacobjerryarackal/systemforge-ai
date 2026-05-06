@@ -1,37 +1,111 @@
 'use client';
 
 import React, { useState } from 'react';
-import { EXAMPLE_MESSY_WORKFLOWS } from '../../lib/exampleWorkflows';
+import WorkflowNode from './WorkflowNode';
+import type {
+    WorkflowStep,
+    WorkflowNodeType,
+} from './WorkflowTypes';
+import {
+    EXAMPLE_MESSY_WORKFLOWS,
+} from '../../lib/exampleWorkflows';
 
 interface WorkflowBuilderProps {
     onGenerate: (workflowSteps: string[]) => void;
     isRunning: boolean;
 }
 
+function createEmptyStep(): WorkflowStep {
+    return {
+        id: crypto.randomUUID(),
+        label: '',
+        type: 'task',
+        duration: '',
+    };
+}
+
 export default function WorkflowBuilder({
     onGenerate,
     isRunning,
 }: WorkflowBuilderProps) {
-    const [workflowText, setWorkflowText] =
-        useState('');
-
     const [selectedExample, setSelectedExample] =
         useState('');
 
-    const handleGenerate = () => {
-        const steps = workflowText
-            .split('\n')
-            .map((step) => step.trim())
-            .filter(Boolean);
+    const [workflowSteps, setWorkflowSteps] =
+        useState<WorkflowStep[]>([
+            createEmptyStep(),
+            createEmptyStep(),
+            createEmptyStep(),
+        ]);
 
-        if (steps.length === 0) {
+    const updateStep = (
+        id: string,
+        field: 'label' | 'type' | 'duration',
+        value: string
+    ) => {
+        setWorkflowSteps((prev) =>
+            prev.map((step) =>
+                step.id === id
+                    ? {
+                        ...step,
+                        [field]:
+                            field === 'type'
+                                ? (value as WorkflowNodeType)
+                                : value,
+                    }
+                    : step
+            )
+        );
+    };
+
+    const addStep = () => {
+        setWorkflowSteps((prev) => [
+            ...prev,
+            createEmptyStep(),
+        ]);
+    };
+
+    const removeStep = (id: string) => {
+        if (workflowSteps.length <= 1) {
+            return;
+        }
+
+        setWorkflowSteps((prev) =>
+            prev.filter((step) => step.id !== id)
+        );
+    };
+
+    const handleGenerate = () => {
+        const cleanedSteps = workflowSteps
+            .map((step) => {
+                const typePrefix =
+                    step.type !== 'task'
+                        ? `[${step.type
+                            .replace('_', ' ')
+                            .toUpperCase()}] `
+                        : '';
+
+                const durationText = step.duration
+                    ? ` (${step.duration})`
+                    : '';
+
+                return `${typePrefix}${step.label}${durationText}`.trim();
+            })
+            .filter(
+                (step) =>
+                    step &&
+                    step !== '[TASK]' &&
+                    step !== ''
+            );
+
+        if (cleanedSteps.length === 0) {
             alert(
-                'Please enter workflow steps or load an example workflow.'
+                'Please build at least one workflow step.'
             );
             return;
         }
 
-        onGenerate(steps);
+        onGenerate(cleanedSteps);
     };
 
     const handleExampleChange = (
@@ -53,16 +127,24 @@ export default function WorkflowBuilder({
             return;
         }
 
-        setWorkflowText(
-            selectedWorkflow.before.join('\n')
-        );
+        const mappedSteps: WorkflowStep[] =
+            selectedWorkflow.before.map(
+                (step) => ({
+                    id: crypto.randomUUID(),
+                    label: step,
+                    type: 'task',
+                    duration: '',
+                })
+            );
+
+        setWorkflowSteps(mappedSteps);
     };
 
     return (
         <section
             style={{
                 width: '100%',
-                maxWidth: 1100,
+                maxWidth: 1200,
                 margin: '0 auto',
                 padding: '0 24px',
                 position: 'relative',
@@ -98,11 +180,9 @@ export default function WorkflowBuilder({
                         lineHeight: 1.1,
                     }}
                 >
-                    Transform Manual
+                    Build Real
                     <br />
-                    Workflows into
-                    <br />
-                    AI Systems
+                    Operational Workflows
                 </h1>
 
                 <p
@@ -114,15 +194,15 @@ export default function WorkflowBuilder({
                         lineHeight: 1.8,
                     }}
                 >
-                    Build messy operational workflows,
-                    redesign them into production-grade
-                    AI-native systems, and generate
-                    architecture decisions like a
-                    Principal Engineer.
+                    Create messy real-world workflows
+                    using tasks, approvals, decision
+                    nodes, APIs, queues, LLM steps,
+                    and human review paths like a real
+                    enterprise system.
                 </p>
             </div>
 
-            {/* Main Card */}
+            {/* Main Builder */}
             <div
                 style={{
                     border:
@@ -134,10 +214,10 @@ export default function WorkflowBuilder({
                     backdropFilter: 'blur(10px)',
                 }}
             >
-                {/* Example Workflow Dropdown */}
+                {/* Example Dropdown */}
                 <div
                     style={{
-                        marginBottom: '28px',
+                        marginBottom: '32px',
                     }}
                 >
                     <label
@@ -190,69 +270,75 @@ export default function WorkflowBuilder({
                     </select>
                 </div>
 
-                {/* Manual Workflow Input */}
+                {/* Workflow Nodes */}
                 <div
                     style={{
                         marginBottom: '28px',
                     }}
                 >
-                    <label
-                        style={{
-                            display: 'block',
-                            marginBottom: '12px',
-                            color: '#F0F0FF',
-                            fontWeight: 600,
-                            fontSize: '15px',
-                        }}
-                    >
-                        Build Your Workflow
-                    </label>
+                    {workflowSteps.map(
+                        (step, index) => (
+                            <div
+                                key={step.id}
+                                style={{
+                                    position: 'relative',
+                                }}
+                            >
+                                <WorkflowNode
+                                    step={step}
+                                    index={index}
+                                    updateStep={updateStep}
+                                />
 
-                    <textarea
-                        value={workflowText}
-                        onChange={(e) =>
-                            setWorkflowText(e.target.value)
-                        }
-                        placeholder={`Example:
-Orders come from Shopify
-Team manually updates inventory in Excel
-Slack message sent to warehouse
-Warehouse updates delivery status manually
-Customer support manually handles delays`}
-                        rows={10}
-                        style={{
-                            width: '100%',
-                            padding: '18px',
-                            borderRadius: '14px',
-                            border:
-                                '1px solid rgba(255,255,255,0.08)',
-                            background:
-                                'rgba(255,255,255,0.03)',
-                            color: '#F0F0FF',
-                            fontSize: '15px',
-                            lineHeight: 1.8,
-                            resize: 'vertical',
-                            outline: 'none',
-                        }}
-                    />
+                                {/* Remove Button */}
+                                <button
+                                    onClick={() =>
+                                        removeStep(step.id)
+                                    }
+                                    style={{
+                                        position: 'absolute',
+                                        top: 16,
+                                        right: 16,
+                                        background:
+                                            'rgba(239,68,68,0.1)',
+                                        color: '#EF4444',
+                                        border:
+                                            '1px solid rgba(239,68,68,0.2)',
+                                        borderRadius: '10px',
+                                        padding:
+                                            '8px 12px',
+                                        cursor: 'pointer',
+                                        fontSize: '13px',
+                                        fontWeight: 600,
+                                    }}
+                                >
+                                    Remove
+                                </button>
+                            </div>
+                        )
+                    )}
                 </div>
 
-                {/* Helper Text */}
-                <div
+                {/* Add Step */}
+                <button
+                    onClick={addStep}
                     style={{
-                        marginBottom: '28px',
-                        color: '#8B8BA7',
-                        fontSize: '14px',
-                        lineHeight: 1.7,
+                        width: '100%',
+                        marginBottom: '24px',
+                        padding: '16px',
+                        borderRadius: '14px',
+                        border:
+                            '1px dashed rgba(255,255,255,0.12)',
+                        background:
+                            'rgba(255,255,255,0.02)',
+                        color: '#00C8FF',
+                        cursor: 'pointer',
+                        fontWeight: 600,
+                        fontSize: '15px',
                     }}
                 >
-                    One workflow step per line.
-                    <br />
-                    Add approvals, decision points,
-                    escalations, manual checks, delays,
-                    and bottlenecks exactly like real
-                    operations.
-                </div>
+                    + Add Workflow Step
+                </button>
 
                 {/* Generate Button */}
                 <button
@@ -272,7 +358,6 @@ Customer support manually handles delays`}
                         color: '#ffffff',
                         fontSize: '16px',
                         fontWeight: 700,
-                        transition: '0.3s ease',
                         opacity: isRunning ? 0.7 : 1,
                     }}
                 >
