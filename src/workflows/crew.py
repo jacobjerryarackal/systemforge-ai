@@ -1,6 +1,5 @@
-from src.agents.workflow_analyst import workflow_analyst_agent
 from src.agents.architect import architect_agent
-from src.agents.infrastructure_critic import infrastructure_critic_agent
+from src.agents.critic import infrastructure_critic_agent
 from src.agents.refiner import refiner_agent
 from src.agents.executive_summary import executive_summary_agent
 
@@ -15,29 +14,26 @@ def run_systemforge(workflow_steps):
     ]
     """
 
-    # STEP 1 — Workflow Analyst
-    analyst_output = workflow_analyst_agent(workflow_steps)
-
-    # STEP 2 — Architecture Generation
+    # STEP 1 — Architecture Generation
     architect_output = architect_agent(
         workflow_steps=workflow_steps,
-        bottlenecks=analyst_output["bottlenecks"]
+        bottlenecks=None
     )
 
-    # STEP 3 — Infrastructure Critic
+    # STEP 2 — Infrastructure Critic
     critic_output = infrastructure_critic_agent(
         workflow_steps=workflow_steps,
         architecture=architect_output
     )
 
-    # STEP 4 — Production Refinement
+    # STEP 3 — Production Refinement
     refiner_output = refiner_agent(
         workflow_steps=workflow_steps,
         architecture=architect_output,
         critic_feedback=critic_output
     )
 
-    # STEP 5 — Executive Summary
+    # STEP 4 — Executive Summary
     summary_output = executive_summary_agent(
         workflow_steps=workflow_steps,
         final_architecture=refiner_output
@@ -47,12 +43,6 @@ def run_systemforge(workflow_steps):
         "workflowTransformation": {
             "before": workflow_steps,
             "after": architect_output["after_workflow"]
-        },
-
-        "workflowAnalyst": {
-            "title": "WORKFLOW ANALYST",
-            "subtitle": "Bottleneck Detection + Manual Dependency Analysis",
-            "decisions": analyst_output["bottlenecks"]
         },
 
         "architect": {
