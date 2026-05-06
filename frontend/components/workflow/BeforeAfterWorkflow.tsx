@@ -34,7 +34,6 @@ function StepCard({
                 marginBottom: '1rem',
             }}
         >
-            {/* Step Number */}
             <div
                 style={{
                     minWidth: 52,
@@ -43,8 +42,8 @@ function StepCard({
                     alignItems: 'center',
                     justifyContent: 'center',
                     border: `1px solid ${isBefore
-                        ? 'rgba(255,184,0,0.25)'
-                        : 'rgba(0,255,156,0.25)'
+                            ? 'rgba(255,184,0,0.25)'
+                            : 'rgba(0,255,156,0.25)'
                         }`,
                     background: isBefore
                         ? 'rgba(255,184,0,0.05)'
@@ -59,13 +58,12 @@ function StepCard({
                 {String(index + 1).padStart(2, '0')}
             </div>
 
-            {/* Step Content */}
             <div
                 style={{
                     flex: 1,
                     border: `1px solid ${isBefore
-                        ? 'rgba(255,184,0,0.08)'
-                        : 'rgba(0,255,156,0.08)'
+                            ? 'rgba(255,184,0,0.08)'
+                            : 'rgba(0,255,156,0.08)'
                         }`,
                     background: isBefore
                         ? 'rgba(255,184,0,0.02)'
@@ -92,14 +90,16 @@ function StepCard({
 export default function BeforeAfterWorkflow({
     data,
 }: BeforeAfterWorkflowProps) {
-
-    const pairedSteps = data.before.map(
-        (beforeStep, index) => ({
-            before: beforeStep,
-            after:
-                data.after[index] ||
-                'Automated workflow step added',
-        })
+    /**
+     * CRITICAL FIX:
+     *
+     * Only render AFTER steps equal to BEFORE length
+     * so "Not defined" never appears.
+     */
+    const cleanedAfterSteps = data.before.map(
+        (_, index) =>
+            data.after[index] ||
+            'Automated workflow step added'
     );
 
     return (
@@ -118,7 +118,6 @@ export default function BeforeAfterWorkflow({
                     margin: '0 auto',
                 }}
             >
-                {/* Header */}
                 <motion.div
                     initial={{ opacity: 0, y: 18 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -163,157 +162,113 @@ export default function BeforeAfterWorkflow({
                     >
                         SystemForge converts fragmented
                         manual operations into
-                        production-grade AI-native
-                        workflows with automation,
-                        validation layers, and scalable
-                        execution paths.
+                        production-grade AI-native workflows.
                     </p>
                 </motion.div>
 
-                {/* Paired Workflow Cards */}
                 <div
                     style={{
                         display: 'grid',
                         gridTemplateColumns:
-                            'repeat(auto-fit, minmax(420px, 1fr))',
+                            '1fr 100px 1fr',
                         gap: '2rem',
+                        alignItems: 'start',
                     }}
                 >
-                    {pairedSteps.map((item, index) => (
-                        <motion.div
-                            key={index}
-                            initial={{
-                                opacity: 0,
-                                y: 20,
-                            }}
-                            animate={{
-                                opacity: 1,
-                                y: 0,
-                            }}
-                            transition={{
-                                delay: index * 0.08,
-                            }}
+                    {/* BEFORE */}
+                    <div
+                        style={{
+                            border:
+                                '1px solid rgba(255,184,0,0.12)',
+                            background:
+                                'rgba(255,184,0,0.02)',
+                            borderRadius: 10,
+                            padding: '2rem',
+                        }}
+                    >
+                        <div
                             style={{
-                                border:
-                                    '1px solid rgba(255,255,255,0.08)',
-                                background:
-                                    'rgba(255,255,255,0.02)',
-                                borderRadius: 18,
-                                padding: '2rem',
-                                backdropFilter: 'blur(10px)',
+                                fontFamily: 'var(--font-mono)',
+                                color: '#FFB800',
+                                fontSize: '0.75rem',
+                                letterSpacing: '0.22em',
+                                marginBottom: '1.5rem',
                             }}
                         >
-                            <div
-                                style={{
-                                    fontFamily:
-                                        'var(--font-display)',
-                                    fontSize: '1.4rem',
-                                    color: '#F0F0FF',
-                                    marginBottom: '1.5rem',
-                                }}
-                            >
-                                Workflow Step{' '}
-                                {String(index + 1).padStart(
-                                    2,
-                                    '0'
-                                )}
-                            </div>
+                            BEFORE — MANUAL WORKFLOW
+                        </div>
 
-                            {/* BEFORE */}
-                            <div
-                                style={{
-                                    marginBottom: '1.5rem',
-                                }}
-                            >
-                                <div
-                                    style={{
-                                        fontFamily:
-                                            'var(--font-mono)',
-                                        fontSize: '0.75rem',
-                                        color: '#FFB800',
-                                        letterSpacing:
-                                            '0.22em',
-                                        marginBottom: '0.8rem',
-                                    }}
-                                >
-                                    BEFORE
-                                </div>
+                        {data.before.map((step, index) => (
+                            <StepCard
+                                key={index}
+                                step={step}
+                                index={index}
+                                type="before"
+                            />
+                        ))}
+                    </div>
 
-                                <div
-                                    style={{
-                                        color: '#B8B8D0',
-                                        lineHeight: 1.7,
-                                    }}
-                                >
-                                    {item.before}
-                                </div>
-                            </div>
-
-                            {/* AFTER */}
-                            <div
-                                style={{
-                                    marginBottom: '1.5rem',
-                                }}
-                            >
-                                <div
-                                    style={{
-                                        fontFamily:
-                                            'var(--font-mono)',
-                                        fontSize: '0.75rem',
-                                        color: '#00FF9C',
-                                        letterSpacing:
-                                            '0.22em',
-                                        marginBottom: '0.8rem',
-                                    }}
-                                >
-                                    AFTER
-                                </div>
-
-                                <div
-                                    style={{
-                                        color: '#F0F0FF',
-                                        lineHeight: 1.8,
-                                    }}
-                                >
-                                    {item.after}
-                                </div>
-                            </div>
-
-                            {/* Business Impact */}
-                            <div
-                                style={{
-                                    paddingTop: '1rem',
-                                    borderTop:
-                                        '1px solid rgba(255,255,255,0.06)',
-                                }}
-                            >
-                                <div
-                                    style={{
-                                        fontFamily:
-                                            'var(--font-mono)',
-                                        fontSize: '0.75rem',
-                                        color: '#00C8FF',
-                                        letterSpacing:
-                                            '0.22em',
-                                        marginBottom: '0.8rem',
-                                    }}
-                                >
-                                    BUSINESS IMPACT
-                                </div>
-
-                                <div
-                                    style={{
-                                        color: '#00C8FF',
-                                        lineHeight: 1.7,
-                                    }}
-                                >
-                                    {index % 2 === 0
-                                        ? 'Reduced manual effort + faster execution'
-                                        : 'Improved reliability + production readiness'}
-                                </div>
-                            </div>
+                    {/* CENTER ARROW */}
+                    <div
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            minHeight: 500,
+                        }}
+                    >
+                        <motion.div
+                            animate={{
+                                x: [0, 10, 0],
+                            }}
+                            transition={{
+                                repeat: Infinity,
+                                duration: 2,
+                            }}
+                            style={{
+                                fontSize: '3rem',
+                                color: '#E30913',
+                                fontWeight: 700,
+                            }}
+                        >
+                            →
                         </motion.div>
-                    ))}
+                    </div>
+
+                    {/* AFTER */}
+                    <div
+                        style={{
+                            border:
+                                '1px solid rgba(0,255,156,0.12)',
+                            background:
+                                'rgba(0,255,156,0.02)',
+                            borderRadius: 10,
+                            padding: '2rem',
+                        }}
+                    >
+                        <div
+                            style={{
+                                fontFamily: 'var(--font-mono)',
+                                color: '#00FF9C',
+                                fontSize: '0.75rem',
+                                letterSpacing: '0.22em',
+                                marginBottom: '1.5rem',
+                            }}
+                        >
+                            AFTER — AI NATIVE SYSTEM
+                        </div>
+
+                        {cleanedAfterSteps.map(
+                            (step, index) => (
+                                <StepCard
+                                    key={index}
+                                    step={step}
+                                    index={index}
+                                    type="after"
+                                />
+                            )
+                        )}
+                    </div>
                 </div>
             </div>
         </section>
