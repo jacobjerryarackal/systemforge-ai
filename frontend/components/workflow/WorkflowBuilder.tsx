@@ -7,7 +7,7 @@ import type {
     WorkflowNodeType,
 } from './WorkflowTypes';
 import {
-    EXAMPLE_MESSY_WORKFLOWS,
+    EXAMPLE_WORKFLOWS
 } from '../../lib/exampleWorkflows';
 
 interface WorkflowBuilderProps {
@@ -19,8 +19,7 @@ function createEmptyStep(): WorkflowStep {
     return {
         id: crypto.randomUUID(),
         label: '',
-        type: 'task',
-        duration: '',
+        type: 'task'
     };
 }
 
@@ -85,11 +84,7 @@ export default function WorkflowBuilder({
                             .toUpperCase()}] `
                         : '';
 
-                const durationText = step.duration
-                    ? ` (${step.duration})`
-                    : '';
-
-                return `${typePrefix}${step.label}${durationText}`.trim();
+                return `${typePrefix}${step.label}`.trim();
             })
             .filter(
                 (step) =>
@@ -119,7 +114,7 @@ export default function WorkflowBuilder({
         }
 
         const selectedWorkflow =
-            EXAMPLE_MESSY_WORKFLOWS.find(
+            EXAMPLE_WORKFLOWS.find(
                 (item) => item.id === selectedId
             );
 
@@ -131,9 +126,8 @@ export default function WorkflowBuilder({
             selectedWorkflow.before.map(
                 (step) => ({
                     id: crypto.randomUUID(),
-                    label: step,
-                    type: 'task',
-                    duration: '',
+                    label: step.label,
+                    type: step.type,
                 })
             );
 
@@ -252,7 +246,7 @@ export default function WorkflowBuilder({
                             Select an example workflow
                         </option>
 
-                        {EXAMPLE_MESSY_WORKFLOWS.map(
+                        {EXAMPLE_WORKFLOWS.map(
                             (workflow) => (
                                 <option
                                     key={workflow.id}
@@ -263,7 +257,7 @@ export default function WorkflowBuilder({
                                     }}
                                 >
                                     {workflow.title} —{' '}
-                                    {workflow.category}
+                                    {workflow.industry}
                                 </option>
                             )
                         )}

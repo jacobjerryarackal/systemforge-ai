@@ -4,7 +4,12 @@ export type WorkflowNodeType =
     | 'decision'
     | 'automation'
     | 'approval'
-    | 'output';
+    | 'output'
+    | 'api'
+    | 'queue'
+    | 'llm'
+    | 'human_review'
+    | 'notification';
 
 export interface WorkflowStep {
     id: string;
