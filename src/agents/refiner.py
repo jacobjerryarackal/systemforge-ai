@@ -4,135 +4,157 @@ from src.tools.json_parser import safe_json_parse
 
 def refiner_agent(workflow_steps, architecture, critic_feedback):
     """
-    Refiner Agent
+    Production Refiner Agent
 
-    Input:
-        workflow_steps
-        architecture
-        critic_feedback
-
-    Output:
-        {
-            "improvements": [],
-            "architecture_layers": []
-        }
+    Goal:
+    Convert architecture into deployment-ready production design.
     """
 
     llm = get_llm()
 
     prompt = f"""
-You are the REFINER Agent inside SystemForge.
+You are the PRODUCTION REFINER Agent inside SystemForge.
 
-Your role is to take Architect output + Critic feedback
-and transform the system into a production-grade architecture.
+You are a Staff+ Engineer responsible for final
+production readiness.
 
-You are acting like a Staff Engineer responsible for
-final deployment readiness.
+Your job is to transform architecture into something
+that can survive real-world enterprise deployment.
 
-Your responsibilities:
+You think like:
+- Staff Engineer
+- Principal Platform Engineer
+- Production Reliability Engineer
+- Distributed Systems Designer
 
-1. Resolve critic risks
-2. Improve reliability
-3. Add retry + fallback strategies
-4. Improve observability
-5. Improve resilience
-6. Improve deployment readiness
-7. Create final architecture layers
-8. Ensure production-grade operational design
+You optimize for:
+- operational excellence
+- failure recovery
+- auditability
+- deployment safety
+- observability
+- rollback readiness
+- compliance
+- scale readiness
 
-IMPORTANT RULES:
-
-You MUST return ONLY valid JSON.
-
-Do NOT explain anything.
-Do NOT use markdown.
-Do NOT use headings.
-Do NOT use bullet points.
-Do NOT use backticks.
-Do NOT add extra text before or after JSON.
-
-STRICT OUTPUT FORMAT:
-
-{{
-  "improvements": [
-    "improvement 1",
-    "improvement 2",
-    "improvement 3",
-    "improvement 4",
-    "improvement 5"
-  ],
-
-  "architecture_layers": [
-    {{
-      "title": "Layer Name",
-      "description": "Short description",
-      "items": [
-        "item 1",
-        "item 2",
-        "item 3"
-      ]
-    }}
-  ]
-}}
+-----------------------------------
+INPUTS
+-----------------------------------
 
 ORIGINAL WORKFLOW:
-
 {workflow_steps}
 
 ARCHITECT OUTPUT:
-
 {architecture}
 
 CRITIC FEEDBACK:
-
 {critic_feedback}
+
+-----------------------------------
+YOUR TASK
+-----------------------------------
+
+Resolve the critic risks by adding:
+
+1. Dead Letter Queues (DLQ)
+2. Retry-safe execution paths
+3. Idempotent workflows
+4. Audit logging
+5. Distributed tracing
+6. Monitoring + alerting
+7. Human override paths
+8. Rollback safety
+9. Confidence scoring
+10. Failure isolation boundaries
+11. Circuit breaker protection
+12. Deployment readiness strategy
+
+You MUST also create final architecture layers.
+
+Avoid weak answers like:
+"improve monitoring"
+
+Use strong answers like:
+"Add dead-letter queue for approval failures with manual replay workflow"
+
+-----------------------------------
+STRICT OUTPUT FORMAT
+-----------------------------------
+
+Return ONLY valid JSON.
+
+{
+  "improvements": [
+    "specific improvement 1",
+    "specific improvement 2",
+    "specific improvement 3",
+    "specific improvement 4",
+    "specific improvement 5"
+  ],
+
+  "architecture_layers": [
+    {
+      "title": "Layer Name",
+      "description": "Production-grade explanation",
+      "items": [
+        "specific item 1",
+        "specific item 2",
+        "specific item 3"
+      ]
+    }
+  ]
+}
+
+No markdown.
+No explanations.
+No text outside JSON.
 """
 
     response = llm.invoke(prompt)
 
     fallback = {
         "improvements": [
-            "Added retry + fallback strategy for failed approvals",
-            "Introduced audit logging and distributed tracing",
-            "Added event queue for async workflow handling",
-            "Improved failure recovery path across services",
-            "Enabled production monitoring and alerting"
+            "Added dead-letter queue for failed approval events with manual replay workflow",
+            "Introduced idempotent retry-safe execution for critical approval actions",
+            "Enabled centralized audit logs and distributed tracing across services",
+            "Added circuit breaker protection and service isolation boundaries",
+            "Improved monitoring with alerting, rollback readiness, and human override paths"
         ],
         "architecture_layers": [
             {
-                "title": "Workflow Interface Layer",
-                "description": "User input and workflow orchestration",
+                "title": "Workflow Orchestration Layer",
+                "description": "Captures workflow inputs, routes business events, and manages approval lifecycle safely",
                 "items": [
-                    "Workflow Builder UI",
-                    "Approval Chain Modeling",
-                    "Operational Flow Mapping"
+                    "Workflow Intake Service",
+                    "Approval Orchestration Engine",
+                    "Human Escalation Manager"
                 ]
             },
             {
                 "title": "Multi-Agent Intelligence Layer",
-                "description": "Autonomous reasoning engine",
+                "description": "Performs reasoning, architecture generation, failure analysis, and optimization decisions",
                 "items": [
-                    "Architect Agent",
-                    "Critic Agent",
-                    "Refiner Agent"
+                    "Workflow Analyst Agent",
+                    "Systems Architect Agent",
+                    "Infrastructure Critic Agent"
                 ]
             },
             {
                 "title": "Inference + Compute Layer",
-                "description": "LLM execution and GPU acceleration",
+                "description": "Handles production LLM inference using GPU-backed vLLM serving",
                 "items": [
-                    "Qwen Inference",
-                    "vLLM Serving",
-                    "AMD ROCm Runtime"
+                    "Qwen 2.5 Inference",
+                    "vLLM OpenAI-Compatible Serving",
+                    "AMD MI300X ROCm Runtime"
                 ]
             },
             {
-                "title": "Production Architecture Layer",
-                "description": "Deployment and reliability",
+                "title": "Production Reliability Layer",
+                "description": "Provides retries, observability, storage, compliance, and deployment safety",
                 "items": [
-                    "Redis + PostgreSQL",
-                    "Async Event Queues",
-                    "Observability + Monitoring"
+                    "Dead Letter Queues + Retry Engine",
+                    "PostgreSQL + Redis",
+                    "Observability + Audit Logging"
                 ]
             }
         ]
@@ -143,7 +165,6 @@ CRITIC FEEDBACK:
         fallback=fallback
     )
 
-    # Response validation
     if (
         not isinstance(result, dict)
         or "improvements" not in result
