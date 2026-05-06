@@ -11,7 +11,11 @@ import FinalArchitectureBlueprint from '../components/architecture/FinalArchitec
 import ArchitectureSummary from '../components/architecture/ArchitectureSummary';
 import ParticleBackground from '../components/animations/ParticleBackground';
 
-import { generateWorkflowRedesign } from '../lib/api';
+import {
+  generateWorkflowRedesign,
+  downloadArchitectureReport,
+} from '../lib/api';
+
 import type { SystemForgeResponse } from '../lib/types';
 
 export default function HomePage() {
@@ -47,6 +51,27 @@ export default function HomePage() {
       );
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDownloadReport = async () => {
+    if (!systemData) {
+      alert('Generate architecture first');
+      return;
+    }
+
+    try {
+      const workflowSteps =
+        systemData.workflowTransformation.before;
+
+      await downloadArchitectureReport(
+        workflowSteps
+      );
+    } catch (error) {
+      console.error(error);
+      alert(
+        'Failed to download architecture report'
+      );
     }
   };
 
@@ -106,6 +131,32 @@ export default function HomePage() {
               systemData.finalMetrics
             }
           />
+
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              padding: '40px 0 80px',
+            }}
+          >
+            <button
+              onClick={handleDownloadReport}
+              style={{
+                background: '#2563eb',
+                color: 'white',
+                border: 'none',
+                padding: '16px 32px',
+                borderRadius: '12px',
+                fontSize: '16px',
+                fontWeight: 600,
+                cursor: 'pointer',
+                boxShadow:
+                  '0 10px 30px rgba(37, 99, 235, 0.3)',
+              }}
+            >
+              Download Architecture Report
+            </button>
+          </div>
         </section>
       )}
     </main>
