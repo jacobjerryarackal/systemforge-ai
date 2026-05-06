@@ -1,327 +1,286 @@
-import { useState } from 'react';
-import { Button } from 'antd';
-import { PlusOutlined, ThunderboltOutlined } from '@ant-design/icons';
-import { motion } from 'framer-motion';
-import WorkflowNode from './WorkflowNode';
-import { WorkflowStep } from './WorkflowTypes';
+'use client';
 
-interface Props {
-    onGenerate: (steps: string[]) => void;
+import React, { useState } from 'react';
+import { EXAMPLE_MESSY_WORKFLOWS } from '../../lib/exampleWorkflows';
+
+interface WorkflowBuilderProps {
+    onGenerate: (workflowSteps: string[]) => void;
     isRunning: boolean;
-}
-
-const EXAMPLE_WORKFLOWS = [
-    {
-        title: 'E-commerce Operations Chaos',
-        steps: [
-            'Orders come from Shopify',
-            'Team manually updates inventory in Excel',
-            'Slack message sent to warehouse',
-            'Warehouse updates delivery status manually',
-            'Customer support manually handles delays',
-        ],
-    },
-    {
-        title: 'Hospital Approval Workflow',
-        steps: [
-            'Patient fills intake form',
-            'Reception manually verifies insurance',
-            'Doctor manually reviews reports',
-            'Lab sends PDF reports by email',
-            'Admin manually updates billing',
-        ],
-    },
-    {
-        title: 'Hiring Workflow Mess',
-        steps: [
-            'Resume comes from LinkedIn',
-            'HR manually shortlists candidates',
-            'Interview scheduling via WhatsApp',
-            'Feedback collected in Google Sheets',
-            'Offer approval delayed manually',
-        ],
-    },
-    {
-        title: 'Startup Support Workflow',
-        steps: [
-            'Customer submits issue',
-            'Support team checks CRM manually',
-            'Engineering gets pinged in Slack',
-            'Fix status tracked in Notion',
-            'Customer gets manual update email',
-        ],
-    },
-];
-
-function createStep(label = ''): WorkflowStep {
-    return {
-        id: crypto.randomUUID(),
-        label,
-    };
 }
 
 export default function WorkflowBuilder({
     onGenerate,
     isRunning,
-}: Props) {
-    const [steps, setSteps] = useState<WorkflowStep[]>([
-        createStep(),
-    ]);
+}: WorkflowBuilderProps) {
+    const [workflowText, setWorkflowText] =
+        useState('');
 
-    const updateStep = (id: string, value: string) => {
-        setSteps((prev) =>
-            prev.map((step) =>
-                step.id === id
-                    ? { ...step, label: value }
-                    : step
-            )
+    const [selectedExample, setSelectedExample] =
+        useState('');
+
+    const handleGenerate = () => {
+        const steps = workflowText
+            .split('\n')
+            .map((step) => step.trim())
+            .filter(Boolean);
+
+        if (steps.length === 0) {
+            alert(
+                'Please enter workflow steps or load an example workflow.'
+            );
+            return;
+        }
+
+        onGenerate(steps);
+    };
+
+    const handleExampleChange = (
+        e: React.ChangeEvent<HTMLSelectElement>
+    ) => {
+        const selectedId = e.target.value;
+        setSelectedExample(selectedId);
+
+        if (!selectedId) {
+            return;
+        }
+
+        const selectedWorkflow =
+            EXAMPLE_MESSY_WORKFLOWS.find(
+                (item) => item.id === selectedId
+            );
+
+        if (!selectedWorkflow) {
+            return;
+        }
+
+        setWorkflowText(
+            selectedWorkflow.before.join('\n')
         );
-    };
-
-    const addStep = () => {
-        setSteps((prev) => [...prev, createStep()]);
-    };
-
-    const loadExampleWorkflow = (example: {
-        title: string;
-        steps: string[];
-    }) => {
-        setSteps(example.steps.map((step) => createStep(step)));
-    };
-
-    const handleSubmit = () => {
-        const cleanSteps = steps.filter(
-            (step) => step.label.trim() !== ''
-        );
-
-        if (cleanSteps.length === 0 || isRunning) return;
-
-        onGenerate(cleanSteps.map((s) => s.label));
     };
 
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+        <section
             style={{
                 width: '100%',
-                maxWidth: '980px',
+                maxWidth: 1100,
                 margin: '0 auto',
+                padding: '0 24px',
+                position: 'relative',
+                zIndex: 10,
             }}
         >
-            {/* Main Workflow Box */}
+            {/* Header */}
             <div
                 style={{
-                    position: 'relative',
-                    border: '1px solid rgba(227, 9, 19, 0.25)',
-                    background:
-                        'linear-gradient(180deg, rgba(10,10,18,0.95), rgba(7,7,15,0.95))',
-                    backdropFilter: 'blur(20px)',
-                    borderRadius: 6,
-                    padding: '2rem',
-                    boxShadow:
-                        '0 0 40px rgba(227, 9, 19, 0.06)',
-                    marginBottom: '1.5rem',
+                    textAlign: 'center',
+                    marginBottom: '48px',
                 }}
             >
-                {/* Header */}
-                <div
+                <p
                     style={{
-                        marginBottom: '1.5rem',
+                        fontSize: '13px',
+                        letterSpacing: '0.3em',
+                        color: '#00C8FF',
+                        marginBottom: '16px',
+                        fontFamily: 'var(--font-mono)',
                     }}
                 >
-                    <div
-                        style={{
-                            fontFamily: 'var(--font-mono)',
-                            fontSize: '0.72rem',
-                            color: '#E30913',
-                            letterSpacing: '0.24em',
-                            marginBottom: '0.6rem',
-                        }}
-                    >
-                        WORKFLOW_INPUT
-                    </div>
+                    SYSTEMFORGE AI
+                </p>
 
-                    <h3
+                <h1
+                    style={{
+                        fontSize:
+                            'clamp(2.5rem, 6vw, 5rem)',
+                        color: '#F0F0FF',
+                        marginBottom: '20px',
+                        fontFamily: 'var(--font-display)',
+                        lineHeight: 1.1,
+                    }}
+                >
+                    Transform Manual
+                    <br />
+                    Workflows into
+                    <br />
+                    AI Systems
+                </h1>
+
+                <p
+                    style={{
+                        maxWidth: 760,
+                        margin: '0 auto',
+                        color: '#8B8BA7',
+                        fontSize: '16px',
+                        lineHeight: 1.8,
+                    }}
+                >
+                    Build messy operational workflows,
+                    redesign them into production-grade
+                    AI-native systems, and generate
+                    architecture decisions like a
+                    Principal Engineer.
+                </p>
+            </div>
+
+            {/* Main Card */}
+            <div
+                style={{
+                    border:
+                        '1px solid rgba(255,255,255,0.08)',
+                    background:
+                        'rgba(255,255,255,0.02)',
+                    borderRadius: 20,
+                    padding: '32px',
+                    backdropFilter: 'blur(10px)',
+                }}
+            >
+                {/* Example Workflow Dropdown */}
+                <div
+                    style={{
+                        marginBottom: '28px',
+                    }}
+                >
+                    <label
                         style={{
-                            fontFamily: 'var(--font-display)',
-                            fontSize: '1.4rem',
+                            display: 'block',
+                            marginBottom: '12px',
                             color: '#F0F0FF',
-                            marginBottom: '0.5rem',
+                            fontWeight: 600,
+                            fontSize: '15px',
                         }}
                     >
-                        Map Your Current Workflow
-                    </h3>
+                        Load Example Workflow
+                    </label>
 
-                    <p
+                    <select
+                        value={selectedExample}
+                        onChange={handleExampleChange}
                         style={{
-                            color: '#8888AA',
-                            lineHeight: 1.7,
-                            fontSize: '0.95rem',
-                            maxWidth: '760px',
-                        }}
-                    >
-                        Add your messy operational process —
-                        approvals, spreadsheets, manual handoffs,
-                        broken workflows, or disconnected systems.
-                        SystemForge will redesign it into a
-                        scalable production-grade AI workflow.
-                    </p>
-                </div>
-
-                {/* Workflow Nodes */}
-                <div
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '18px',
-                        marginBottom: '1.5rem',
-                    }}
-                >
-                    {steps.map((step, index) => (
-                        <WorkflowNode
-                            key={step.id}
-                            step={step}
-                            index={index}
-                            updateStep={updateStep}
-                        />
-                    ))}
-                </div>
-
-                {/* Add Step */}
-                <div
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        marginBottom: '1.5rem',
-                    }}
-                >
-                    <Button
-                        icon={<PlusOutlined />}
-                        onClick={addStep}
-                        style={{
-                            height: '42px',
-                            padding: '0 24px',
-                            borderRadius: 4,
-                            background:
-                                'rgba(0,212,255,0.04)',
+                            width: '100%',
+                            padding: '16px',
+                            borderRadius: '12px',
                             border:
-                                '1px solid rgba(0,212,255,0.2)',
-                            color: '#00D4FF',
-                            fontFamily: 'var(--font-display)',
-                            letterSpacing: '0.08em',
+                                '1px solid rgba(255,255,255,0.08)',
+                            background:
+                                'rgba(255,255,255,0.03)',
+                            color: '#F0F0FF',
+                            fontSize: '15px',
+                            outline: 'none',
                         }}
                     >
-                        Add Workflow Step
-                    </Button>
+                        <option value="">
+                            Select an example workflow
+                        </option>
+
+                        {EXAMPLE_MESSY_WORKFLOWS.map(
+                            (workflow) => (
+                                <option
+                                    key={workflow.id}
+                                    value={workflow.id}
+                                    style={{
+                                        background: '#111827',
+                                        color: '#ffffff',
+                                    }}
+                                >
+                                    {workflow.title} —{' '}
+                                    {workflow.category}
+                                </option>
+                            )
+                        )}
+                    </select>
+                </div>
+
+                {/* Manual Workflow Input */}
+                <div
+                    style={{
+                        marginBottom: '28px',
+                    }}
+                >
+                    <label
+                        style={{
+                            display: 'block',
+                            marginBottom: '12px',
+                            color: '#F0F0FF',
+                            fontWeight: 600,
+                            fontSize: '15px',
+                        }}
+                    >
+                        Build Your Workflow
+                    </label>
+
+                    <textarea
+                        value={workflowText}
+                        onChange={(e) =>
+                            setWorkflowText(e.target.value)
+                        }
+                        placeholder={`Example:
+Orders come from Shopify
+Team manually updates inventory in Excel
+Slack message sent to warehouse
+Warehouse updates delivery status manually
+Customer support manually handles delays`}
+                        rows={10}
+                        style={{
+                            width: '100%',
+                            padding: '18px',
+                            borderRadius: '14px',
+                            border:
+                                '1px solid rgba(255,255,255,0.08)',
+                            background:
+                                'rgba(255,255,255,0.03)',
+                            color: '#F0F0FF',
+                            fontSize: '15px',
+                            lineHeight: 1.8,
+                            resize: 'vertical',
+                            outline: 'none',
+                        }}
+                    />
+                </div>
+
+                {/* Helper Text */}
+                <div
+                    style={{
+                        marginBottom: '28px',
+                        color: '#8B8BA7',
+                        fontSize: '14px',
+                        lineHeight: 1.7,
+                    }}
+                >
+                    One workflow step per line.
+                    <br />
+                    Add approvals, decision points,
+                    escalations, manual checks, delays,
+                    and bottlenecks exactly like real
+                    operations.
                 </div>
 
                 {/* Generate Button */}
-                <Button
-                    type="primary"
-                    icon={<ThunderboltOutlined />}
-                    loading={isRunning}
-                    onClick={handleSubmit}
-                    block
+                <button
+                    onClick={handleGenerate}
+                    disabled={isRunning}
                     style={{
-                        height: '56px',
+                        width: '100%',
+                        padding: '18px',
+                        borderRadius: '14px',
                         border: 'none',
-                        borderRadius: 4,
-                        background:
-                            'linear-gradient(135deg, #E30913 0%, #B5060F 100%)',
-                        fontFamily: 'var(--font-display)',
-                        fontSize: '0.9rem',
-                        letterSpacing: '0.16em',
-                        boxShadow:
-                            '0 0 30px rgba(227, 9, 19, 0.25)',
+                        cursor: isRunning
+                            ? 'not-allowed'
+                            : 'pointer',
+                        background: isRunning
+                            ? 'rgba(255,255,255,0.08)'
+                            : 'linear-gradient(90deg, #2563eb, #1d4ed8)',
+                        color: '#ffffff',
+                        fontSize: '16px',
+                        fontWeight: 700,
+                        transition: '0.3s ease',
+                        opacity: isRunning ? 0.7 : 1,
                     }}
                 >
                     {isRunning
-                        ? 'REDESIGNING WORKFLOW...'
-                        : 'GENERATE PRODUCTION ARCHITECTURE →'}
-                </Button>
+                        ? 'Generating Architecture...'
+                        : 'Generate System Redesign'}
+                </button>
             </div>
-
-            {/* Example Workflows */}
-            <div>
-                <div
-                    style={{
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: '0.7rem',
-                        color: '#444466',
-                        letterSpacing: '0.22em',
-                        marginBottom: '1rem',
-                    }}
-                >
-                    EXAMPLE_MESSY_WORKFLOWS
-                </div>
-
-                <div
-                    style={{
-                        display: 'grid',
-                        gap: '14px',
-                    }}
-                >
-                    {EXAMPLE_WORKFLOWS.map(
-                        (example, index) => (
-                            <button
-                                key={index}
-                                onClick={() =>
-                                    loadExampleWorkflow(example)
-                                }
-                                style={{
-                                    textAlign: 'left',
-                                    padding: '1rem 1.2rem',
-                                    borderRadius: 4,
-                                    border:
-                                        '1px solid rgba(0,212,255,0.12)',
-                                    background:
-                                        'rgba(0,212,255,0.03)',
-                                    cursor: 'pointer',
-                                    transition: 'all 0.2s ease',
-                                }}
-                                onMouseEnter={(e) => {
-                                    e.currentTarget.style.borderColor =
-                                        'rgba(0,212,255,0.28)';
-                                    e.currentTarget.style.background =
-                                        'rgba(0,212,255,0.06)';
-                                }}
-                                onMouseLeave={(e) => {
-                                    e.currentTarget.style.borderColor =
-                                        'rgba(0,212,255,0.12)';
-                                    e.currentTarget.style.background =
-                                        'rgba(0,212,255,0.03)';
-                                }}
-                            >
-                                <div
-                                    style={{
-                                        color: '#00D4FF',
-                                        fontFamily:
-                                            'var(--font-display)',
-                                        fontSize: '0.85rem',
-                                        marginBottom: '0.4rem',
-                                        letterSpacing: '0.08em',
-                                    }}
-                                >
-                                    {example.title}
-                                </div>
-
-                                <div
-                                    style={{
-                                        color: '#8888AA',
-                                        fontFamily: 'var(--font-mono)',
-                                        fontSize: '0.72rem',
-                                        lineHeight: 1.7,
-                                    }}
-                                >
-                                    {example.steps.join(' → ')}
-                                </div>
-                            </button>
-                        )
-                    )}
-                </div>
-            </div>
-        </motion.div>
+        </section>
     );
 }
