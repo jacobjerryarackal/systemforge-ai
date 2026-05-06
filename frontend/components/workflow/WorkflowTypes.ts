@@ -16,9 +16,7 @@ export interface ExampleWorkflow {
     id: string;
     title: string;
     industry: string;
-
     before: WorkflowStep[];
     after: WorkflowStep[];
-
     estimatedReduction: string;
 }
