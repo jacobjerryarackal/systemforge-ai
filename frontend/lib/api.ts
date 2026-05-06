@@ -1,9 +1,10 @@
-import type { SystemForgeResponse } from './types';
+import type { SystemForgeResponse } from "./types";
 
 export async function generateWorkflowRedesign(
   workflowSteps: string[]
 ): Promise<SystemForgeResponse> {
-  const response = await fetch("http://localhost:8000/run-systemforge", {
+  const API_URL = process.env.NEXT_PUBLIC_API_URL;
+  const response = await fetch(`${API_URL}/run-systemforge`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
