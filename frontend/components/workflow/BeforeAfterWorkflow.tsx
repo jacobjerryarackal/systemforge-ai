@@ -3,103 +3,79 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import type { WorkflowTransformation } from '../../lib/types';
+import FlowchartNode from './FlowchartNode';
 
 interface BeforeAfterWorkflowProps {
     data: WorkflowTransformation;
 }
 
-function StepCard({
-    step,
-    index,
-    type,
-}: {
-    step: string;
-    index: number;
-    type: 'before' | 'after';
-}) {
-    const isBefore = type === 'before';
+function detectNodeType(step: string) {
+    const text = step.toLowerCase();
 
-    return (
-        <motion.div
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-                delay: index * 0.08,
-                duration: 0.45,
-            }}
-            style={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                gap: '1rem',
-                marginBottom: '1rem',
-            }}
-        >
-            <div
-                style={{
-                    minWidth: 52,
-                    height: 52,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    border: `1px solid ${isBefore
-                            ? 'rgba(255,184,0,0.25)'
-                            : 'rgba(0,255,156,0.25)'
-                        }`,
-                    background: isBefore
-                        ? 'rgba(255,184,0,0.05)'
-                        : 'rgba(0,255,156,0.05)',
-                    borderRadius: 8,
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '0.8rem',
-                    color: isBefore ? '#FFB800' : '#00FF9C',
-                    letterSpacing: '0.12em',
-                }}
-            >
-                {String(index + 1).padStart(2, '0')}
-            </div>
+    if (
+        text.includes('approve') ||
+        text.includes('approval')
+    ) {
+        return 'approval';
+    }
 
-            <div
-                style={{
-                    flex: 1,
-                    border: `1px solid ${isBefore
-                            ? 'rgba(255,184,0,0.08)'
-                            : 'rgba(0,255,156,0.08)'
-                        }`,
-                    background: isBefore
-                        ? 'rgba(255,184,0,0.02)'
-                        : 'rgba(0,255,156,0.02)',
-                    borderRadius: 8,
-                    padding: '1rem 1.2rem',
-                }}
-            >
-                <div
-                    style={{
-                        fontFamily: 'var(--font-body)',
-                        color: '#F0F0FF',
-                        fontSize: '0.98rem',
-                        lineHeight: 1.6,
-                    }}
-                >
-                    {step}
-                </div>
-            </div>
-        </motion.div>
-    );
+    if (
+        text.includes('decision') ||
+        text.includes('verify') ||
+        text.includes('check')
+    ) {
+        return 'decision';
+    }
+
+    if (
+        text.includes('api') ||
+        text.includes('service')
+    ) {
+        return 'api';
+    }
+
+    if (
+        text.includes('queue') ||
+        text.includes('kafka') ||
+        text.includes('async')
+    ) {
+        return 'queue';
+    }
+
+    if (
+        text.includes('llm') ||
+        text.includes('ai') ||
+        text.includes('parser')
+    ) {
+        return 'llm';
+    }
+
+    if (
+        text.includes('human') ||
+        text.includes('manual') ||
+        text.includes('review')
+    ) {
+        return 'human_review';
+    }
+
+    if (
+        text.includes('email') ||
+        text.includes('notify') ||
+        text.includes('notification')
+    ) {
+        return 'notification';
+    }
+
+    return 'task';
 }
 
 export default function BeforeAfterWorkflow({
     data,
 }: BeforeAfterWorkflowProps) {
-    /**
-     * CRITICAL FIX:
-     *
-     * Only render AFTER steps equal to BEFORE length
-     * so "Not defined" never appears.
-     */
     const cleanedAfterSteps = data.before.map(
         (_, index) =>
             data.after[index] ||
-            'Automated workflow step added'
+            'New automation layer introduced'
     );
 
     return (
@@ -109,22 +85,31 @@ export default function BeforeAfterWorkflow({
                 position: 'relative',
                 zIndex: 10,
                 width: '100%',
-                padding: '5rem 2rem',
+                padding: '6rem 2rem',
             }}
         >
             <div
                 style={{
-                    maxWidth: 1400,
+                    maxWidth: 1500,
                     margin: '0 auto',
                 }}
             >
+                {/* Header */}
                 <motion.div
-                    initial={{ opacity: 0, y: 18 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.55 }}
+                    initial={{
+                        opacity: 0,
+                        y: 20,
+                    }}
+                    animate={{
+                        opacity: 1,
+                        y: 0,
+                    }}
+                    transition={{
+                        duration: 0.5,
+                    }}
                     style={{
                         textAlign: 'center',
-                        marginBottom: '4rem',
+                        marginBottom: '5rem',
                     }}
                 >
                     <div
@@ -143,7 +128,7 @@ export default function BeforeAfterWorkflow({
                         style={{
                             fontFamily: 'var(--font-display)',
                             fontSize:
-                                'clamp(2rem, 4vw, 4rem)',
+                                'clamp(2rem, 4vw, 4.5rem)',
                             color: '#F0F0FF',
                             marginBottom: '1rem',
                         }}
@@ -153,68 +138,63 @@ export default function BeforeAfterWorkflow({
 
                     <p
                         style={{
-                            maxWidth: 760,
+                            maxWidth: 800,
                             margin: '0 auto',
                             color: '#8888AA',
                             fontSize: '1rem',
-                            lineHeight: 1.75,
+                            lineHeight: 1.8,
                         }}
                     >
-                        SystemForge converts fragmented
-                        manual operations into
-                        production-grade AI-native workflows.
+                        Visualize how fragmented
+                        manual operations transform
+                        into production-grade,
+                        AI-native operational systems.
                     </p>
                 </motion.div>
 
+                {/* Main Layout */}
                 <div
                     style={{
                         display: 'grid',
                         gridTemplateColumns:
-                            '1fr 100px 1fr',
+                            '1fr 120px 1fr',
                         gap: '2rem',
                         alignItems: 'start',
                     }}
                 >
-                    {/* BEFORE */}
-                    <div
-                        style={{
-                            border:
-                                '1px solid rgba(255,184,0,0.12)',
-                            background:
-                                'rgba(255,184,0,0.02)',
-                            borderRadius: 10,
-                            padding: '2rem',
-                        }}
-                    >
+                    {/* BEFORE FLOW */}
+                    <div>
                         <div
                             style={{
-                                fontFamily: 'var(--font-mono)',
+                                textAlign: 'center',
+                                marginBottom: '2rem',
                                 color: '#FFB800',
-                                fontSize: '0.75rem',
-                                letterSpacing: '0.22em',
-                                marginBottom: '1.5rem',
+                                fontFamily: 'var(--font-mono)',
+                                letterSpacing: '0.2em',
+                                fontSize: '0.8rem',
                             }}
                         >
                             BEFORE — MANUAL WORKFLOW
                         </div>
 
-                        {data.before.map((step, index) => (
-                            <StepCard
-                                key={index}
-                                step={step}
-                                index={index}
-                                type="before"
-                            />
-                        ))}
+                        {data.before.map(
+                            (step, index) => (
+                                <FlowchartNode
+                                    key={index}
+                                    title={step}
+                                    type={detectNodeType(step)}
+                                />
+                            )
+                        )}
                     </div>
 
-                    {/* CENTER ARROW */}
+                    {/* CENTER TRANSFORMATION */}
                     <div
                         style={{
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
-                            minHeight: 500,
+                            minHeight: 800,
                         }}
                     >
                         <motion.div
@@ -226,7 +206,7 @@ export default function BeforeAfterWorkflow({
                                 duration: 2,
                             }}
                             style={{
-                                fontSize: '3rem',
+                                fontSize: '4rem',
                                 color: '#E30913',
                                 fontWeight: 700,
                             }}
@@ -235,24 +215,16 @@ export default function BeforeAfterWorkflow({
                         </motion.div>
                     </div>
 
-                    {/* AFTER */}
-                    <div
-                        style={{
-                            border:
-                                '1px solid rgba(0,255,156,0.12)',
-                            background:
-                                'rgba(0,255,156,0.02)',
-                            borderRadius: 10,
-                            padding: '2rem',
-                        }}
-                    >
+                    {/* AFTER FLOW */}
+                    <div>
                         <div
                             style={{
-                                fontFamily: 'var(--font-mono)',
+                                textAlign: 'center',
+                                marginBottom: '2rem',
                                 color: '#00FF9C',
-                                fontSize: '0.75rem',
-                                letterSpacing: '0.22em',
-                                marginBottom: '1.5rem',
+                                fontFamily: 'var(--font-mono)',
+                                letterSpacing: '0.2em',
+                                fontSize: '0.8rem',
                             }}
                         >
                             AFTER — AI NATIVE SYSTEM
@@ -260,11 +232,10 @@ export default function BeforeAfterWorkflow({
 
                         {cleanedAfterSteps.map(
                             (step, index) => (
-                                <StepCard
+                                <FlowchartNode
                                     key={index}
-                                    step={step}
-                                    index={index}
-                                    type="after"
+                                    title={step}
+                                    type={detectNodeType(step)}
                                 />
                             )
                         )}
