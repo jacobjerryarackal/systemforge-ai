@@ -288,32 +288,8 @@ export default function WorkflowBuilder({
                                     step={step}
                                     index={index}
                                     updateStep={updateStep}
+                                    removeStep={removeStep}
                                 />
-
-                                {/* Remove Button */}
-                                <button
-                                    onClick={() =>
-                                        removeStep(step.id)
-                                    }
-                                    style={{
-                                        position: 'absolute',
-                                        top: 16,
-                                        right: 16,
-                                        background:
-                                            'rgba(239,68,68,0.1)',
-                                        color: '#EF4444',
-                                        border:
-                                            '1px solid rgba(239,68,68,0.2)',
-                                        borderRadius: '10px',
-                                        padding:
-                                            '8px 12px',
-                                        cursor: 'pointer',
-                                        fontSize: '13px',
-                                        fontWeight: 600,
-                                    }}
-                                >
-                                    Remove
-                                </button>
                             </div>
                         )
                     )}

@@ -19,24 +19,57 @@ function buildComparisonBlocks(
     before: string[],
     after: string[]
 ): ComparisonBlock[] {
-    const maxLength = Math.max(before.length, after.length);
+    const maxLength = Math.max(
+        before.length,
+        after.length
+    );
+
+    const smartFallbacks = [
+        'New automation layer introduced',
+        'System-orchestrated validation added',
+        'Human escalation path introduced',
+        'Production monitoring layer added',
+        'Reliability safeguard introduced',
+        'Audit + observability layer created',
+        'Approval workflow optimization added',
+        'Async event handling introduced',
+    ];
+
+    const impactOptions = [
+        'Reduced manual effort + faster execution',
+        'Improved reliability + production readiness',
+        'Lower operational bottlenecks + better scale',
+        'Higher audit visibility + safer approvals',
+    ];
 
     const blocks: ComparisonBlock[] = [];
 
     for (let i = 0; i < maxLength; i++) {
         blocks.push({
-            title: `Workflow Step ${String(i + 1).padStart(2, '0')}`,
-            before: before[i] || 'Not defined',
-            after: after[i] || 'System optimized this step',
+            title: `Workflow Step ${String(
+                i + 1
+            ).padStart(2, '0')}`,
+
+            before:
+                before[i] ||
+                smartFallbacks[
+                i % smartFallbacks.length
+                ],
+
+            after:
+                after[i] ||
+                'System optimized this step',
+
             impact:
-                i % 2 === 0
-                    ? 'Reduced manual effort + faster execution'
-                    : 'Improved reliability + production readiness',
+                impactOptions[
+                i % impactOptions.length
+                ],
         });
     }
 
     return blocks;
 }
+
 
 function ComparisonCard({
     item,
