@@ -1,16 +1,24 @@
 export type WorkflowNodeType =
+    | 'input'
     | 'task'
     | 'decision'
+    | 'automation'
     | 'approval'
-    | 'api'
-    | 'queue'
-    | 'llm'
-    | 'human_review'
-    | 'notification';
+    | 'output';
 
 export interface WorkflowStep {
     id: string;
-    label: string;
     type: WorkflowNodeType;
-    duration?: string;
+    label: string;
+}
+
+export interface ExampleWorkflow {
+    id: string;
+    title: string;
+    industry: string;
+
+    before: WorkflowStep[];
+    after: WorkflowStep[];
+
+    estimatedReduction: string;
 }
