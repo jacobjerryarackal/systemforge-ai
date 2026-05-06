@@ -42,4 +42,6 @@ export interface SystemForgeResponse {
   architectureLayers: ArchitectureLayer[];
 
   finalMetrics: FinalMetrics;
+  
+  executiveSummary: AgentDecision;
 }

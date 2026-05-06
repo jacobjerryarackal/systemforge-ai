@@ -18,6 +18,7 @@ import {
 import ReadinessProgress from '../components/architecture/ReadinessProgress';
 import InfraCostBreakdown from '../components/architecture/InfraCostBreakdown';
 import RiskHeatmap from '../components/architecture/RiskHeatmap';
+import ExecutiveReport from '../components/architecture/ExecutiveReport';
 import type { SystemForgeResponse } from '../lib/types';
 
 export default function HomePage() {
@@ -152,6 +153,10 @@ export default function HomePage() {
           <InfraCostBreakdown />
 
           <RiskHeatmap />
+
+          <ExecutiveReport
+            summary={systemData.executiveSummary}
+          />
 
           <div
             style={{
