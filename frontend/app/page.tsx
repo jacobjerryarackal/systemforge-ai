@@ -15,7 +15,7 @@ import {
   generateWorkflowRedesign,
   downloadArchitectureReport,
 } from '../lib/api';
-
+import ReadinessProgress from '../components/architecture/ReadinessProgress';
 import type { SystemForgeResponse } from '../lib/types';
 
 export default function HomePage() {
@@ -134,6 +134,17 @@ export default function HomePage() {
 
           <ArchitectureScoreCard
             metrics={systemData.finalMetrics}
+          />
+
+          <ReadinessProgress
+            metrics={{
+              deploymentReadiness:
+                systemData.finalMetrics.deploymentReadiness,
+              automationPotential:
+                systemData.finalMetrics.automationPotential,
+              architectureConfidence:
+                systemData.finalMetrics.architectureConfidence,
+            }}
           />
 
           <div
