@@ -1,13 +1,20 @@
+from datetime import datetime
+
 from reportlab.platypus import (
     SimpleDocTemplate,
     Paragraph,
     Spacer,
-    ListFlowable,
-    ListItem,
+    Table,
+    TableStyle,
 )
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+
+from reportlab.lib.styles import (
+    getSampleStyleSheet,
+    ParagraphStyle,
+)
+
 from reportlab.lib.pagesizes import A4
-from reportlab.lib.enums import TA_CENTER, TA_LEFT
+from reportlab.lib.enums import TA_CENTER
 from reportlab.lib import colors
 from reportlab.lib.units import inch
 
@@ -17,99 +24,118 @@ def generate_architecture_pdf(
     filename="architecture_report.pdf"
 ):
     """
-    Premium themed PDF report for SystemForge AI
+    Premium Executive PDF
+    Compact + Professional + CTO Ready
 
-    Dark-tech style inspired by frontend UI:
-    - clean hierarchy
-    - stronger headings
-    - better spacing
-    - enterprise presentation feel
+    Includes:
+    - Cover
+    - Before / After Workflow
+    - Metrics Dashboard
+    - Architecture Blueprint
+    - Executive Summary
     """
+
+    # =====================================================
+    # COLORS
+    # =====================================================
+
+    PRIMARY = colors.HexColor("#2563EB")
+    SUCCESS = colors.HexColor("#16A34A")
+    WARNING = colors.HexColor("#D97706")
+    PURPLE = colors.HexColor("#7C3AED")
+
+    TEXT = colors.HexColor("#0F172A")
+    MUTED = colors.HexColor("#64748B")
+
+    BORDER = colors.HexColor("#E2E8F0")
+
+    LIGHT_BLUE = colors.HexColor("#EFF6FF")
+    LIGHT_RED = colors.HexColor("#FEF2F2")
+    LIGHT_BG = colors.HexColor("#F8FAFC")
+    EXEC_BG = colors.HexColor("#FAF5FF")
+
+    # =====================================================
+    # DOCUMENT
+    # =====================================================
 
     doc = SimpleDocTemplate(
         filename,
         pagesize=A4,
-        leftMargin=40,
-        rightMargin=40,
-        topMargin=50,
-        bottomMargin=50,
+        leftMargin=32,
+        rightMargin=32,
+        topMargin=32,
+        bottomMargin=32,
     )
 
     styles = getSampleStyleSheet()
 
-    # -------------------------
-    # CUSTOM STYLES
-    # -------------------------
+    # =====================================================
+    # TYPOGRAPHY
+    # =====================================================
 
     title_style = ParagraphStyle(
-        "TitleStyle",
+        "Title",
         parent=styles["Title"],
         fontName="Helvetica-Bold",
         fontSize=22,
         leading=28,
         alignment=TA_CENTER,
-        textColor=colors.HexColor("#0F172A"),
-        spaceAfter=12,
+        textColor=TEXT,
+        spaceAfter=8,
     )
 
     subtitle_style = ParagraphStyle(
-        "SubtitleStyle",
+        "Subtitle",
         parent=styles["Normal"],
-        fontName="Helvetica",
         fontSize=10,
-        leading=15,
+        leading=14,
         alignment=TA_CENTER,
-        textColor=colors.HexColor("#475569"),
-        spaceAfter=20,
+        textColor=MUTED,
+        spaceAfter=6,
     )
 
     section_style = ParagraphStyle(
-        "SectionStyle",
+        "Section",
         parent=styles["Heading2"],
         fontName="Helvetica-Bold",
-        fontSize=14,
-        leading=20,
-        textColor=colors.HexColor("#2563EB"),
-        spaceBefore=16,
-        spaceAfter=10,
+        fontSize=13,
+        leading=18,
+        textColor=PRIMARY,
+        spaceBefore=10,
+        spaceAfter=8,
     )
 
     body_style = ParagraphStyle(
-        "BodyStyle",
+        "Body",
         parent=styles["BodyText"],
-        fontName="Helvetica",
-        fontSize=10.5,
-        leading=16,
-        textColor=colors.HexColor("#1E293B"),
-        spaceAfter=6,
+        fontSize=10,
+        leading=14,
+        textColor=TEXT,
+        spaceAfter=4,
     )
 
-    metric_style = ParagraphStyle(
-        "MetricStyle",
+    metric_value_style = ParagraphStyle(
+        "MetricValue",
         parent=styles["BodyText"],
         fontName="Helvetica-Bold",
-        fontSize=11,
-        leading=18,
-        textColor=colors.HexColor("#111827"),
-        spaceAfter=6,
+        fontSize=14,
+        alignment=TA_CENTER,
+        textColor=TEXT,
     )
 
-    bullet_style = ParagraphStyle(
-        "BulletStyle",
+    metric_label_style = ParagraphStyle(
+        "MetricLabel",
         parent=styles["BodyText"],
-        fontName="Helvetica",
-        fontSize=10,
-        leading=15,
-        textColor=colors.HexColor("#334155"),
-        leftIndent=8,
-        spaceAfter=4,
+        fontSize=8,
+        alignment=TA_CENTER,
+        textColor=MUTED,
     )
 
     content = []
 
-    # -------------------------
-    # HEADER
-    # -------------------------
+    # =====================================================
+    # COVER SECTION
+    # =====================================================
 
     content.append(
         Paragraph(
@@ -120,23 +146,53 @@ def generate_architecture_pdf(
 
     content.append(
         Paragraph(
-            "Production Architecture Report",
+            "Production Architecture Blueprint",
             subtitle_style
         )
     )
 
-    content.append(Spacer(1, 0.2 * inch))
-
-    # -------------------------
-    # WORKFLOW TRANSFORMATION
-    # -------------------------
+    content.append(
+        Paragraph(
+            f"Generated on: {datetime.now().strftime('%d %B %Y')}",
+            subtitle_style
+        )
+    )
 
     content.append(
         Paragraph(
-            "Before → After Workflow Transformation",
-            section_style
+            "Confidential — Internal Architecture Review",
+            subtitle_style
         )
     )
+
+    content.append(Spacer(1, 0.15 * inch))
+
+    hero = Table(
+        [[
+            Paragraph(
+                "Workflow Redesign + Production Validation Engine",
+                body_style
+            )
+        ]],
+        colWidths=[500]
+    )
+
+    hero.setStyle(
+        TableStyle([
+            ("BACKGROUND", (0, 0), (-1, -1), LIGHT_BG),
+            ("BOX", (0, 0), (-1, -1), 1, PRIMARY),
+            ("LEFTPADDING", (0, 0), (-1, -1), 14),
+            ("TOPPADDING", (0, 0), (-1, -1), 12),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 12),
+        ])
+    )
+
+    content.append(hero)
+    content.append(Spacer(1, 0.20 * inch))
+
+    # =====================================================
+    # BEFORE / AFTER WORKFLOW
+    # =====================================================
 
     before = data.get(
         "workflowTransformation",
@@ -148,63 +204,54 @@ def generate_architecture_pdf(
         {}
     ).get("after", [])
 
-    content.append(
-        Paragraph(
-            f"<b>Before Workflow:</b><br/>{' → '.join(before)}",
-            body_style
-        )
+    before_html = "<br/>".join(
+        [f"• {step}" for step in before]
+    )
+
+    after_html = "<br/>".join(
+        [f"• {step}" for step in after]
     )
 
     content.append(
         Paragraph(
-            f"<b>After Workflow:</b><br/>{' → '.join(after)}",
-            body_style
+            "Before → After Workflow Transformation",
+            section_style
         )
     )
 
-    content.append(Spacer(1, 0.15 * inch))
-
-    # -------------------------
-    # AGENT OUTPUTS
-    # -------------------------
-
-    sections = [
-        "architect",
-        "critic",
-        "refiner",
-        "executiveSummary",
-    ]
-
-    for section in sections:
-        block = data.get(section, {})
-        title = block.get("title", "")
-        decisions = block.get("decisions", [])
-
-        if not title:
-            continue
-
-        content.append(
+    before_after = Table(
+        [[
             Paragraph(
-                title,
-                section_style
+                f"<b>BEFORE — MANUAL WORKFLOW</b><br/><br/>{before_html}",
+                body_style
+            ),
+            Paragraph(
+                f"<b>AFTER — AI NATIVE SYSTEM</b><br/><br/>{after_html}",
+                body_style
             )
-        )
+        ]],
+        colWidths=[250, 250]
+    )
 
-        for item in decisions:
-            content.append(
-                Paragraph(
-                    f"• {item}",
-                    bullet_style
-                )
-            )
+    before_after.setStyle(
+        TableStyle([
+            ("BACKGROUND", (0, 0), (0, 0), LIGHT_RED),
+            ("BACKGROUND", (1, 0), (1, 0), LIGHT_BLUE),
+            ("BOX", (0, 0), (-1, -1), 1, BORDER),
+            ("INNERGRID", (0, 0), (-1, -1), 0.5, BORDER),
+            ("VALIGN", (0, 0), (-1, -1), "TOP"),
+            ("LEFTPADDING", (0, 0), (-1, -1), 12),
+            ("TOPPADDING", (0, 0), (-1, -1), 12),
+            ("BOTTOMPADDING", (0, 0), (-1, -1), 12),
+        ])
+    )
 
-        content.append(
-            Spacer(1, 0.1 * inch)
-        )
+    content.append(before_after)
+    content.append(Spacer(1, 0.20 * inch))
 
-    # -------------------------
-    # FINAL METRICS
-    # -------------------------
+    # =====================================================
+    # METRICS DASHBOARD
+    # =====================================================
 
     content.append(
         Paragraph(
@@ -218,31 +265,71 @@ def generate_architecture_pdf(
         {}
     )
 
-    pretty_names = {
-        "deploymentReadiness": "Deployment Readiness",
-        "automationPotential": "Automation Potential",
-        "riskScore": "Risk Score",
-        "estimatedMonthlyInfraCost": "Infrastructure Cost",
-        "architectureConfidence": "Architecture Confidence",
-    }
+    metric_items = [
+        (
+            metrics.get(
+                "deploymentReadiness",
+                "—"
+            ),
+            "Deployment Readiness",
+            SUCCESS,
+        ),
+        (
+            metrics.get(
+                "automationPotential",
+                "—"
+            ),
+            "Automation Potential",
+            PRIMARY,
+        ),
+        (
+            metrics.get(
+                "riskScore",
+                "—"
+            ),
+            "Risk Score",
+            WARNING,
+        ),
+    ]
 
-    for key, value in metrics.items():
-        label = pretty_names.get(key, key)
+    cards = []
 
-        content.append(
-            Paragraph(
-                f"<b>{label}:</b> {value}",
-                metric_style
-            )
+    for value, label, color in metric_items:
+        card = Table(
+            [[
+                Paragraph(
+                    str(value),
+                    metric_value_style
+                )
+            ],
+            [
+                Paragraph(
+                    label,
+                    metric_label_style
+                )
+            ]],
+            colWidths=[155]
         )
 
+        card.setStyle(
+            TableStyle([
+                ("BOX", (0, 0), (-1, -1), 1, color),
+                ("TOPPADDING", (0, 0), (-1, -1), 10),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 10),
+            ])
+        )
+
+        cards.append(card)
+
     content.append(
-        Spacer(1, 0.15 * inch)
+        Table([cards])
     )
 
-    # -------------------------
-    # ARCHITECTURE LAYERS
-    # -------------------------
+    content.append(Spacer(1, 0.20 * inch))
+
+    # =====================================================
+    # ARCHITECTURE BLUEPRINT
+    # =====================================================
 
     content.append(
         Paragraph(
@@ -257,43 +344,100 @@ def generate_architecture_pdf(
     )
 
     for layer in layers:
+        layer_card = Table(
+            [[
+                Paragraph(
+                    f"<b>{layer.get('title')}</b><br/><br/>{layer.get('description')}",
+                    body_style
+                )
+            ]],
+            colWidths=[500]
+        )
+
+        layer_card.setStyle(
+            TableStyle([
+                ("BOX", (0, 0), (-1, -1), 1, BORDER),
+                ("LEFTPADDING", (0, 0), (-1, -1), 12),
+                ("TOPPADDING", (0, 0), (-1, -1), 10),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 10),
+            ])
+        )
+
+        content.append(layer_card)
+        content.append(
+            Spacer(1, 0.10 * inch)
+        )
+
+    # =====================================================
+    # EXECUTIVE SUMMARY
+    # =====================================================
+
+    executive = data.get(
+        "executiveSummary",
+        {}
+    )
+
+    executive_points = executive.get(
+        "decisions",
+        []
+    )
+
+    if executive_points:
+        content.append(
+            Spacer(1, 0.15 * inch)
+        )
+
         content.append(
             Paragraph(
-                f"<b>{layer.get('title', '')}</b><br/>{layer.get('description', '')}",
-                body_style
+                "Executive Summary",
+                section_style
             )
         )
 
-        for item in layer.get("items", []):
-            content.append(
+        executive_html = "<br/>".join(
+            [f"• {point}" for point in executive_points]
+        )
+
+        executive_card = Table(
+            [[
                 Paragraph(
-                    f"• {item}",
-                    bullet_style
+                    f"<b>Business Impact + ROI</b><br/><br/>{executive_html}",
+                    body_style
                 )
-            )
-
-        content.append(
-            Spacer(1, 0.08 * inch)
+            ]],
+            colWidths=[500]
         )
 
-    # -------------------------
-    # FOOTER NOTE
-    # -------------------------
+        executive_card.setStyle(
+            TableStyle([
+                ("BACKGROUND", (0, 0), (-1, -1), EXEC_BG),
+                ("BOX", (0, 0), (-1, -1), 1, PURPLE),
+                ("LEFTPADDING", (0, 0), (-1, -1), 14),
+                ("TOPPADDING", (0, 0), (-1, -1), 12),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 12),
+            ])
+        )
+
+        content.append(executive_card)
+
+    # =====================================================
+    # FOOTER
+    # =====================================================
 
     content.append(
-        Spacer(1, 0.2 * inch)
+        Spacer(1, 0.20 * inch)
     )
 
     content.append(
         Paragraph(
-            "Generated by SystemForge AI — Workflow Redesign + Production Validation Engine",
+            "Generated by SystemForge AI — Enterprise Workflow Redesign Engine",
             subtitle_style
         )
     )
 
-    # -------------------------
-    # BUILD PDF
-    # -------------------------
+    # =====================================================
+    # BUILD
+    # =====================================================
 
     doc.build(content)
 
