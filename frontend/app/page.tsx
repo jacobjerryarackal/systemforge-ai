@@ -25,7 +25,8 @@ export default function HomePage() {
   const [systemData, setSystemData] =
     useState<SystemForgeResponse | null>(null);
 
-
+  const [selectedWorkflow, setSelectedWorkflow] =
+    useState<typeof EXAMPLE_WORKFLOWS[0] | null>(null);
 
   // generate LLM redesign
   const handleGenerate = async (
@@ -58,6 +59,19 @@ export default function HomePage() {
       setLoading(false);
     }
   };
+
+  const workflowToRender =
+    systemData?.workflowTransformation
+      ? {
+        before: selectedWorkflow
+          ? selectedWorkflow.before.map(step => step.label)
+          : systemData.workflowTransformation.before,
+
+        after: selectedWorkflow
+          ? selectedWorkflow.after.map(step => step.label)
+          : systemData.workflowTransformation.after,
+      }
+      : null;
 
   const handleDownloadReport = async () => {
     if (!systemData) {
@@ -110,9 +124,11 @@ export default function HomePage() {
 
       {systemData && (
         <section id="results">
-          <BeforeAfterWorkflow
-            data={systemData.workflowTransformation}
-          />
+          {workflowToRender && (
+            <BeforeAfterWorkflow
+              data={workflowToRender}
+            />
+          )}
 
           <WorkflowComparison
             data={systemData}
