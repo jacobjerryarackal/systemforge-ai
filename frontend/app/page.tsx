@@ -73,6 +73,22 @@ export default function HomePage() {
       }
       : null;
 
+  const handleWorkflowSelect = (
+    workflowId: string | null
+  ) => {
+    if (!workflowId) {
+      setSelectedWorkflow(null);
+      return;
+    }
+
+    const workflow =
+      EXAMPLE_WORKFLOWS.find(
+        (item) => item.id === workflowId
+      ) || null;
+
+    setSelectedWorkflow(workflow);
+  };
+
   const handleDownloadReport = async () => {
     if (!systemData) {
       alert('Generate architecture first');
@@ -117,6 +133,7 @@ export default function HomePage() {
         <WorkflowBuilder
           onGenerate={handleGenerate}
           isRunning={loading}
+          onWorkflowSelect={handleWorkflowSelect}
         />
       </section>
 
