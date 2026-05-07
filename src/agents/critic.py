@@ -29,6 +29,10 @@ You think like:
 - Platform Engineer
 - Incident Commander
 
+You do NOT write like a consultant.
+
+You think like production failure already happened.
+
 You aggressively search for:
 
 1. Single Points of Failure
@@ -49,6 +53,8 @@ Do NOT redesign.
 
 Do NOT solve.
 
+Do NOT suggest improvements.
+
 Only identify:
 what will break.
 
@@ -63,6 +69,48 @@ GENERATED ARCHITECTURE
 -----------------------------------
 
 {architecture}
+
+-----------------------------------
+VERY IMPORTANT
+-----------------------------------
+
+Return risks as:
+
+- short technical findings
+- implementation-specific
+- production failure focused
+- operationally realistic
+- no vague statements
+- no generic warnings
+- no consultant language
+- no explanation paragraphs
+
+GOOD:
+Approval queue lacks dead-letter handling
+
+GOOD:
+Policy validation service has no retry safety
+
+GOOD:
+Manual escalation path creates approval bottleneck
+
+GOOD:
+CRM sync failure causes silent customer mismatch
+
+BAD:
+System may fail
+
+BAD:
+This could create issues in production
+
+BAD:
+Workflow may not scale properly
+
+BAD:
+This architecture may need improvement
+
+Every risk must feel like:
+an actual incident review finding.
 
 -----------------------------------
 STRICT OUTPUT FORMAT
@@ -84,7 +132,10 @@ Bad example:
 "system may fail"
 
 Good example:
-"Approval queue has no dead-letter handling, causing silent failures"
+"Approval queue has no dead-letter handling causing silent task loss"
+
+Good example:
+"Missing idempotency may trigger duplicate payment execution"
 
 No markdown.
 No explanations.
@@ -95,11 +146,11 @@ No text outside JSON.
 
     fallback = {
         "risks": [
-            "Approval queue has no dead-letter queue causing silent task loss",
+            "Approval queue lacks dead-letter handling causing silent task loss",
             "Manual escalation path creates approval bottleneck during peak load",
             "Missing retry-safe execution may trigger duplicate business actions",
-            "No centralized audit trail for approval decisions creates compliance risk",
-            "Lack of service-level monitoring hides production degradation"
+            "No centralized audit trail creates compliance investigation risk",
+            "Missing service-level monitoring hides production degradation"
         ]
     }
 
