@@ -10,7 +10,7 @@ import AgentDecisionPanel from '../components/agents/AgentDecisionPanel';
 import FinalArchitectureBlueprint from '../components/architecture/FinalArchitectureBlueprint';
 import ArchitectureSummary from '../components/architecture/ArchitectureSummary';
 import ParticleBackground from '../components/animations/ParticleBackground';
-
+import LiveAgentThinking from '../components/agents/LiveAgentThinking';
 import { EXAMPLE_WORKFLOWS } from '../lib/exampleWorkflows';
 import {
   generateWorkflowRedesign,
@@ -142,9 +142,11 @@ export default function HomePage() {
         />
       </section>
 
+      {loading && (
+        <LiveAgentThinking />
+      )}
 
-
-      {systemData && (
+      {systemData && !loading && (
         <>
           <section id="results">
             {workflowToRender && (
