@@ -104,12 +104,6 @@ export default function ArchitectureSummary({
             color: '#FFB800',
         },
         {
-            label: 'Infrastructure Cost',
-            value: metrics.estimatedMonthlyInfraCost,
-            subtitle: 'Estimated monthly cost',
-            color: '#FF2D55',
-        },
-        {
             label: 'Architecture Confidence',
             value: metrics.architectureConfidence,
             subtitle: 'Validated architecture confidence',
