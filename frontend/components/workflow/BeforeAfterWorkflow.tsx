@@ -69,21 +69,6 @@ function detectNodeType(step: string) {
     return 'task';
 }
 
-function cleanBeforeStep(step?: string) {
-    if (!step) return '';
-
-    return step
-        .replace(/\[.*?\]/g, '')
-        .replace(/\s+/g, ' ')
-        .trim();
-}
-
-function cleanAfterStep(step: string) {
-    return step
-        .replace(/\s+/g, ' ')
-        .trim();
-}
-
 function mapWorkflowTypeToFlowchartType(type: string) {
     switch (type) {
         case 'input':
