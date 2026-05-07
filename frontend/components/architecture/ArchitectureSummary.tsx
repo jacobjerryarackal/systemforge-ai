@@ -6,6 +6,7 @@ import type { FinalMetrics } from '../../lib/types';
 
 interface ArchitectureSummaryProps {
     metrics: FinalMetrics;
+    onDownloadReport: () => void;
 }
 
 interface MetricCardData {
@@ -81,6 +82,7 @@ function MetricCard({
 
 export default function ArchitectureSummary({
     metrics,
+    onDownloadReport,
 }: ArchitectureSummaryProps) {
     const metricCards: MetricCardData[] = [
         {
@@ -100,6 +102,12 @@ export default function ArchitectureSummary({
             value: metrics.riskScore,
             subtitle: 'System vulnerability evaluation',
             color: '#FFB800',
+        },
+        {
+            label: 'Infrastructure Cost',
+            value: metrics.estimatedMonthlyInfraCost,
+            subtitle: 'Estimated monthly cost',
+            color: '#FF2D55',
         },
         {
             label: 'Architecture Confidence',
@@ -205,7 +213,7 @@ export default function ArchitectureSummary({
                         border: '1px solid rgba(0,212,255,0.12)',
                         background: 'rgba(0,212,255,0.03)',
                         borderRadius: 10,
-                        padding: '2rem',
+                        padding: '2.5rem',
                         textAlign: 'center',
                     }}
                 >
@@ -247,6 +255,43 @@ export default function ArchitectureSummary({
                         measurable business impact, operational clarity,
                         and infrastructure confidence.
                     </p>
+
+                    {/* Download Button INSIDE final card */}
+                    <div
+                        style={{
+                            marginTop: '32px',
+                            display: 'flex',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <button
+                            onClick={onDownloadReport}
+                            style={{
+                                background:
+                                    'linear-gradient(135deg, #2563eb, #1d4ed8)',
+                                color: '#fff',
+                                border: 'none',
+                                padding: '18px 42px',
+                                borderRadius: '14px',
+                                fontSize: '16px',
+                                fontWeight: 700,
+                                cursor: 'pointer',
+                                boxShadow:
+                                    '0 12px 32px rgba(37,99,235,0.25)',
+                                transition: 'all 0.3s ease',
+                            }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.transform =
+                                    'translateY(-2px)';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.transform =
+                                    'translateY(0px)';
+                            }}
+                        >
+                            Download Architecture Report
+                        </button>
+                    </div>
                 </motion.div>
             </div>
         </section>

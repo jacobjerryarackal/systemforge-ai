@@ -145,59 +145,35 @@ export default function HomePage() {
 
 
       {systemData && (
-        <section id="results">
-          {workflowToRender && (
-            <BeforeAfterWorkflow
-              data={workflowToRender}
+        <>
+          <section id="results">
+            {workflowToRender && (
+              <BeforeAfterWorkflow
+                data={workflowToRender}
+              />
+            )}
+
+            <WorkflowComparison
+              data={systemData}
             />
-          )}
 
-          <WorkflowComparison
-            data={systemData}
-          />
+            <AgentDecisionPanel
+              architect={systemData.architect}
+              critic={systemData.critic}
+              refiner={systemData.refiner}
+            />
 
-          <AgentDecisionPanel
-            architect={systemData.architect}
-            critic={systemData.critic}
-            refiner={systemData.refiner}
-          />
+            <FinalArchitectureBlueprint
+              layers={systemData.architectureLayers}
+            />
 
-          <FinalArchitectureBlueprint
-            layers={
-              systemData.architectureLayers
-            }
-          />
+            <ArchitectureSummary
+              metrics={systemData.finalMetrics}
+              onDownloadReport={handleDownloadReport}
+            />
+          </section>
 
-          <ArchitectureSummary
-            metrics={
-              systemData.finalMetrics
-            }
-          />
-
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              padding: '50px 0 100px',
-            }}
-          >
-            <button
-              onClick={handleDownloadReport}
-              style={{
-                background: '#2563eb',
-                color: 'white',
-                border: 'none',
-                padding: '16px 32px',
-                borderRadius: '12px',
-                fontSize: '16px',
-                fontWeight: 600,
-                cursor: 'pointer',
-              }}
-            >
-              Download Architecture Report
-            </button>
-          </div>
-        </section>
+        </>
       )}
     </main>
   );
