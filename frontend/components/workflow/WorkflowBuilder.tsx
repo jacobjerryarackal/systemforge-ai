@@ -1,355 +1,400 @@
-// components/workflow/WorkflowBuilder.tsx
-
 'use client';
 
 import React, { useState } from 'react';
 import { EXAMPLE_WORKFLOWS } from '../../lib/exampleWorkflows';
+import { WorkflowNodeType, WorkflowStep } from './WorkflowTypes';
 
-interface Props {
+interface WorkflowBuilderProps {
     onGenerate: (workflowSteps: string[]) => void;
     isRunning: boolean;
-    onWorkflowSelect: (workflowId: string) => void;
 }
+
+const STEP_TYPES: WorkflowNodeType[] = [
+    'input',
+    'task',
+    'decision',
+    'automation',
+    'approval',
+    'output',
+    'api',
+    'queue',
+    'llm',
+    'human_review',
+    'notification',
+];
+
+const DEFAULT_STEPS: WorkflowStep[] = [
+    {
+        id: '1',
+        type: 'input',
+        label: '',
+    },
+    {
+        id: '2',
+        type: 'task',
+        label: '',
+    },
+    {
+        id: '3',
+        type: 'decision',
+        label: '',
+    },
+];
 
 export default function WorkflowBuilder({
     onGenerate,
     isRunning,
-    onWorkflowSelect,
-}: Props) {
-    /*
-      IMPORTANT FLOW:
-  
-      - DO NOT preload insurance claims automatically
-      - Start with user-editable workflow inputs
-      - User can type their own workflow
-      - OR user can load from example workflow dropdown later
-      - Generate only on button click
-    */
+}: WorkflowBuilderProps) {
+    const [selectedExample, setSelectedExample] = useState('');
+    const [workflowSteps, setWorkflowSteps] =
+        useState<WorkflowStep[]>(DEFAULT_STEPS);
 
-    const [steps, setSteps] = useState([
-        '',
-        '',
-        '',
-    ]);
+    const placeholders = [
+        'Step 1: What triggers your workflow?',
+        'Step 2: What happens next?',
+        'Step 3: Who approves or decides?',
+    ];
 
-    const [selectedExample, setSelectedExample] =
-        useState('');
-
-    const handleStepChange = (
-        index: number,
-        value: string
+    const handleExampleChange = (
+        e: React.ChangeEvent<HTMLSelectElement>
     ) => {
-        const updated = [...steps];
-        updated[index] = value;
-        setSteps(updated);
-    };
+        const workflowId = e.target.value;
+        setSelectedExample(workflowId);
 
-    const handleAddStep = () => {
-        setSteps([...steps, '']);
-    };
-
-    const handleRemoveStep = (index: number) => {
-        const updated = [...steps];
-        updated.splice(index, 1);
-        setSteps(updated);
-    };
-
-    const handleGenerate = () => {
-        const cleanedSteps = steps
-            .map((step) => step.trim())
-            .filter(Boolean);
-
-        if (!cleanedSteps.length) {
-            alert('Please add at least one workflow step');
+        if (!workflowId) {
+            setWorkflowSteps(DEFAULT_STEPS);
             return;
         }
 
-        /*
-          Only if user selected example workflow,
-          we update selected workflow.
-    
-          If user created custom workflow,
-          LLM should redesign THAT workflow.
-        */
+        const selectedWorkflow = EXAMPLE_WORKFLOWS.find(
+            (workflow) => workflow.id === workflowId
+        );
 
-        if (selectedExample) {
-            onWorkflowSelect(selectedExample);
+        if (selectedWorkflow) {
+            setWorkflowSteps(
+                selectedWorkflow.before.map((step) => ({
+                    id: step.id,
+                    type: step.type,
+                    label: step.label,
+                }))
+            );
+        }
+    };
+
+    const clearExampleWorkflow = () => {
+        setSelectedExample('');
+        setWorkflowSteps(DEFAULT_STEPS);
+    };
+
+    const updateStepLabel = (
+        id: string,
+        value: string
+    ) => {
+        setWorkflowSteps((prev) =>
+            prev.map((step) =>
+                step.id === id
+                    ? {
+                        ...step,
+                        label: value,
+                    }
+                    : step
+            )
+        );
+    };
+
+    const updateStepType = (
+        id: string,
+        type: WorkflowNodeType
+    ) => {
+        setWorkflowSteps((prev) =>
+            prev.map((step) =>
+                step.id === id
+                    ? {
+                        ...step,
+                        type,
+                    }
+                    : step
+            )
+        );
+    };
+
+    const addWorkflowStep = () => {
+        setWorkflowSteps((prev) => [
+            ...prev,
+            {
+                id: Date.now().toString(),
+                type: 'task',
+                label: '',
+            },
+        ]);
+    };
+
+    const removeStep = (id: string) => {
+        if (workflowSteps.length <= 1) return;
+
+        setWorkflowSteps((prev) =>
+            prev.filter((step) => step.id !== id)
+        );
+    };
+
+    const handleGenerate = () => {
+        const cleanedSteps = workflowSteps
+            .map((step) => step.label.trim())
+            .filter(Boolean);
+
+        if (cleanedSteps.length === 0) {
+            alert('Please add at least one workflow step');
+            return;
         }
 
         onGenerate(cleanedSteps);
     };
 
-    const handleLoadExample = (
-        workflowId: string
-    ) => {
-        setSelectedExample(workflowId);
-
-        const selected =
-            EXAMPLE_WORKFLOWS.find(
-                (workflow) => workflow.id === workflowId
-            );
-
-        if (!selected) return;
-
-        setSteps(
-            selected.before.map(
-                (step) => step.label
-            )
-        );
-    };
-
     return (
         <section
             style={{
-                maxWidth: '1300px',
+                maxWidth: '1400px',
                 margin: '0 auto',
-                padding: '80px 24px',
-                position: 'relative',
-                zIndex: 10,
+                padding: '40px',
+                border: '1px solid rgba(255,255,255,0.08)',
+                borderRadius: '24px',
+                background: 'rgba(5, 8, 22, 0.85)',
+                backdropFilter: 'blur(10px)',
             }}
         >
-            {/* MAIN CARD */}
             <div
                 style={{
-                    border:
-                        '1px solid rgba(255,255,255,0.08)',
-                    borderRadius: '18px',
-                    padding: '40px',
-                    background:
-                        'rgba(3, 6, 18, 0.85)',
-                    backdropFilter: 'blur(14px)',
+                    fontSize: '56px',
+                    fontWeight: 800,
+                    marginBottom: '20px',
+                    color: '#f8fafc',
                 }}
             >
-                {/* TOP LABEL */}
-                <div
-                    style={{
-                        color: '#ff2d2d',
-                        fontSize: '12px',
-                        letterSpacing: '4px',
-                        textTransform: 'uppercase',
-                        marginBottom: '18px',
-                        fontWeight: 600,
-                    }}
-                >
-                    WORKFLOW_INPUT
-                </div>
+                Map Your Current Workflow
+            </div>
 
-                {/* TITLE */}
-                <h2
-                    style={{
-                        fontSize: '52px',
-                        lineHeight: 1.1,
-                        color: '#f8fafc',
-                        margin: 0,
-                        marginBottom: '18px',
-                        fontWeight: 800,
-                    }}
-                >
-                    Map Your Current Workflow
-                </h2>
+            <p
+                style={{
+                    fontSize: '18px',
+                    lineHeight: 1.8,
+                    color: '#94a3b8',
+                    marginBottom: '40px',
+                    maxWidth: '1000px',
+                }}
+            >
+                Add your messy operational process — approvals,
+                spreadsheets, manual handoffs, broken workflows,
+                or disconnected systems. SystemForge will redesign
+                it into a scalable production-grade AI workflow.
+            </p>
 
-                {/* SUBTEXT */}
-                <p
-                    style={{
-                        color: '#94a3b8',
-                        fontSize: '20px',
-                        lineHeight: 1.8,
-                        maxWidth: '1000px',
-                        marginBottom: '42px',
-                    }}
-                >
-                    Add your messy operational process —
-                    approvals, spreadsheets, manual
-                    handoffs, broken workflows, or
-                    disconnected systems. SystemForge
-                    will redesign it into a scalable
-                    production-grade AI workflow.
-                </p>
-
-                {/* OPTIONAL EXAMPLE LOADER */}
-                <div
-                    style={{
-                        marginBottom: '28px',
-                    }}
-                >
-                    <select
-                        value={selectedExample}
-                        onChange={(e) =>
-                            handleLoadExample(
-                                e.target.value
-                            )
-                        }
-                        style={{
-                            width: '100%',
-                            height: '54px',
-                            background: '#050816',
-                            border:
-                                '1px solid rgba(255,255,255,0.08)',
-                            borderRadius: '10px',
-                            color: '#fff',
-                            padding: '0 16px',
-                            fontSize: '15px',
-                            outline: 'none',
-                        }}
-                    >
-                        <option value="">
-                            Load Example Workflow
-                        </option>
-
-                        {EXAMPLE_WORKFLOWS.map(
-                            (workflow) => (
-                                <option
-                                    key={workflow.id}
-                                    value={workflow.id}
-                                >
-                                    {workflow.title} —{' '}
-                                    {workflow.industry}
-                                </option>
-                            )
-                        )}
-                    </select>
-                </div>
-
-                {/* WORKFLOW STEPS */}
-                <div
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '18px',
-                    }}
-                >
-                    {steps.map((step, index) => (
-                        <div
-                            key={index}
-                            style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '16px',
-                            }}
-                        >
-                            {/* STEP NUMBER */}
-                            <div
-                                style={{
-                                    width: '42px',
-                                    minWidth: '42px',
-                                    color: '#00d4ff',
-                                    fontWeight: 700,
-                                    fontSize: '18px',
-                                }}
-                            >
-                                {String(index + 1).padStart(
-                                    2,
-                                    '0'
-                                )}
-                            </div>
-
-                            {/* INPUT */}
-                            <input
-                                value={step}
-                                onChange={(e) =>
-                                    handleStepChange(
-                                        index,
-                                        e.target.value
-                                    )
-                                }
-                                placeholder={
-                                    index === 0
-                                        ? 'Step 1: What triggers your workflow?'
-                                        : index === 1
-                                            ? 'Step 2: What happens next?'
-                                            : index === 2
-                                                ? 'Step 3: Who approves or decides?'
-                                                : `Step ${index + 1}: Add workflow step`
-                                }
-                                style={{
-                                    flex: 1,
-                                    height: '52px',
-                                    background: '#050816',
-                                    border:
-                                        '1px solid rgba(255,255,255,0.08)',
-                                    borderRadius: '8px',
-                                    padding: '0 16px',
-                                    color: '#ffffff',
-                                    fontSize: '16px',
-                                    outline: 'none',
-                                }}
-                            />
-
-                            {/* REMOVE */}
-                            <button
-                                onClick={() =>
-                                    handleRemoveStep(index)
-                                }
-                                style={{
-                                    background: 'transparent',
-                                    border: 'none',
-                                    color: '#64748b',
-                                    fontSize: '24px',
-                                    cursor: 'pointer',
-                                }}
-                            >
-                                →
-                            </button>
-                        </div>
-                    ))}
-                </div>
-
-                {/* ADD STEP */}
-                <div
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        marginTop: '34px',
-                        marginBottom: '42px',
-                    }}
-                >
-                    <button
-                        onClick={handleAddStep}
-                        style={{
-                            background: 'transparent',
-                            border:
-                                '1px solid rgba(0,212,255,0.25)',
-                            borderRadius: '10px',
-                            padding: '14px 34px',
-                            color: '#00d4ff',
-                            fontSize: '22px',
-                            fontWeight: 600,
-                            cursor: 'pointer',
-                        }}
-                    >
-                        + Add Workflow Step
-                    </button>
-                </div>
-
-                {/* GENERATE BUTTON */}
-                <button
-                    onClick={handleGenerate}
-                    disabled={isRunning}
+            {/* Example Workflow Dropdown */}
+            <div style={{ marginBottom: '28px' }}>
+                <select
+                    value={selectedExample}
+                    onChange={handleExampleChange}
                     style={{
                         width: '100%',
-                        height: '70px',
-                        border: 'none',
-                        borderRadius: '8px',
-                        background:
-                            isRunning
-                                ? '#334155'
-                                : '#ff1111',
+                        padding: '20px',
+                        borderRadius: '14px',
+                        background: '#050816',
                         color: '#fff',
-                        fontSize: '24px',
-                        fontWeight: 800,
-                        letterSpacing: '1px',
-                        cursor: isRunning
-                            ? 'not-allowed'
-                            : 'pointer',
-                        boxShadow:
-                            '0 0 30px rgba(255,0,0,0.18)',
+                        border:
+                            '1px solid rgba(255,255,255,0.08)',
+                        fontSize: '18px',
+                        outline: 'none',
                     }}
                 >
-                    {isRunning
-                        ? 'GENERATING...'
-                        : '⚡ GENERATE PRODUCTION ARCHITECTURE →'}
+                    <option value="">
+                        Load Example Workflow
+                    </option>
+
+                    {EXAMPLE_WORKFLOWS.map((workflow) => (
+                        <option
+                            key={workflow.id}
+                            value={workflow.id}
+                        >
+                            {workflow.title} — {workflow.industry}
+                        </option>
+                    ))}
+                </select>
+
+                {selectedExample && (
+                    <button
+                        onClick={clearExampleWorkflow}
+                        style={{
+                            marginTop: '14px',
+                            background: 'transparent',
+                            border: '1px solid #ef4444',
+                            color: '#ef4444',
+                            padding: '10px 18px',
+                            borderRadius: '10px',
+                            cursor: 'pointer',
+                            fontWeight: 600,
+                        }}
+                    >
+                        Clear Example Workflow
+                    </button>
+                )}
+            </div>
+
+            {/* Workflow Steps */}
+            <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '22px',
+                }}
+            >
+                {workflowSteps.map((step, index) => (
+                    <div
+                        key={step.id}
+                        style={{
+                            display: 'flex',
+                            gap: '14px',
+                            alignItems: 'center',
+                        }}
+                    >
+                        {/* Step Number */}
+                        <div
+                            style={{
+                                minWidth: '60px',
+                                fontSize: '28px',
+                                fontWeight: 700,
+                                color: '#00d4ff',
+                            }}
+                        >
+                            {String(index + 1).padStart(2, '0')}
+                        </div>
+
+                        {/* Step Type */}
+                        <select
+                            value={step.type}
+                            onChange={(e) =>
+                                updateStepType(
+                                    step.id,
+                                    e.target.value as WorkflowNodeType
+                                )
+                            }
+                            style={{
+                                width: '180px',
+                                padding: '16px',
+                                borderRadius: '12px',
+                                background: '#050816',
+                                color: '#fff',
+                                border:
+                                    '1px solid rgba(255,255,255,0.08)',
+                                fontSize: '14px',
+                            }}
+                        >
+                            {STEP_TYPES.map((type) => (
+                                <option
+                                    key={type}
+                                    value={type}
+                                >
+                                    {type.replace('_', ' ')}
+                                </option>
+                            ))}
+                        </select>
+
+                        {/* Step Input */}
+                        <input
+                            type="text"
+                            value={step.label}
+                            onChange={(e) =>
+                                updateStepLabel(
+                                    step.id,
+                                    e.target.value
+                                )
+                            }
+                            placeholder={
+                                placeholders[index] ||
+                                `Step ${index + 1}`
+                            }
+                            style={{
+                                flex: 1,
+                                padding: '18px 20px',
+                                borderRadius: '12px',
+                                background: '#050816',
+                                color: '#fff',
+                                border:
+                                    '1px solid rgba(255,255,255,0.08)',
+                                fontSize: '18px',
+                                outline: 'none',
+                            }}
+                        />
+
+                        {/* Remove */}
+                        <button
+                            onClick={() => removeStep(step.id)}
+                            style={{
+                                background: 'transparent',
+                                border: '1px solid #ef4444',
+                                color: '#ef4444',
+                                padding: '10px 18px',
+                                borderRadius: '10px',
+                                cursor: 'pointer',
+                                fontWeight: 700,
+                            }}
+                        >
+                            Remove
+                        </button>
+                    </div>
+                ))}
+            </div>
+
+            {/* Add Step */}
+            <div
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    marginTop: '34px',
+                }}
+            >
+                <button
+                    onClick={addWorkflowStep}
+                    style={{
+                        background: 'transparent',
+                        border: '1px solid #00d4ff',
+                        color: '#00d4ff',
+                        padding: '18px 32px',
+                        borderRadius: '14px',
+                        cursor: 'pointer',
+                        fontWeight: 700,
+                        fontSize: '16px',
+                    }}
+                >
+                    + Add Workflow Step
                 </button>
             </div>
+
+            {/* Generate Button */}
+            <button
+                onClick={handleGenerate}
+                disabled={isRunning}
+                style={{
+                    background:
+                        'linear-gradient(90deg, #dc2626, #ef4444)',
+                    color: '#fff',
+                    border: 'none',
+                    padding: '18px 32px',
+                    borderRadius: '14px',
+                    fontSize: '16px',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    width: 'fit-content',
+                    minWidth: '360px',
+                    margin: '42px auto 0',
+                    display: 'block',
+                    boxShadow:
+                        '0 10px 30px rgba(239,68,68,0.20)',
+                    opacity: isRunning ? 0.7 : 1,
+                }}
+            >
+                {isRunning
+                    ? 'Generating...'
+                    : '⚡ Generate Production Architecture'}
+            </button>
         </section>
     );
 }

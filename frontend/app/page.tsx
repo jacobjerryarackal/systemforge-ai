@@ -25,19 +25,7 @@ export default function HomePage() {
   const [systemData, setSystemData] =
     useState<SystemForgeResponse | null>(null);
 
-  const [selectedWorkflow, setSelectedWorkflow] =
-    useState(null);
 
-  // dropdown workflow selection
-  const handleWorkflowSelect = (workflowId: string) => {
-    const found = EXAMPLE_WORKFLOWS.find(
-      (workflow) => workflow.id === workflowId
-    );
-
-    if (found) {
-      setSelectedWorkflow(found);
-    }
-  };
 
   // generate LLM redesign
   const handleGenerate = async (
@@ -45,14 +33,14 @@ export default function HomePage() {
   ) => {
     try {
       setLoading(true);
-
+      console.log("Sending steps:", workflowSteps);
       const result =
         await generateWorkflowRedesign(
           workflowSteps
         );
-
+      console.log("API Result:", result);
       setSystemData(result);
-
+      console.log("Received result:", result);
       setTimeout(() => {
         document
           .getElementById('results')
@@ -115,17 +103,17 @@ export default function HomePage() {
         <WorkflowBuilder
           onGenerate={handleGenerate}
           isRunning={loading}
-          onWorkflowSelect={handleWorkflowSelect}
         />
       </section>
 
-      {/* always show selected dropdown workflow correctly */}
-      <BeforeAfterWorkflow
-        data={selectedWorkflow}
-      />
 
-      {systemData && selectedWorkflow && (
+
+      {systemData && (
         <section id="results">
+          <BeforeAfterWorkflow
+            data={systemData.workflowTransformation}
+          />
+
           <WorkflowComparison
             data={systemData}
           />

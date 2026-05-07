@@ -2,12 +2,11 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import type { ExampleWorkflow } from './WorkflowTypes';
 import FlowchartNode from './FlowchartNode';
-import { EXAMPLE_WORKFLOWS } from '../../lib/exampleWorkflows';
+import type { WorkflowTransformation } from '../../lib/types';
 
 interface BeforeAfterWorkflowProps {
-    data: ExampleWorkflow;
+    data: WorkflowTransformation;
 }
 
 function detectNodeType(step: string) {
@@ -129,21 +128,9 @@ export default function BeforeAfterWorkflow({
     data,
 }: BeforeAfterWorkflowProps) {
 
-    const workflow = data?.id
-        ? EXAMPLE_WORKFLOWS.find(
-            (flow) => flow.id === data.id
-        )
-        : null;
-
-    if (!data || !workflow) {
+    if (!data) {
         return null;
     }
-
-    const cleanedAfterSteps = data.before.map(
-        (_, index) =>
-            data.after[index] ||
-            'New automation layer introduced'
-    );
 
     return (
         <section
@@ -246,9 +233,9 @@ export default function BeforeAfterWorkflow({
 
                         {data.before.map((step, index) => (
                             <FlowchartNode
-                                key={step.id}
-                                title={step.label}
-                                type={mapWorkflowTypeToFlowchartType(step.type)}
+                                key={index}
+                                title={step}
+                                type={detectNodeType(step)}
                                 isLast={index === data.before.length - 1}
                             />
                         ))}
@@ -298,9 +285,9 @@ export default function BeforeAfterWorkflow({
 
                         {data.after.map((step, index) => (
                             <FlowchartNode
-                                key={step.id}
-                                title={step.label}
-                                type={mapWorkflowTypeToFlowchartType(step.type)}
+                                key={index}
+                                title={step}
+                                type={detectNodeType(step)}
                                 isLast={index === data.after.length - 1}
                             />
                         ))}
