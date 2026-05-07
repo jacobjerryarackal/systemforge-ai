@@ -285,8 +285,12 @@ export default function HeroSection({
           }}
         >
           <WorkflowBuilder
-            onGenerate={(steps: string[]) => onSubmit(steps.join(' → '))}
+            onGenerate={(steps: string[]) =>
+              onSubmit(steps.join(' → '))
+            }
             isRunning={isRunning}
+            onWorkflowSelect={() => { }}
+            onWorkflowChange={() => { }}
           />
         </motion.div>
 
