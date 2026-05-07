@@ -7,11 +7,10 @@ import { WorkflowNodeType, WorkflowStep } from './WorkflowTypes';
 interface WorkflowBuilderProps {
     onGenerate: (workflowSteps: string[]) => void;
     isRunning: boolean;
-
-    // VERY IMPORTANT
-    // this tells page.tsx which example workflow
-    // user selected from dropdown
     onWorkflowSelect: (workflowId: string | null) => void;
+
+    // NEW
+    onWorkflowChange: () => void;
 }
 
 const STEP_TYPES: WorkflowNodeType[] = [
@@ -50,6 +49,7 @@ export default function WorkflowBuilder({
     onGenerate,
     isRunning,
     onWorkflowSelect,
+    onWorkflowChange,
 }: WorkflowBuilderProps) {
     const [selectedExample, setSelectedExample] =
         useState('');
@@ -70,8 +70,9 @@ export default function WorkflowBuilder({
 
         setSelectedExample(workflowId);
 
-        // VERY IMPORTANT
-        // tell parent page.tsx which workflow selected
+        // RESET OLD RESULTS
+        onWorkflowChange();
+
         if (!workflowId) {
             onWorkflowSelect(null);
             setWorkflowSteps(DEFAULT_STEPS);
@@ -82,19 +83,16 @@ export default function WorkflowBuilder({
 
         const selectedWorkflow =
             EXAMPLE_WORKFLOWS.find(
-                (workflow) =>
-                    workflow.id === workflowId
+                (workflow) => workflow.id === workflowId
             );
 
         if (selectedWorkflow) {
             setWorkflowSteps(
-                selectedWorkflow.before.map(
-                    (step) => ({
-                        id: step.id,
-                        type: step.type,
-                        label: step.label,
-                    })
-                )
+                selectedWorkflow.before.map((step) => ({
+                    id: step.id,
+                    type: step.type,
+                    label: step.label,
+                }))
             );
         }
     };
@@ -102,10 +100,10 @@ export default function WorkflowBuilder({
     const clearExampleWorkflow = () => {
         setSelectedExample('');
 
-        // VERY IMPORTANT
-        // reset parent selected workflow
-        onWorkflowSelect(null);
+        // RESET OLD RESULTS
+        onWorkflowChange();
 
+        onWorkflowSelect(null);
         setWorkflowSteps(DEFAULT_STEPS);
     };
 
@@ -113,6 +111,9 @@ export default function WorkflowBuilder({
         id: string,
         value: string
     ) => {
+        // RESET OLD RESULTS
+        onWorkflowChange();
+
         setWorkflowSteps((prev) =>
             prev.map((step) =>
                 step.id === id

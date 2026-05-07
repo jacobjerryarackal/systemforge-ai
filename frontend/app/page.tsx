@@ -60,6 +60,10 @@ export default function HomePage() {
     }
   };
 
+  const handleWorkflowChange = () => {
+    setSystemData(null);
+  };
+
   const workflowToRender =
     systemData?.workflowTransformation
       ? {
@@ -134,6 +138,7 @@ export default function HomePage() {
           onGenerate={handleGenerate}
           isRunning={loading}
           onWorkflowSelect={handleWorkflowSelect}
+          onWorkflowChange={handleWorkflowChange}
         />
       </section>
 
