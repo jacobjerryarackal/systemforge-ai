@@ -69,7 +69,18 @@ function detectNodeType(step: string) {
     return 'task';
 }
 
+function cleanBeforeStep(step: string) {
+    return step
+        .replace(/\[.*?\]/g, '') // removes [INPUT], [TASK], etc
+        .replace(/\s+/g, ' ')
+        .trim();
+}
 
+function cleanAfterStep(step: string) {
+    return step
+        .replace(/\s+/g, ' ')
+        .trim();
+}
 
 export default function BeforeAfterWorkflow({
     data,
@@ -183,7 +194,7 @@ export default function BeforeAfterWorkflow({
                             (step, index) => (
                                 <FlowchartNode
                                     key={index}
-                                    title={step}
+                                    title={cleanBeforeStep(step)}
                                     type={detectNodeType(step)}
                                     isLast={index === data.before.length - 1}
                                 />
@@ -237,7 +248,7 @@ export default function BeforeAfterWorkflow({
                             (step, index) => (
                                 <FlowchartNode
                                     key={index}
-                                    title={step}
+                                    title={cleanAfterStep(step)}
                                     type={detectNodeType(step)}
                                     isLast={index === cleanedAfterSteps.length - 1}
                                 />
