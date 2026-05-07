@@ -10,6 +10,7 @@ import AgentDecisionPanel from '../components/agents/AgentDecisionPanel';
 import FinalArchitectureBlueprint from '../components/architecture/FinalArchitectureBlueprint';
 import ArchitectureSummary from '../components/architecture/ArchitectureSummary';
 import ParticleBackground from '../components/animations/ParticleBackground';
+
 import { EXAMPLE_WORKFLOWS } from '../lib/exampleWorkflows';
 import {
   generateWorkflowRedesign,
@@ -20,9 +21,25 @@ import type { SystemForgeResponse } from '../lib/types';
 
 export default function HomePage() {
   const [loading, setLoading] = useState(false);
+
   const [systemData, setSystemData] =
     useState<SystemForgeResponse | null>(null);
 
+  const [selectedWorkflow, setSelectedWorkflow] =
+    useState(null);
+
+  // dropdown workflow selection
+  const handleWorkflowSelect = (workflowId: string) => {
+    const found = EXAMPLE_WORKFLOWS.find(
+      (workflow) => workflow.id === workflowId
+    );
+
+    if (found) {
+      setSelectedWorkflow(found);
+    }
+  };
+
+  // generate LLM redesign
   const handleGenerate = async (
     workflowSteps: string[]
   ) => {
@@ -98,15 +115,17 @@ export default function HomePage() {
         <WorkflowBuilder
           onGenerate={handleGenerate}
           isRunning={loading}
+          onWorkflowSelect={handleWorkflowSelect}
         />
       </section>
 
-      {systemData && (
-        <section id="results">
-          <BeforeAfterWorkflow
-            data={EXAMPLE_WORKFLOWS[0]}
-          />
+      {/* always show selected dropdown workflow correctly */}
+      <BeforeAfterWorkflow
+        data={selectedWorkflow}
+      />
 
+      {systemData && selectedWorkflow && (
+        <section id="results">
           <WorkflowComparison
             data={systemData}
           />

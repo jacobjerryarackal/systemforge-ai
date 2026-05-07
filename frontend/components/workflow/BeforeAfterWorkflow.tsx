@@ -70,7 +70,6 @@ function detectNodeType(step: string) {
     return 'task';
 }
 
-
 function cleanBeforeStep(step?: string) {
     if (!step) return '';
 
@@ -86,14 +85,59 @@ function cleanAfterStep(step: string) {
         .trim();
 }
 
+function mapWorkflowTypeToFlowchartType(type: string) {
+    switch (type) {
+        case 'input':
+            return 'input';
+
+        case 'task':
+            return 'task';
+
+        case 'decision':
+            return 'decision';
+
+        case 'automation':
+            return 'automation';
+
+        case 'approval':
+            return 'approval';
+
+        case 'output':
+            return 'output';
+
+        case 'api':
+            return 'api';
+
+        case 'queue':
+            return 'queue';
+
+        case 'llm':
+            return 'llm';
+
+        case 'human_review':
+            return 'human_review';
+
+        case 'notification':
+            return 'notification';
+
+        default:
+            return 'task';
+    }
+}
+
 export default function BeforeAfterWorkflow({
     data,
 }: BeforeAfterWorkflowProps) {
 
-    const selectedWorkflow =
-        EXAMPLE_WORKFLOWS.find(
-            (workflow) => workflow.id === data.id
-        ) || EXAMPLE_WORKFLOWS[0];
+    const workflow = data?.id
+        ? EXAMPLE_WORKFLOWS.find(
+            (flow) => flow.id === data.id
+        )
+        : null;
+
+    if (!data || !workflow) {
+        return null;
+    }
 
     const cleanedAfterSteps = data.before.map(
         (_, index) =>
@@ -200,16 +244,14 @@ export default function BeforeAfterWorkflow({
                             BEFORE — MANUAL WORKFLOW
                         </div>
 
-                        {data.before.map(
-                            (step, index) => (
-                                <FlowchartNode
-                                    key={index}
-                                    title={cleanBeforeStep(step.label)}
-                                    type={step.type}
-                                    isLast={index === data.before.length - 1}
-                                />
-                            )
-                        )}
+                        {data.before.map((step, index) => (
+                            <FlowchartNode
+                                key={step.id}
+                                title={step.label}
+                                type={mapWorkflowTypeToFlowchartType(step.type)}
+                                isLast={index === data.before.length - 1}
+                            />
+                        ))}
                     </div>
 
                     {/* CENTER TRANSFORMATION */}
@@ -254,18 +296,14 @@ export default function BeforeAfterWorkflow({
                             AFTER — AI NATIVE SYSTEM
                         </div>
 
-                        {selectedWorkflow.after.map(
-                            (step, index) => (
-                                <FlowchartNode
-                                    key={step.id}
-                                    title={step.label}
-                                    type={step.type}
-                                    isLast={
-                                        index === selectedWorkflow.after.length - 1
-                                    }
-                                />
-                            )
-                        )}
+                        {data.after.map((step, index) => (
+                            <FlowchartNode
+                                key={step.id}
+                                title={step.label}
+                                type={mapWorkflowTypeToFlowchartType(step.type)}
+                                isLast={index === data.after.length - 1}
+                            />
+                        ))}
                     </div>
                 </div>
             </div>
