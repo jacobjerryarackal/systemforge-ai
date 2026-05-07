@@ -18,14 +18,17 @@ def get_llm():
         AMD MI300X + vLLM + Qwen2.5-7B-Instruct
     """
 
-    provider = os.getenv("LLM_PROVIDER", "groq").lower()
+    provider = os.getenv(
+        "LLM_PROVIDER",
+        "groq"
+    ).lower()
 
     # =========================
     # AMD GPU Inference (PROD)
     # =========================
     if provider == "amd":
         return ChatOpenAI(
-            api_key="dummy",  # required by vLLM but not validated
+            api_key="dummy",
             base_url=os.getenv(
                 "AMD_BASE_URL",
                 "http://129.212.182.205:8000/v1"
@@ -35,14 +38,17 @@ def get_llm():
                 "Qwen/Qwen2.5-7B-Instruct"
             ),
             temperature=0.1,
-            max_tokens=512,
+            max_tokens=1200,
         )
 
     # =========================
     # GROQ (DEV)
     # =========================
     return ChatGroq(
-        groq_api_key=os.getenv("GROQ_API_KEY"),
+        groq_api_key=os.getenv(
+            "GROQ_API_KEY"
+        ),
         model_name="llama-3.1-8b-instant",
         temperature=0.1,
+        max_tokens=1200,
     )
