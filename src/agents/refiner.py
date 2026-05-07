@@ -27,6 +27,11 @@ You think like:
 - Production Reliability Engineer
 - Distributed Systems Designer
 
+You do NOT write like a consultant.
+
+You write like the engineer who must deploy
+this system to production tomorrow.
+
 You optimize for:
 - operational excellence
 - failure recovery
@@ -71,11 +76,100 @@ Resolve the critic risks by adding:
 
 You MUST also create final architecture layers.
 
-Avoid weak answers like:
-"improve monitoring"
+-----------------------------------
+VERY IMPORTANT
+-----------------------------------
 
-Use strong answers like:
-"Add dead-letter queue for approval failures with manual replay workflow"
+Return improvements as:
+
+- short technical improvements
+- production deployment focused
+- implementation-specific
+- enterprise operational language
+- no generic explanations
+- no consultant language
+- no vague statements
+- no paragraphs
+
+GOOD:
+Added dead-letter queue for approval failures
+
+GOOD:
+Introduced idempotent retry-safe payment execution
+
+GOOD:
+Enabled audit-safe approval decision logging
+
+GOOD:
+Added rollback workflow for failed ERP sync
+
+BAD:
+Improved monitoring
+
+BAD:
+System is now more reliable
+
+BAD:
+Added better observability for production
+
+BAD:
+Improved deployment quality
+
+Each improvement must feel like:
+a real production deployment change.
+
+-----------------------------------
+ARCHITECTURE LAYERS RULES
+-----------------------------------
+
+Architecture layers must be:
+
+- production-grade
+- short + clear
+- system boundary focused
+- implementation-ready
+- enterprise architecture naming style
+
+GOOD:
+Workflow Orchestration Layer
+
+GOOD:
+Decision + Validation Layer
+
+GOOD:
+Production Reliability Layer
+
+BAD:
+AI Smart Layer
+
+BAD:
+Automation System Layer
+
+BAD:
+Technology Improvement Layer
+
+Descriptions must be concise and technical.
+
+Items must be:
+
+- real services
+- real components
+- real infrastructure boundaries
+
+GOOD:
+Approval Orchestration Engine
+
+GOOD:
+Dead Letter Queue + Retry Engine
+
+GOOD:
+Observability + Audit Logging
+
+BAD:
+AI Automation Tool
+
+BAD:
+Smart Process System
 
 -----------------------------------
 STRICT OUTPUT FORMAT
@@ -114,16 +208,16 @@ No text outside JSON.
 
     fallback = {
         "improvements": [
-            "Added dead-letter queue for failed approval events with manual replay workflow",
-            "Introduced idempotent retry-safe execution for critical approval actions",
-            "Enabled centralized audit logs and distributed tracing across services",
+            "Added dead-letter queue for failed approval events",
+            "Introduced idempotent retry-safe execution for approvals",
+            "Enabled centralized audit logs and distributed tracing",
             "Added circuit breaker protection and service isolation boundaries",
-            "Improved monitoring with alerting, rollback readiness, and human override paths"
+            "Improved monitoring with rollback readiness and human override"
         ],
         "architecture_layers": [
             {
                 "title": "Workflow Orchestration Layer",
-                "description": "Captures workflow inputs, routes business events, and manages approval lifecycle safely",
+                "description": "Captures workflow inputs and manages approval lifecycle safely",
                 "items": [
                     "Workflow Intake Service",
                     "Approval Orchestration Engine",
@@ -131,17 +225,17 @@ No text outside JSON.
                 ]
             },
             {
-                "title": "Multi-Agent Intelligence Layer",
-                "description": "Performs reasoning, architecture generation, failure analysis, and optimization decisions",
+                "title": "Decision + Validation Layer",
+                "description": "Validates business rules and executes policy decisions",
                 "items": [
-                    "Workflow Analyst Agent",
-                    "Systems Architect Agent",
-                    "Infrastructure Critic Agent"
+                    "Validation Engine",
+                    "Policy Decision Service",
+                    "Approval Routing Engine"
                 ]
             },
             {
                 "title": "Inference + Compute Layer",
-                "description": "Handles production LLM inference using GPU-backed vLLM serving",
+                "description": "Handles production LLM inference using GPU-backed serving",
                 "items": [
                     "Qwen 2.5 Inference",
                     "vLLM OpenAI-Compatible Serving",
@@ -150,9 +244,9 @@ No text outside JSON.
             },
             {
                 "title": "Production Reliability Layer",
-                "description": "Provides retries, observability, storage, compliance, and deployment safety",
+                "description": "Provides retries, observability, compliance, and failure recovery",
                 "items": [
-                    "Dead Letter Queues + Retry Engine",
+                    "Dead Letter Queue + Retry Engine",
                     "PostgreSQL + Redis",
                     "Observability + Audit Logging"
                 ]
