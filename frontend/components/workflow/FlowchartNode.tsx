@@ -4,12 +4,15 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 export type FlowchartNodeType =
+    | 'input'
     | 'task'
     | 'decision'
+    | 'automation'
+    | 'approval'
+    | 'output'
     | 'api'
     | 'queue'
     | 'llm'
-    | 'approval'
     | 'human_review'
     | 'notification';
 
@@ -24,6 +27,15 @@ function getNodeAccent(
     type: FlowchartNodeType
 ) {
     switch (type) {
+        case 'input':
+            return '#06B6D4';
+
+        case 'automation':
+            return '#F97316';
+
+        case 'output':
+            return '#22C55E';
+
         case 'decision':
             return '#F59E0B';
 
@@ -54,6 +66,15 @@ function getNodeIcon(
     type: FlowchartNodeType
 ) {
     switch (type) {
+        case 'input':
+            return '□';
+
+        case 'automation':
+            return '⚡';
+
+        case 'output':
+            return '✓';
+
         case 'decision':
             return '?';
 

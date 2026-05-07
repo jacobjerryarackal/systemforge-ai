@@ -2,11 +2,12 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import type { WorkflowTransformation } from '../../lib/types';
+import type { ExampleWorkflow } from './WorkflowTypes';
 import FlowchartNode from './FlowchartNode';
+import { EXAMPLE_WORKFLOWS } from '../../lib/exampleWorkflows';
 
 interface BeforeAfterWorkflowProps {
-    data: WorkflowTransformation;
+    data: ExampleWorkflow;
 }
 
 function detectNodeType(step: string) {
@@ -69,9 +70,12 @@ function detectNodeType(step: string) {
     return 'task';
 }
 
-function cleanBeforeStep(step: string) {
+
+function cleanBeforeStep(step?: string) {
+    if (!step) return '';
+
     return step
-        .replace(/\[.*?\]/g, '') // removes [INPUT], [TASK], etc
+        .replace(/\[.*?\]/g, '')
         .replace(/\s+/g, ' ')
         .trim();
 }
@@ -85,6 +89,12 @@ function cleanAfterStep(step: string) {
 export default function BeforeAfterWorkflow({
     data,
 }: BeforeAfterWorkflowProps) {
+
+    const selectedWorkflow =
+        EXAMPLE_WORKFLOWS.find(
+            (workflow) => workflow.id === data.id
+        ) || EXAMPLE_WORKFLOWS[0];
+
     const cleanedAfterSteps = data.before.map(
         (_, index) =>
             data.after[index] ||
@@ -194,8 +204,8 @@ export default function BeforeAfterWorkflow({
                             (step, index) => (
                                 <FlowchartNode
                                     key={index}
-                                    title={cleanBeforeStep(step)}
-                                    type={detectNodeType(step)}
+                                    title={cleanBeforeStep(step.label)}
+                                    type={step.type}
                                     isLast={index === data.before.length - 1}
                                 />
                             )
@@ -244,13 +254,15 @@ export default function BeforeAfterWorkflow({
                             AFTER — AI NATIVE SYSTEM
                         </div>
 
-                        {cleanedAfterSteps.map(
+                        {selectedWorkflow.after.map(
                             (step, index) => (
                                 <FlowchartNode
-                                    key={index}
-                                    title={cleanAfterStep(step)}
-                                    type={detectNodeType(step)}
-                                    isLast={index === cleanedAfterSteps.length - 1}
+                                    key={step.id}
+                                    title={step.label}
+                                    type={step.type}
+                                    isLast={
+                                        index === selectedWorkflow.after.length - 1
+                                    }
                                 />
                             )
                         )}

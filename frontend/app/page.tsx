@@ -10,7 +10,7 @@ import AgentDecisionPanel from '../components/agents/AgentDecisionPanel';
 import FinalArchitectureBlueprint from '../components/architecture/FinalArchitectureBlueprint';
 import ArchitectureSummary from '../components/architecture/ArchitectureSummary';
 import ParticleBackground from '../components/animations/ParticleBackground';
-
+import { EXAMPLE_WORKFLOWS } from '../lib/exampleWorkflows';
 import {
   generateWorkflowRedesign,
   downloadArchitectureReport,
@@ -104,9 +104,7 @@ export default function HomePage() {
       {systemData && (
         <section id="results">
           <BeforeAfterWorkflow
-            data={
-              systemData.workflowTransformation
-            }
+            data={EXAMPLE_WORKFLOWS[0]}
           />
 
           <WorkflowComparison
