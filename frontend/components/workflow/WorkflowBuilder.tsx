@@ -8,23 +8,29 @@ interface WorkflowBuilderProps {
     onGenerate: (workflowSteps: string[]) => void;
     isRunning: boolean;
     onWorkflowSelect: (workflowId: string | null) => void;
-
-    // NEW
     onWorkflowChange: () => void;
 }
 
-const STEP_TYPES: WorkflowNodeType[] = [
-    'input',
-    'task',
-    'decision',
-    'automation',
-    'approval',
-    'output',
-    'api',
-    'queue',
-    'llm',
-    'human_review',
-    'notification',
+const STEP_TYPES = [
+    { value: 'input', label: 'Input', icon: '📥' },
+    { value: 'task', label: 'Task', icon: '⚙️' },
+    { value: 'decision', label: 'Decision', icon: '🔀' },
+    { value: 'automation', label: 'Automation', icon: '🤖' },
+    { value: 'approval', label: 'Approval', icon: '✅' },
+    { value: 'output', label: 'Output', icon: '📤' },
+    { value: 'api', label: 'API', icon: '🔌' },
+    { value: 'queue', label: 'Queue', icon: '📬' },
+    { value: 'llm', label: 'LLM', icon: '🧠' },
+    {
+        value: 'human_review',
+        label: 'Human Review',
+        icon: '👤',
+    },
+    {
+        value: 'notification',
+        label: 'Notification',
+        icon: '🔔',
+    },
 ];
 
 const DEFAULT_STEPS: WorkflowStep[] = [
@@ -70,7 +76,7 @@ export default function WorkflowBuilder({
 
         setSelectedExample(workflowId);
 
-        // RESET OLD RESULTS
+        // reset old results
         onWorkflowChange();
 
         if (!workflowId) {
@@ -83,16 +89,19 @@ export default function WorkflowBuilder({
 
         const selectedWorkflow =
             EXAMPLE_WORKFLOWS.find(
-                (workflow) => workflow.id === workflowId
+                (workflow) =>
+                    workflow.id === workflowId
             );
 
         if (selectedWorkflow) {
             setWorkflowSteps(
-                selectedWorkflow.before.map((step) => ({
-                    id: step.id,
-                    type: step.type,
-                    label: step.label,
-                }))
+                selectedWorkflow.before.map(
+                    (step) => ({
+                        id: step.id,
+                        type: step.type,
+                        label: step.label,
+                    })
+                )
             );
         }
     };
@@ -100,7 +109,7 @@ export default function WorkflowBuilder({
     const clearExampleWorkflow = () => {
         setSelectedExample('');
 
-        // RESET OLD RESULTS
+        // reset old results
         onWorkflowChange();
 
         onWorkflowSelect(null);
@@ -111,7 +120,6 @@ export default function WorkflowBuilder({
         id: string,
         value: string
     ) => {
-        // RESET OLD RESULTS
         onWorkflowChange();
 
         setWorkflowSteps((prev) =>
@@ -130,6 +138,8 @@ export default function WorkflowBuilder({
         id: string,
         type: WorkflowNodeType
     ) => {
+        onWorkflowChange();
+
         setWorkflowSteps((prev) =>
             prev.map((step) =>
                 step.id === id
@@ -143,6 +153,8 @@ export default function WorkflowBuilder({
     };
 
     const addWorkflowStep = () => {
+        onWorkflowChange();
+
         setWorkflowSteps((prev) => [
             ...prev,
             {
@@ -155,6 +167,8 @@ export default function WorkflowBuilder({
 
     const removeStep = (id: string) => {
         if (workflowSteps.length <= 1) return;
+
+        onWorkflowChange();
 
         setWorkflowSteps((prev) =>
             prev.filter(
@@ -357,7 +371,7 @@ export default function WorkflowBuilder({
                                 }
                                 style={{
                                     width:
-                                        '180px',
+                                        '220px',
                                     padding:
                                         '16px',
                                     borderRadius:
@@ -369,7 +383,7 @@ export default function WorkflowBuilder({
                                     border:
                                         '1px solid rgba(255,255,255,0.08)',
                                     fontSize:
-                                        '14px',
+                                        '15px',
                                 }}
                             >
                                 {STEP_TYPES.map(
@@ -378,16 +392,18 @@ export default function WorkflowBuilder({
                                     ) => (
                                         <option
                                             key={
-                                                type
+                                                type.value
                                             }
                                             value={
-                                                type
+                                                type.value
                                             }
                                         >
-                                            {type.replace(
-                                                '_',
-                                                ' '
-                                            )}
+                                            {
+                                                type.icon
+                                            }{' '}
+                                            {
+                                                type.label
+                                            }
                                         </option>
                                     )
                                 )}
@@ -413,9 +429,7 @@ export default function WorkflowBuilder({
                                     placeholders[
                                     index
                                     ] ||
-                                    `Step ${index +
-                                    1
-                                    }`
+                                    `Step ${index + 1}`
                                 }
                                 style={{
                                     flex: 1,
@@ -436,7 +450,7 @@ export default function WorkflowBuilder({
                                 }}
                             />
 
-                            {/* Remove */}
+                            {/* Remove Button */}
                             <button
                                 onClick={() =>
                                     removeStep(
