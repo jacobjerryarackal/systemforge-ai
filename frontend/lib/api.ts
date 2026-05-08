@@ -45,12 +45,6 @@ export async function downloadArchitectureReport(
     process.env.NEXT_PUBLIC_BACKEND_URL ||
     "";
 
-  if (!API_URL) {
-    throw new Error(
-      "NEXT_PUBLIC_API_URL is missing in .env"
-    );
-  }
-
   const response = await fetch(
     `${API_URL}/download-report`,
     {
