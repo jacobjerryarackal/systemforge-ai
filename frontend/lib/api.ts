@@ -8,11 +8,7 @@ export async function generateWorkflowRedesign(
     process.env.NEXT_PUBLIC_BACKEND_URL ||
     "";
 
-  if (!API_URL) {
-    throw new Error(
-      "NEXT_PUBLIC_API_URL is missing in .env"
-    );
-  }
+  console.log("API_URL =", API_URL);
 
   const response = await fetch(
     `${API_URL}/run-systemforge`,
