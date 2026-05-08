@@ -1,279 +1,405 @@
-# SystemForge
+# SystemForge AI
 
-## AI-Powered Workflow Redesign + Architecture Validation Engine
 
-SystemForge transforms messy business workflows into production-ready AI system architectures using autonomous multi-agent reasoning.
+## Overview
 
-Instead of relying on manual architecture reviews, disconnected diagrams, spreadsheets, and consultant-heavy redesign cycles, SystemForge analyzes fragmented operational workflows, identifies architectural risks, and produces optimized, scalable, and production-grade system designs.
+SystemForge AI helps engineering teams redesign legacy or underperforming production systems into scalable, fault-tolerant, and modern architectures.
 
-It combines workflow redesign, architecture validation, and infrastructure refinement into a single autonomous engine powered by multi-agent orchestration and GPU-accelerated LLM inference.
+Instead of manually reviewing infrastructure bottlenecks, engineers can describe their current system and SystemForge AI generates:
 
----
+* Production-grade architecture redesign recommendations
+* Scalability improvements
+* Reliability and fault-tolerance strategies
+* Cost optimization suggestions
+* Modern cloud-native architecture patterns
+* Downloadable architecture reports in PDF format
 
-# Problem
-
-Many businesses operate with fragmented workflows that are difficult to scale, monitor, and optimize.
-
-Common examples include:
-
-* Manual approvals across multiple teams
-* Spreadsheet-driven operations
-* Unclear ownership across services
-* Single points of failure in critical systems
-* Lack of observability and production safeguards
-* Poorly documented architecture decisions
-* Delayed engineering reviews and expensive consulting cycles
-
-Traditional tools help visualize workflows, but they do not redesign them for production readiness.
-
-Organizations often need both:
-
-* Workflow optimization
-* Architecture reliability validation
-
-SystemForge solves both.
+This project was built for the focusing on practical AI solutions powered by AMD infrastructure.
 
 ---
 
-# Solution
+## Problem Statement
 
-SystemForge converts messy workflows into resilient, production-grade system architectures through a 3-agent autonomous pipeline.
+Many startups and engineering teams launch products quickly but struggle later with:
 
-### Input
+* poor scalability
+* high infrastructure costs
+* deployment bottlenecks
+* weak fault tolerance
+* lack of observability
+* production incidents caused by architectural debt
 
-A user provides an existing workflow, operational process, or architecture draft.
+Architecture reviews are often expensive, slow, and require senior system design expertise.
 
-Example:
+### The challenge
 
-Customer sends request
-→ team manually checks inventory
-→ approval happens through email
-→ payment is manually tracked
-→ delivery is delayed
-
-### Output
-
-SystemForge redesigns the system into an optimized architecture.
-
-Example:
-
-Customer Request
-→ AI Intake Agent
-→ Validation Layer
-→ Inventory Sync Service
-→ Approval Engine
-→ Payment Orchestration
-→ Auto Dispatch
-→ Monitoring Dashboard
-
-The result includes:
-
-* Improved workflow design
-* Service architecture recommendations
-* Infrastructure planning
-* Reliability improvements
-* Production-readiness validation
-* Deployment and observability suggestions
+How can teams quickly receive expert-level production architecture recommendations without waiting for expensive consulting cycles?
 
 ---
 
-# Core Agent Pipeline
+## Solution
 
-SystemForge uses three autonomous agents working sequentially.
+SystemForge AI acts as an AI Architecture Consultant.
 
-## 1. Architect Agent
+Users provide:
 
-### Responsibility
+* current system details
+* workloads
+* bottlenecks
+* deployment setup
+* infrastructure constraints
 
-Designs the first version of the system architecture.
+The platform analyzes the system and generates:
 
-### Tasks
+### Output Includes
 
-* Understand workflow intent
-* Identify service boundaries
-* Define APIs and data flow
-* Recommend queues, databases, and infrastructure
-* Create scalable architecture foundations
+* architecture redesign recommendations
+* distributed system improvements
+* reliability upgrades
+* deployment optimization
+* scaling strategies
+* service decomposition suggestions
+* infrastructure modernization paths
+* downloadable architecture report (PDF)
 
-### Output
-
-Initial production architecture draft
-
----
-
-## 2. Critic Agent
-
-### Responsibility
-
-Finds weaknesses, bottlenecks, and architectural risks.
-
-### Tasks
-
-* Detect single points of failure
-* Identify scaling risks
-* Review latency and reliability concerns
-* Analyze observability gaps
-* Check fallback and failure handling
-* Surface security and compliance risks
-
-### Output
-
-Architecture review with high-severity findings
+This reduces architecture review time from days to minutes.
 
 ---
 
-## 3. Refiner Agent
+## Why It Matters
 
-### Responsibility
+Modern production systems fail because of architectural decisions—not code quality.
 
-Improves the architecture using critic feedback.
+SystemForge AI helps teams:
 
-### Tasks
+* prevent production outages
+* reduce cloud costs
+* improve system reliability
+* scale confidently
+* accelerate technical decision-making
 
-* Add fallback systems
-* Introduce circuit breakers
-* Improve resilience patterns
-* Strengthen observability
-* Improve deployment readiness
-* Finalize production-grade architecture
-
-### Output
-
-Production-ready refined architecture
+This creates real business impact for startups, SaaS platforms, and enterprise engineering teams.
 
 ---
 
-# System Flow
+## AMD Integration
 
-Workflow Input
-↓
-Workflow Builder UI
-↓
-Backend API
-↓
-Multi-Agent Orchestration Engine
-↓
-GPU-Accelerated LLM Inference
-↓
-Architecture Generation + Validation
-↓
-Final Workflow + Infrastructure Output
+## Where AMD Is Used
 
----
+SystemForge AI uses AMD-powered inference infrastructure for generating architecture recommendations.
 
-# Features
+### AMD-Powered Components
 
-* Workflow redesign from messy operational processes
-* Autonomous architecture generation
-* Multi-agent validation pipeline
-* Reliability and SPOF detection
-* Production-readiness scoring
-* Infrastructure recommendations
-* Observability and monitoring suggestions
-* Failure recovery strategy generation
-* Deployment architecture planning
-* Visual workflow output generation
+* AMD inference endpoints
+* AMD model serving infrastructure
+* LLM execution powered through AMD-supported deployment
+* high-performance inference for architecture generation workflows
+
+### Why AMD
+
+AMD enables:
+
+* faster model inference
+* production-grade reliability
+* scalable AI execution
+* efficient deployment for real-world enterprise use cases
+
+This project is not just using AI—it is built on infrastructure designed for production AI workloads.
+
+That is the core alignment with the AMD Developer Hackathon.
 
 ---
 
-# Technology Stack
+## Features
+
+### Core Features
+
+* AI-based production architecture redesign
+* architecture optimization engine
+* fault tolerance recommendations
+* cost optimization suggestions
+* scalability planning
+* cloud-native modernization guidance
+* PDF architecture report generation
+* production-ready deployment
+
+### Engineering Features
+
+* Next.js frontend
+* FastAPI backend
+* API proxy architecture
+* Hugging Face Spaces deployment
+* environment-based configuration
+* production-safe API routing
+
+---
+
+## Tech Stack
 
 ## Frontend
 
 * Next.js
 * TypeScript
-* Ant Design
-* Framer Motion
-* Three.js
+* React
+* CSS
 
 ## Backend
 
-* Python
 * FastAPI
-* CrewAI
-* LangChain
+* Python
+* PDF report generation
 
 ## AI Layer
 
-* Qwen Models
-* vLLM
-* AMD ROCm GPU Acceleration
+* AMD inference infrastructure
+* LLM orchestration
+* architecture workflow engine
 
-## Infrastructure
+## Deployment
 
-* PostgreSQL
-* Redis
-* Docker
+* Hugging Face Spaces
 
 ---
 
-# AMD GPU Integration
+## Architecture
 
-SystemForge uses GPU-accelerated inference for autonomous agent execution.
+```text
+User Input
+   ↓
+Next.js Frontend
+   ↓
+Next.js API Proxy Routes
+   ↓
+FastAPI Backend
+   ↓
+AMD-Powered Inference Engine
+   ↓
+Architecture Generation Workflow
+   ↓
+Final Recommendations + PDF Report
+```
 
-The frontend is responsible for workflow interaction and visualization, while the backend routes agent reasoning through high-performance model inference using AMD GPU infrastructure.
+### Important Production Design Decision
 
-### GPU workloads include
+Frontend does NOT call FastAPI directly.
 
-* Architect agent reasoning
-* Critic agent analysis
-* Refiner agent refinement
-* Long-context architecture validation
-* Multi-step architecture generation
+Instead, Next.js API routes act as a proxy:
 
-### Inference pipeline
+```text
+Frontend → /api/run-systemforge → FastAPI
+Frontend → /api/download-report → FastAPI
+```
 
-Frontend
-↓
-Backend API
-↓
-CrewAI Agent Engine
-↓
-AMD GPU Endpoint
-↓
-Qwen Model Inference
-↓
-Agent Response Generation
+This solves:
 
-This enables faster inference, better scalability, and production-grade multi-agent execution.
+* CORS issues
+* localhost deployment failures
+* production environment inconsistencies
+* browser loopback permission problems
 
----
-
-# Example Use Cases
-
-## E-commerce Platform Redesign
-
-Transform fragmented order processing into scalable event-driven architecture.
-
-## Healthcare Workflow Optimization
-
-Redesign patient intake, approvals, and compliance systems with reliability safeguards.
-
-## Fintech Operations Pipeline
-
-Improve fraud detection, transaction routing, and regulatory reporting systems.
-
-## Internal Enterprise Automation
-
-Replace manual approvals and spreadsheet-driven workflows with resilient service architecture.
+This was a major production deployment improvement.
 
 ---
 
-# Future Scope
+## Screenshots
 
-* Drag-and-drop workflow builder
-* Collaborative workflow editing
-* Industry-specific architecture templates
-* Compliance-aware architecture generation
-* Kubernetes deployment generation
-* CI/CD pipeline generation
-* Infrastructure-as-Code recommendations
-* Automated incident recovery planning
+Add your screenshots here before final submission.
+
+Recommended screenshots:
+
+* Home page
+* Input workflow page
+* Generated architecture output
+* PDF report generation
+* Final production architecture recommendations
+
+Example:
+
+```md
+![Homepage](./screenshots/homepage.png)
+```
 
 ---
 
-# Vision
+## Demo Video
 
-SystemForge is designed to move beyond architecture review.
+Add your demo video link here.
 
-The long-term goal is to become an autonomous workflow redesign engine that helps organizations transform operational complexity into scalable, reliable, and production-ready AI systems.
+Recommended demo structure (2–5 minutes):
+
+1. Problem statement
+2. Product walkthrough
+3. Live architecture generation
+4. PDF report generation
+5. AMD usage explanation
+6. Why this matters
+
+---
+
+## Live Deployment
+
+### Hugging Face Space
+
+[https://huggingface.co/spaces/lablab-ai-amd-developer-hackathon/systemforge-ai](https://huggingface.co/spaces/lablab-ai-amd-developer-hackathon/systemforge-ai)
+
+---
+
+## GitHub Repository
+
+### Source Code
+
+[https://github.com/jacobjerryarackal/systemforge-ai](https://github.com/jacobjerryarackal/systemforge-ai)
+
+---
+
+## Local Setup
+
+## Clone Repository
+
+```bash
+git clone https://github.com/jacobjerryarackal/systemforge-ai.git
+cd systemforge-ai
+```
+
+---
+
+## Backend Setup
+
+```bash
+python -m venv venv
+source venv/bin/activate
+# Windows
+venv\Scripts\activate
+
+pip install -r requirements.txt
+```
+
+### Run Backend
+
+```bash
+uvicorn main:app --reload
+```
+
+Backend runs on:
+
+```text
+http://127.0.0.1:8000
+```
+
+---
+
+## Frontend Setup
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Frontend runs on:
+
+```text
+http://localhost:3000
+```
+
+---
+
+## Environment Variables
+
+### Frontend `.env.local`
+
+```env
+NEXT_PUBLIC_API_URL=http://127.0.0.1:8000
+NEXT_PUBLIC_BACKEND_URL=http://127.0.0.1:8000
+NEXT_PUBLIC_MOCK_MODE=false
+```
+
+### Backend `.env`
+
+```env
+AMD_API_KEY=your_key
+AMD_BASE_URL=your_base_url
+AMD_MODEL=your_model
+MODEL_NAME=your_model
+LLM_PROVIDER=amd
+USE_MOCK_MODE=false
+```
+
+For production deployment, these variables must be added inside Hugging Face Space settings.
+
+---
+
+## Deployment Notes
+
+### Important
+
+Do NOT expose backend directly to the browser.
+
+Use API proxy routes:
+
+```text
+frontend/app/api/run-systemforge/route.ts
+frontend/app/api/download-report/route.ts
+```
+
+This ensures stable production deployment.
+
+---
+
+## Third-Party Services Disclosure
+
+This project uses:
+
+* Next.js
+* FastAPI
+* Hugging Face Spaces
+* AMD inference infrastructure
+* LLM APIs for architecture generation
+* PDF generation libraries
+
+These services are used to support production deployment and AI workflow execution.
+
+---
+
+## Future Roadmap
+
+Planned improvements:
+
+* architecture diagram visualization
+* multi-cloud recommendations
+* Kubernetes optimization mode
+* observability recommendations
+* CI/CD redesign suggestions
+* security architecture review
+* FinOps optimization engine
+* enterprise architecture dashboard
+
+---
+
+## Hackathon Submission Notes
+
+This project was built specifically for:
+
+## AMD Developer Hackathon — Track 1
+
+Focus areas:
+
+* practical AI product
+* production deployment
+* real business value
+* AMD-powered infrastructure usage
+* scalable implementation
+
+SystemForge AI is designed as a real-world engineering productivity platform, not just a prototype.
+
+---
+
+## Author
+
+### Jacob Jerry Arackal
+
+Generative AI Engineer | Full Stack Developer | System Design Enthusiast
+
+Built with a strong focus on production-grade AI systems and real-world deployment.
+
+---
