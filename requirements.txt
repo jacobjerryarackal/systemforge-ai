@@ -7,5 +7,6 @@ langchain
 langchain-openai
 langchain-groq
 gradio
+reportlab
 setuptools<70
 wheel
