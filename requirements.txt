@@ -5,7 +5,7 @@ fastapi
 uvicorn
 langchain
 langchain-openai
-python-dotenv
+langchain-groq
 gradio
 setuptools<70
 wheel
