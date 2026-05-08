@@ -5,7 +5,7 @@ from fastapi.responses import FileResponse
 
 from src.workflows.crew import run_systemforge
 from src.api.pdf_generator import generate_architecture_pdf
-
+import traceback
 
 app = FastAPI(
     title="SystemForge API"
@@ -56,11 +56,14 @@ def generate_architecture(
         raise
 
     except Exception as e:
+        print("========== FULL BACKEND ERROR ==========")
         print(f"SystemForge Error: {str(e)}")
+        traceback.print_exc()
+        print("========================================")
 
         raise HTTPException(
             status_code=500,
-            detail="Failed to generate architecture"
+            detail=f"Failed to generate architecture: {str(e)}"
         )
 
 
@@ -101,9 +104,12 @@ def download_report(
         raise
 
     except Exception as e:
+        print("========== FULL BACKEND ERROR ==========")
         print(f"PDF Generation Error: {str(e)}")
+        traceback.print_exc()
+        print("========================================")
 
         raise HTTPException(
             status_code=500,
-            detail="Failed to generate report"
+            detail=f"Failed to download pdf: {str(e)}"
         )
