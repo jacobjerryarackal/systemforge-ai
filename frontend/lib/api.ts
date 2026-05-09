@@ -1,10 +1,15 @@
 import type { SystemForgeResponse } from "./types";
 
+const API_URL =
+  process.env.NEXT_PUBLIC_API_URL || "";
+
 export async function generateWorkflowRedesign(
   workflowSteps: string[]
 ): Promise<SystemForgeResponse> {
+  console.log("API_URL =", API_URL);
+
   const response = await fetch(
-    `/api/run-systemforge`,
+    `${API_URL}/run-systemforge`,
     {
       method: "POST",
       headers: {
@@ -29,12 +34,11 @@ export async function generateWorkflowRedesign(
   return data;
 }
 
-
 export async function downloadArchitectureReport(
   workflowSteps: string[]
 ): Promise<void> {
   const response = await fetch(
-    `/api/download-report`,
+    `${API_URL}/download-report`,
     {
       method: "POST",
       headers: {
@@ -58,9 +62,7 @@ export async function downloadArchitectureReport(
         errorData.detail ||
         errorData.error ||
         errorMessage;
-    } catch {
-      // fallback if response is not JSON
-    }
+    } catch { }
 
     throw new Error(errorMessage);
   }
