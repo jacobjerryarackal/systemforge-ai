@@ -215,11 +215,11 @@ Recommended screenshots:
 
 Example:
 
-```md
+
 ![Homepage](./screenshots/homepage1.png)
 ![Homepage](./screenshots/homepage2.png)
 ![Homepage](./screenshots/homepage3.png)
-```
+
 
 ![Agent Thinking Process](./screenshots/agent_thinking.png)
 
