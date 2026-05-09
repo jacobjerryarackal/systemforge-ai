@@ -3,13 +3,8 @@ import type { SystemForgeResponse } from "./types";
 export async function generateWorkflowRedesign(
   workflowSteps: string[]
 ): Promise<SystemForgeResponse> {
-  const API_URL =
-    process.env.NEXT_PUBLIC_API_URL || "";
-
-  console.log("API_URL =", API_URL);
-
   const response = await fetch(
-    `${API_URL}/run-systemforge`,
+    `/api/run-systemforge`,
     {
       method: "POST",
       headers: {
@@ -38,13 +33,8 @@ export async function generateWorkflowRedesign(
 export async function downloadArchitectureReport(
   workflowSteps: string[]
 ): Promise<void> {
-  const API_URL =
-    process.env.NEXT_PUBLIC_API_URL ||
-    process.env.NEXT_PUBLIC_BACKEND_URL ||
-    "";
-
   const response = await fetch(
-    `${API_URL}/download-report`,
+    `/api/download-report`,
     {
       method: "POST",
       headers: {
