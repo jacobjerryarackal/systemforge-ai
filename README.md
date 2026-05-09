@@ -216,24 +216,30 @@ Recommended screenshots:
 Example:
 
 ```md
-![Homepage](./screenshots/homepage.png)
+![Homepage](./screenshots/homepage1.png)
+![Homepage](./screenshots/homepage2.png)
+![Homepage](./screenshots/homepage3.png)
 ```
 
----
+![Agent Thinking Process](./screenshots/agent_thinking.png)
 
-## Demo Video
+![Before After Transformation](./screenshots/before_after_transformation.png)
 
-Add your demo video link here.
+![Workflow Steps](./screenshots/workflow_steps.png)
 
-Recommended demo structure (2–5 minutes):
+![Architecture](./screenshots/architecture_blueprint.png)
 
-1. Problem statement
-2. Product walkthrough
-3. Live architecture generation
-4. PDF report generation
-5. AMD usage explanation
-6. Why this matters
+![Agent Decision Intelligence](./screenshots/agent_decision_intelligence.png)
 
+![Final System Impact](./screenshots/final_system_impact1.png)
+
+![Final System Impact](./screenshots/final_system_impact2.png)
+
+![PDF](./screenshots/pdf_generation1.png)
+
+![PDF](./screenshots/pdf_generation2.png)
+
+![PDF](./screenshots/pdf_generation3.png)
 ---
 
 ## Live Deployment
@@ -241,6 +247,12 @@ Recommended demo structure (2–5 minutes):
 ### Hugging Face Space
 
 [https://huggingface.co/spaces/lablab-ai-amd-developer-hackathon/systemforge-ai](https://huggingface.co/spaces/lablab-ai-amd-developer-hackathon/systemforge-ai)
+
+---
+
+### Vercel Live Demo
+
+[https://systemforge-ai.vercel.app/](https://systemforge-ai.vercel.app/)
 
 ---
 
